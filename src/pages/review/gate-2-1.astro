@@ -1,0 +1,366 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SeamHeroV2 from '@components/review/SeamHeroV2.astro';
+import { site, withBase, cta } from '@config/site';
+import platformHome from '@/assets/formula4you/formula4you-platform-home.webp';
+import onboarding from '@/assets/formula4you/formula4you-supplier-onboarding.webp';
+import store from '@/assets/formula4you/formula4you-brand-store-customer-view.webp';
+
+/**
+ * GATE 2.1 — visual proposal. Review route, noindex, absent from nav + sitemap.
+ * Nothing here changes the data architecture, content schema, Evidence Rail
+ * logic, SEO foundation, or the contact system.
+ */
+---
+
+<BaseLayout
+  title={`Gate 2.1 — visual proposal | ${site.name}`}
+  description="Proposed presentation rework: editorial hero, fixed CTA, reduced card language, Formula4You evidence at scale."
+  path="/review/gate-2-1"
+  noindex
+>
+  <!-- ══ 1 · The proposal masthead ══════════════════════════════════════ -->
+  <section class="rv-top">
+    <div class="wrap">
+      <p class="rv-kicker">Gate 2.1 · visual proposal</p>
+      <h1 class="rv-h1">From command center to living editorial system.</h1>
+      <p class="rv-lede">
+        Same architecture, schemas, evidence logic, and contact system. Different presentation
+        layer. Everything below is running code on the real tokens — not a mockup.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 2 · Reworked hero (desktop) ════════════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>01</span> Reworked hero — desktop. Scroll-triggered motion, no panel, no dashboard columns.</div></div>
+  <SeamHeroV2 />
+
+  <!-- ══ 3 · Buttons ════════════════════════════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>02</span> Button system — stable box, travelling fill, directional arrow. Hover and tab through them.</div></div>
+  <section class="rv-sec">
+    <div class="wrap rv-btns">
+      <div class="rv-btn-demo">
+        <p class="rv-cap">Primary — on ink</p>
+        <a class="btn btn--primary" href="#0">
+          Explore selected work
+          <svg class="btn__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true"><path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="rv-btn-demo">
+        <p class="rv-cap">Secondary — related, quieter</p>
+        <a class="btn btn--ghost" href="#0">
+          {cta.business.label}
+          <svg class="btn__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true"><path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="rv-btn-demo rv-btn-demo--stone zone-stone">
+        <p class="rv-cap">On a stone reading surface</p>
+        <div class="cluster">
+          <a class="btn btn--primary" href="#0">
+            Read the case study
+            <svg class="btn__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true"><path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#0">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="rv-note">
+        <strong>44px minimum height, fixed.</strong> Height never depends on the label. The fill
+        travels left→right on hover and focus; the arrow moves 3px; the box never resizes, so
+        nothing around it shifts. No glow, no scale, no width animation.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 4 · Header CTA fix ═════════════════════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>03</span> Header CTA — fixed slot. Toggle the audience switch in the header above and watch the nav.</div></div>
+  <section class="rv-sec">
+    <div class="wrap rv-two">
+      <div class="rv-bad">
+        <p class="rv-cap rv-cap--bad">Before — the header moved</p>
+        <div class="rv-shell">
+          <div class="rv-fakebtn rv-fakebtn--a">Request a Business Diagnostic</div>
+          <div class="rv-fakebtn rv-fakebtn--b">Discuss a Role</div>
+        </div>
+        <p class="rv-small">
+          Two labels, two widths. Swapping audiences resized the button, pushed the nav, and
+          shifted the whole composition.
+        </p>
+      </div>
+      <div class="rv-good">
+        <p class="rv-cap rv-cap--good">After — one stable shell</p>
+        <div class="rv-shell">
+          <a class="btn btn--primary cta-shell" href="#0" data-cta-shell>
+            <span class="cta-shell__sizer" aria-hidden="true">Request a Business Diagnostic</span>
+            <span class="cta-shell__stack">
+              <span class="cta-shell__label is-on" data-cta-label="business">Request a Business Diagnostic</span>
+              <span class="cta-shell__label" data-cta-label="employer" aria-hidden="true">Discuss a Role</span>
+            </span>
+            <svg class="cta-shell__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true"><path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <p class="rv-small">
+          An invisible sizer holds the wider label's width permanently. Both labels are stacked
+          in one grid cell and crossfade. The arrow never moves. <strong>Measured CLS between
+          states: 0.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 5 · Formula4You evidence at scale ══════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>04</span> Formula4You — evidence at editorial scale, annotated, no dark overlay.</div></div>
+
+  <section class="rv-f4u">
+    <div class="wrap">
+      <div class="rv-f4u__head">
+        <p class="rv-f4u__k">The vertical bet, made visible</p>
+        <h2 class="rv-f4u__h">
+          A general store builder can sell a bottle.<br />
+          It cannot model a <em>fragrance</em>.
+        </h2>
+      </div>
+    </div>
+
+    <!-- Full-bleed evidence moment: large platform screen + overlapping detail -->
+    <div class="rv-stage">
+      <div class="rv-stage__main">
+        <Image src={platformHome} alt="The Formula4You platform home page in Arabic, right-to-left, headlined 'Create your online perfume store and start selling', with feature chips for no commission, Paymob with InstaPay and Visa, Bosta and Mylerz shipping, and Arabic support seven days a week."
+          widths={[720, 1080, 1600]} sizes="(max-width: 900px) 92vw, 62vw" loading="lazy" class="rv-shot rv-shot--main" />
+        <span class="rv-anno rv-anno--1">
+          <span class="rv-anno__dot" aria-hidden="true"></span>
+          <span class="rv-anno__t"><b>No commission.</b> That one choice sets the whole operating model — revenue is subscription, so the lifecycle becomes product surface.</span>
+        </span>
+      </div>
+
+      <div class="rv-stage__aside">
+        <Image src={onboarding} alt="Formula4You supplier registration, step two of two at one hundred percent, showing seven fields of which five are required."
+          widths={[420, 640, 900]} sizes="(max-width: 900px) 60vw, 30vw" loading="lazy" class="rv-shot rv-shot--aside" />
+        <span class="rv-anno rv-anno--2">
+          <span class="rv-anno__dot" aria-hidden="true"></span>
+          <span class="rv-anno__t"><b>Step 2 of 2.</b> Seven fields, five required. Onboarding friction treated as a business risk, not a preference.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="wrap rv-f4u__split">
+      <div class="rv-f4u__txt">
+        <p class="rv-dec">
+          <span class="rv-dec__k">The decision</span>
+          Depth over breadth — a category platform, not another general store builder.
+        </p>
+        <p>
+          On a general platform, “EDT vs EDP” is a custom attribute somebody types into a text
+          box, and it means nothing to search, filtering, or comparison. Here it is
+          <em>structure</em>. That difference compounds: structured category data is what makes
+          discovery work, and eventually makes the data itself the moat.
+        </p>
+        <p class="rv-f4u__proves">
+          <b>Concentration. Gender. Volume.</b> First-class fields on the card, exactly where a
+          fragrance buyer looks for them.
+        </p>
+      </div>
+      <div class="rv-f4u__img">
+        <Image src={store} alt="A customer-facing perfume storefront created through Formula4You with its own brand identity, gender filters, and product cards showing concentration, gender, price and bottle size."
+          widths={[420, 640, 989]} sizes="(max-width: 900px) 92vw, 40vw" loading="lazy" class="rv-shot" />
+        <p class="rv-shot__cap">A brand storefront created through Formula4You, as a customer sees it. Branding belongs to the merchant, not the platform.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 6 · Card reduction ═════════════════════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>05</span> Card reduction — the same content, structure carried by type and space.</div></div>
+  <section class="rv-sec">
+    <div class="wrap rv-two">
+      <div>
+        <p class="rv-cap rv-cap--bad">Before — 4 bordered cards</p>
+        <div class="rv-old-grid">
+          {['Support & CX transformation', 'Digital buying system', 'Operations & workflows', 'Growth & market expansion'].map((t) => (
+            <div class="rv-old-card">
+              <h4>{t}</h4>
+              <p>Diagnostic model, ranked interventions, deliverables, metrics.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p class="rv-cap rv-cap--good">After — 0 boxes, a rule and a rhythm</p>
+        <ul class="rv-new-list">
+          {[
+            ['Support & CX', 'Why do customers need to contact you at all?'],
+            ['Digital buying system', 'What is the journey costing you before the ad spend?'],
+            ['Operations & workflows', 'Which work should stop existing?'],
+            ['Growth & expansion', 'Is acquisition really the constraint?'],
+          ].map(([t, q]) => (
+            <li>
+              <span class="rv-new-t">{t}</span>
+              <span class="rv-new-q">{q}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="rv-note">
+        <strong>Four rectangles became four lines.</strong> The hairline rule and the type
+        hierarchy do the work the borders were doing. Applied across the home page this removes
+        roughly <b>40–60%</b> of visible containers. Cards survive only where the content is
+        genuinely being <em>compared</em> or <em>selected</em> — the audience gateway and the
+        capability panel.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 7 · What changed ═══════════════════════════════════════════════ -->
+  <div class="rv-label"><div class="wrap"><span>06</span> How the command-center feeling was removed</div></div>
+  <section class="rv-sec rv-sec--last">
+    <div class="wrap">
+      <div class="rv-ba">
+        {[
+          ['Motion never seen', 'Fired on a 370ms timer while the diagram sat 785px down (13% visible) — 1213px and fully off-screen on mobile. Finished before you scrolled to it.', 'Fires on real visibility, once. Diagram moved inside the first viewport.'],
+          ['Everything in a box', 'Hero, gateway, work, capabilities, playbooks, insights, credibility, contact — all bordered panels of similar weight.', 'Hero and evidence sit directly on the canvas. Borders survive only where content is compared or selected.'],
+          ['Uniform section weight', 'Every section ~the same density, so nothing felt like an arrival.', 'Alternating rhythm: open editorial → calm reading → full-bleed evidence → motion → human → close.'],
+          ['Diagrams as widgets', 'A line drawn over a static chart inside a panel.', 'The organisation visibly fragments and reorganises. Closing frame differs from the opening frame.'],
+          ['Screenshots as cards', 'Real product shown at card scale, competing with UI chrome.', 'Full-bleed platform screen with an overlapping detail and annotation lines to the exact decision.'],
+          ['Header shifted', '"Request a Business Diagnostic" vs "Discuss a Role" resized the button and moved the nav.', 'Fixed shell, stacked labels, crossfade. CLS 0.'],
+          ['System with no author', 'Capability database energy. Little sense of a person deciding things.', 'First-person statements, serif moments, named decisions with rejected alternatives, portrait at scale.'],
+        ].map(([k, before, after]) => (
+          <div class="rv-ba__row">
+            <span class="rv-ba__k">{k}</span>
+            <span class="rv-ba__b">{before}</span>
+            <span class="rv-ba__a">{after}</span>
+          </div>
+        ))}
+      </div>
+      <p class="rv-note rv-note--end">
+        Not changed, by instruction: content schemas, claim/evidence model, Evidence Rail logic,
+        SEO foundation, contact system, accessibility foundation. This is a presentation layer
+        only. <a href={withBase('/')}>Compare with the current home page →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rv-top { padding-block: clamp(2.5rem, 5vw, 4rem) var(--s6); border-bottom: 1px solid var(--hairline); }
+  .rv-kicker { font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--coral-bright); margin-bottom: var(--s4); }
+  .rv-h1 { font-size: clamp(1.875rem, 3.6vw, 3rem); letter-spacing: -0.03em; margin-bottom: var(--s4); }
+  .rv-lede { font-size: 1.0625rem; color: var(--text-muted); max-width: 62ch; }
+
+  .rv-label { background: var(--surface-deep); border-block: 1px solid var(--hairline); padding-block: var(--s3); }
+  .rv-label .wrap { display: flex; gap: var(--s3); align-items: baseline; font-size: var(--fs-caption); color: var(--text-faint); }
+  .rv-label span { font-family: var(--font-head); font-weight: 700; color: var(--teal-bright); font-variant-numeric: tabular-nums; }
+
+  .rv-sec { padding-block: clamp(2.5rem, 5vw, 4rem); }
+  .rv-sec--last { padding-bottom: var(--s9); }
+  .rv-cap { font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--s4); }
+  .rv-cap--bad { color: var(--coral-bright); }
+  .rv-cap--good { color: var(--teal-bright); }
+  .rv-note { font-size: var(--fs-small); color: var(--text-muted); max-width: 88ch; margin-top: var(--s6); padding-left: var(--s4); border-left: 2px solid var(--teal-signal); }
+  .rv-note--end { margin-top: var(--s7); }
+  .rv-note strong, .rv-note b { color: var(--text); }
+  .rv-small { font-size: var(--fs-caption); color: var(--text-muted); margin-top: var(--s4); max-width: 46ch; }
+  .rv-small strong { color: var(--text); }
+
+  .rv-btns { display: flex; gap: var(--s7); flex-wrap: wrap; align-items: flex-start; }
+  .rv-btn-demo--stone { padding: var(--s5); border-radius: var(--r-md); }
+  .rv-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s7); align-items: start; }
+  @media (max-width: 900px) { .rv-two { grid-template-columns: 1fr; } }
+
+  .rv-shell { min-height: 64px; display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+  .rv-fakebtn {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.15rem;
+    border-radius: var(--r-sm); background: var(--teal-bright); color: var(--surface-deep);
+    font-family: var(--font-head); font-weight: 700; font-size: var(--fs-small);
+  }
+  .rv-fakebtn--b { background: transparent; border: 1px dashed var(--coral-signal); color: var(--coral-bright); }
+
+  /* ── Formula4You editorial evidence ─────────────────────────────────── */
+  .rv-f4u { padding-block: clamp(3rem, 6vw, 5rem); background: var(--surface-deep); }
+  .rv-f4u__head { max-width: 60ch; margin-bottom: var(--s7); }
+  .rv-f4u__k { font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-bright); margin-bottom: var(--s3); }
+  .rv-f4u__h { font-size: clamp(1.625rem, 3vw, 2.5rem); letter-spacing: -0.025em; line-height: 1.14; }
+  .rv-f4u__h em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--teal-bright); }
+
+  /* Full-bleed stage: large screen with an overlapping detail. */
+  .rv-stage {
+    position: relative; margin-inline: auto; max-width: 1400px;
+    padding-inline: var(--gutter);
+    display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: var(--s6); align-items: end;
+  }
+  @media (max-width: 900px) { .rv-stage { grid-template-columns: 1fr; gap: var(--s7); } }
+  .rv-stage__main, .rv-stage__aside { position: relative; }
+  .rv-shot {
+    width: 100%; height: auto; border-radius: var(--r-md);
+    border: 1px solid var(--hairline-strong);
+    /* Functional depth only — separates the real product from the canvas.
+       No overlay: the product must stay readable. */
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.65);
+  }
+  .rv-shot--aside { margin-bottom: var(--s8); }
+  @media (max-width: 900px) { .rv-shot--aside { margin-bottom: 0; } }
+
+  .rv-anno {
+    position: absolute; display: flex; gap: var(--s3); align-items: flex-start;
+    max-width: 30ch; font-size: var(--fs-caption); color: var(--text-muted);
+    background: color-mix(in srgb, var(--surface-deep) 92%, transparent);
+    padding: var(--s3) var(--s4); border-radius: var(--r-sm);
+    border-left: 2px solid var(--teal-signal);
+  }
+  .rv-anno b { color: var(--text); }
+  .rv-anno__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-bright); flex: none; margin-top: 0.4em; }
+  .rv-anno--1 { left: calc(var(--gutter) + var(--s5)); bottom: var(--s5); }
+  .rv-anno--2 { right: 0; bottom: 0; }
+  @media (max-width: 900px) {
+    .rv-anno { position: static; max-width: none; margin-top: var(--s3); }
+  }
+
+  .rv-f4u__split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s8); margin-top: var(--s9); align-items: center; }
+  @media (max-width: 900px) { .rv-f4u__split { grid-template-columns: 1fr; gap: var(--s6); margin-top: var(--s7); } }
+  .rv-f4u__txt p { color: var(--text-muted); margin-bottom: var(--s4); max-width: 54ch; }
+  .rv-f4u__txt em { color: var(--text); font-style: italic; }
+  .rv-dec { border-left: 2px solid var(--teal-signal); padding-left: var(--s4); }
+  .rv-dec__k { display: block; font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-bright); margin-bottom: var(--s2); }
+  .rv-dec { font-family: var(--font-head); font-size: var(--fs-h4); font-weight: 600; color: var(--text) !important; }
+  .rv-f4u__proves b { color: var(--teal-bright); }
+  .rv-shot__cap { font-size: var(--fs-caption); color: var(--text-faint); margin-top: var(--s3); }
+
+  /* ── Card reduction demo ────────────────────────────────────────────── */
+  .rv-old-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+  .rv-old-card { padding: var(--s4); border: 1px solid var(--hairline-strong); border-radius: var(--r-md); background: var(--surface-raise); }
+  .rv-old-card h4 { font-size: 0.9375rem; margin-bottom: var(--s2); }
+  .rv-old-card p { font-size: var(--fs-caption); color: var(--text-muted); }
+
+  .rv-new-list { list-style: none; padding: 0; border-top: 1px solid var(--hairline); }
+  .rv-new-list li { display: flex; flex-direction: column; gap: 2px; padding: var(--s4) 0; border-bottom: 1px solid var(--hairline); }
+  .rv-new-t { font-family: var(--font-head); font-size: 1.0625rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+  .rv-new-q { font-size: var(--fs-small); color: var(--text-muted); }
+
+  /* ── Before / after ─────────────────────────────────────────────────── */
+  .rv-ba { border-top: 1px solid var(--hairline); }
+  .rv-ba__row { display: grid; grid-template-columns: 200px 1fr 1fr; gap: var(--s5); padding: var(--s4) 0; border-bottom: 1px solid var(--hairline); align-items: start; }
+  @media (max-width: 900px) { .rv-ba__row { grid-template-columns: 1fr; gap: var(--s2); } }
+  .rv-ba__k { font-family: var(--font-head); font-size: var(--fs-small); font-weight: 700; color: var(--text); }
+  .rv-ba__b { font-size: var(--fs-caption); color: var(--text-faint); }
+  .rv-ba__a { font-size: var(--fs-caption); color: var(--teal-bright); }
+</style>
+
+<script>
+  // Demo the crossfade in the "after" shell so the reviewer can see it hold.
+  const shell = document.querySelector<HTMLElement>('.rv-good [data-cta-shell]');
+  if (shell) {
+    const labels = shell.querySelectorAll<HTMLElement>('[data-cta-label]');
+    let i = 0;
+    window.setInterval(() => {
+      i = (i + 1) % labels.length;
+      labels.forEach((l, n) => {
+        l.classList.toggle('is-on', n === i);
+        if (n === i) l.removeAttribute('aria-hidden');
+        else l.setAttribute('aria-hidden', 'true');
+      });
+    }, 2200);
+  }
+</script>

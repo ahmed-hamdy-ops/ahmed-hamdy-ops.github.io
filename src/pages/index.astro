@@ -5,7 +5,6 @@ import AudienceGateway from '@components/home/AudienceGateway.astro';
 import BusinessSystem from '@components/home/BusinessSystem.astro';
 import SelectedWork from '@components/home/SelectedWork.astro';
 import CapabilityMap from '@components/home/CapabilityMap.astro';
-import Playbooks from '@components/home/Playbooks.astro';
 import AuditsAndInsights from '@components/home/AuditsAndInsights.astro';
 import HowIWork from '@components/home/HowIWork.astro';
 import Credibility from '@components/home/Credibility.astro';
@@ -22,18 +21,25 @@ import { site, absoluteUrl } from '@config/site';
  *
  * Section order + dominant domain (balance rule: no two consecutive sections
  * share a dominant functional domain):
- *   1 Hero .................. positioning
- *   2 Audience gateway ...... routing
- *   3 Business system ....... cross-functional / system
- *   4 Selected work ......... market · product · CX · growth
- *   5 Capability map ........ all (the map itself)
- *   6 Playbooks ............. operations · CX · conversion · growth
- *   7 Audit method .......... market strategy / judgment
- *   8 Insights .............. mixed, incl. AI decisions
- *   9 How I work + SAB ...... execution · measurement
- *  10 Credibility ........... proof
- *  11 About ................. narrative
- *  12 Contact CTA ........... conversion
+ *   1 Hero .......................... positioning
+ *   2 Audience gateway .............. routing
+ *   3 Business system ............... cross-functional / system
+ *   4 Selected work ................. market · product · CX · growth
+ *   5 Capabilities + playbooks ...... all (the map itself)   ← merged at Gate 2
+ *   6 Audit method + Insights ....... market strategy · judgment · AI decisions
+ *   7 How I work + SAB .............. execution · measurement
+ *   8 Credibility ................... proof
+ *   9 About ......................... narrative
+ *  10 Contact CTA ................... conversion
+ *
+ * Gate 2 merge: the Capability Proof Map absorbed Transformation Playbooks.
+ * They answered nearly the same question ("what can he do?" / "how would he do
+ * it?") from adjacent sections. Merged, each capability now names the work that
+ * proves it AND the playbook that operationalises it.
+ *
+ * Credibility and About stay separate deliberately: Credibility is
+ * evidence-led and intentionally unimpressive; About is narrative. Merging
+ * would let the narrative soften the evidence discipline.
  */
 ---
 
@@ -57,7 +63,6 @@ import { site, absoluteUrl } from '@config/site';
   <BusinessSystem />
   <SelectedWork />
   <CapabilityMap />
-  <Playbooks />
   <AuditsAndInsights />
   <HowIWork />
   <Credibility />

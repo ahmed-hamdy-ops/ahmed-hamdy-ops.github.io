@@ -270,34 +270,11 @@ const STAGES = [
 </style>
 
 <script>
+  import { playOnce } from '@/scripts/play-once';
+
   const ic = document.querySelector<HTMLElement>('[data-ic]');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function playIc() {
-    if (!ic || reduce.matches) return;
-    ic.classList.remove('play');
-    void ic.offsetWidth;
-    ic.classList.add('play');
-    window.setTimeout(() => ic!.classList.remove('play'), 1600);
-  }
-
-  document.querySelector('[data-ic-replay]')?.addEventListener('click', playIc);
-
-  // Runs once when the section is genuinely on screen. Never on scroll-back.
-  if (ic && !reduce.matches && 'IntersectionObserver' in window) {
-    let done = false;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting && !done) {
-            done = true;
-            playIc();
-            io.disconnect();
-          }
-        }
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(ic);
+  if (ic) {
+    const { run } = playOnce(ic, { threshold: 0.3, duration: 1700, delay: 120 });
+    document.querySelector('[data-ic-replay]')?.addEventListener('click', run);
   }
 </script>

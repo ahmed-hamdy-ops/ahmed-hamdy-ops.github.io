@@ -12,7 +12,10 @@ const { path } = Astro.props;
  */
 const links = [
   { label: 'Work', href: '/work' },
-  { label: 'Playbooks', href: '/#playbooks' },
+  // Playbooks merged into the capability section at Gate 2 — each capability
+  // now names the playbook behind it. The label stays (it is what people look
+  // for); the destination is the merged section.
+  { label: 'Playbooks', href: '/#capabilities' },
   { label: 'Insights', href: '/#insights' },
   { label: 'How I Work', href: '/#how-i-work' },
   { label: 'About', href: '/#about' },
@@ -42,8 +45,27 @@ const isActive = (href: string) => href === '/work' && path.startsWith('/work');
         <button type="button" data-aud="business" aria-pressed="true">For Businesses</button>
         <button type="button" data-aud="employer" aria-pressed="false">For Employers</button>
       </div>
-      <a class="btn btn--primary hdr__cta" href={withBase(cta.business.href)} data-cta>
-        {cta.business.label}
+      {/*
+        Fixed CTA shell. Both labels are rendered and stacked; only opacity
+        crossfades. The shell is sized by the LONGER label held in the layout by
+        an invisible sizer, so the button's external dimensions — and therefore
+        every nav item's position — never move between audience states.
+        Previously "Request a Business Diagnostic" vs "Discuss a Role" resized
+        the button and shifted the whole header.
+      */}
+      <a class="btn btn--primary cta-shell" href={withBase(cta.business.href)} data-cta-shell>
+        <span class="cta-shell__stack">
+          {/* Sizer and both labels share ONE grid cell: the cell sizes to the
+              widest (the sizer), the labels overlay it. If the sizer sat beside
+              the labels it would ADD its width instead of defining it. */}
+          <span class="cta-shell__sizer" aria-hidden="true">{cta.business.label}</span>
+          <span class="cta-shell__label is-on" data-cta-label="business">{cta.business.label}</span>
+          <span class="cta-shell__label" data-cta-label="employer" aria-hidden="true">{cta.employer.label}</span>
+        </span>
+        <svg class="cta-shell__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true">
+          <path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </a>
     </div>
 
@@ -82,15 +104,26 @@ const isActive = (href: string) => href === '/work' && path.startsWith('/work');
   .hdr__name { font-family: var(--font-head); font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
   .hdr__role { font-size: 0.6875rem; color: var(--text-faint); letter-spacing: 0.04em; }
 
-  .hdr__nav { display: flex; gap: var(--s5); margin-inline-start: auto; }
+  .hdr__nav { display: flex; gap: var(--s5); margin-inline-start: auto; flex: none; }
   .hdr__nav a {
+    position: relative;
     font-family: var(--font-head); font-size: var(--fs-small); font-weight: 600;
     color: var(--text-muted); text-decoration: none; padding: 0.4rem 0;
-    border-bottom: 2px solid transparent;
-    transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+    white-space: nowrap;              /* "How I Work" must never wrap to 3 lines */
+    transition: color var(--dur-fast) var(--ease);
   }
-  .hdr__nav a:hover { color: var(--text); border-bottom-color: var(--teal-signal); }
-  .hdr__nav a[aria-current='page'] { color: var(--teal-bright); border-bottom-color: var(--teal-bright); }
+  /* Underline grows from the left rather than appearing — a movement, not a flash. */
+  .hdr__nav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: var(--teal-signal);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform var(--dur-mid) var(--ease-out);
+  }
+  .hdr__nav a:hover, .hdr__nav a:focus-visible { color: var(--text); }
+  .hdr__nav a:hover::after, .hdr__nav a:focus-visible::after { transform: scaleX(1); }
+  .hdr__nav a[aria-current='page']::after { transform: scaleX(1); background: var(--teal-bright); }
+  @media (prefers-reduced-motion: reduce) { .hdr__nav a::after { transition: none; } }
+  .hdr__nav a[aria-current='page'] { color: var(--teal-bright); }
 
   .hdr__right { display: flex; align-items: center; gap: var(--s3); flex: none; }
 
@@ -132,6 +165,23 @@ const isActive = (href: string) => href === '/work' && path.startsWith('/work');
     document.querySelectorAll<HTMLButtonElement>('.aud button').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.aud === aud));
     });
+
+    // Stable shells: crossfade the stacked labels. Never write textContent —
+    // that resizes the button and shifts the whole header.
+    document.querySelectorAll<HTMLAnchorElement>('[data-cta-shell]').forEach((a) => {
+      a.setAttribute('href', CTA_COPY[aud].href);
+      a.querySelectorAll<HTMLElement>('[data-cta-label]').forEach((l) => {
+        const on = l.dataset.ctaLabel === aud;
+        l.classList.toggle('is-on', on);
+        // The hidden label must not be announced twice.
+        if (on) l.removeAttribute('aria-hidden');
+        else l.setAttribute('aria-hidden', 'true');
+      });
+      a.setAttribute('aria-label', CTA_COPY[aud].label);
+    });
+
+    // Plain CTAs elsewhere on the page are free to resize — they are not in a
+    // fixed composition.
     document.querySelectorAll<HTMLAnchorElement>('[data-cta]').forEach((a) => {
       a.textContent = CTA_COPY[aud].label;
       a.setAttribute('href', CTA_COPY[aud].href);

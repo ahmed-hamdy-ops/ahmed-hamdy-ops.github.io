@@ -65,12 +65,12 @@
   --tint-coral:     rgba(224, 132, 117, 0.08);
   --tint-raise:     rgba(168, 182, 194, 0.045);
 
-  /* ── TYPE ───────────────────────────────────────────────────────────────*/
-  --font-head: 'Manrope', ui-sans-serif, 'Segoe UI Variable Display', 'Segoe UI',
-               system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', ui-sans-serif, 'Segoe UI Variable Text', 'Segoe UI',
-               system-ui, -apple-system, sans-serif;
-  --font-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  /* ── TYPE ───────────────────────────────────────────────────────────────
+     Self-hosted (see fonts.css). The *-Fallback families are metric-matched to
+     the real faces, so `font-display: swap` swaps without reflowing the page. */
+  --font-head: 'Manrope', 'Manrope Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Source Serif 4', 'Source Serif Fallback', Georgia, serif;
 
   --fs-display: clamp(2.125rem, 1.35rem + 3.4vw, 3.5rem);
   --fs-h1:      clamp(1.875rem, 1.35rem + 2.3vw, 2.75rem);

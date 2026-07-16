@@ -1,0 +1,294 @@
+---
+import { withBase, cta } from '@config/site';
+
+/**
+ * SEAM DIAGNOSIS — v2. Editorial hero, expressive transformation.
+ *
+ * What changed from v1 and why:
+ *  · v1's diagram sat 785px down (desktop) / 1213px (mobile). Measured live, it
+ *    played at 13% visibility or fully off-screen. The instrument now sits
+ *    INSIDE the first viewport, and motion fires on real visibility.
+ *  · v1 was two dashboard columns inside a bordered panel. v2 is one editorial
+ *    composition with no panel border at all — the diagram sits directly on the
+ *    canvas and the type carries the structure.
+ *  · v1's transformation was a line drawn over a static chart. v2 fragments the
+ *    organisation into offset, rotated strips that visibly REORGANISE into one
+ *    aligned operating flow, while evidence fragments pull into a causal
+ *    sequence. The closing frame is unmistakably different from the opening.
+ *
+ * Base state = the resolved diagram, so reduced motion shows the whole argument.
+ */
+
+const STAGES = [
+  { x: 60, label: 'Discover' },
+  { x: 268, label: 'Understand' },
+  { x: 476, label: 'Decide' },
+  { x: 684, label: 'Buy' },
+  { x: 892, label: 'Receive' },
+  { x: 1100, label: 'Return' },
+];
+
+/**
+ * dy / rot are the FRAGMENTED starting offsets the strips animate away from.
+ * `d` is the per-strip stagger delay, set inline — NOT via :nth-of-type, which
+ * counts among sibling <g> elements and lands the delays on the wrong groups.
+ */
+const FUNCS = [
+  { x: 44, label: 'Marketing', state: 'cause', dy: 34, rot: -1.8, d: 420, note: 'promised next-day' },
+  { x: 276, label: 'Website / Product', state: 'cause', dy: -26, rot: 1.4, d: 490, note: 'time hidden till checkout' },
+  { x: 508, label: 'Checkout', state: 'ok', dy: 18, rot: -0.8, d: 560, note: 'working correctly' },
+  { x: 740, label: 'Operations', state: 'cause', dy: 40, rot: 2.0, d: 630, note: 'fulfilment takes 3 days' },
+  { x: 972, label: 'Support / Retention', state: 'symptom', dy: -32, rot: -1.5, d: 700, note: '“where is my order?”' },
+];
+---
+
+<section class="h2">
+  <div class="wrap h2__wrap">
+    <div class="h2__copy">
+      <p class="h2__eyebrow">Business Growth &amp; Operations</p>
+      <h1 class="h2__head">
+        I trace the system<br />
+        behind the problem<span class="h2__dash">—</span><br />
+        <em>then redesign it.</em>
+      </h1>
+      <p class="h2__sub">
+        Most business problems are not where they appear.
+      </p>
+      <div class="h2__acts">
+        <a class="btn btn--primary" href={withBase('/work/formula4you')}>
+          Explore selected work
+          <svg class="btn__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true">
+            <path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a class="btn btn--ghost" href={withBase(cta.business.href)}>
+          {cta.business.label}
+          <svg class="btn__arrow" viewBox="0 0 14 10" width="14" height="10" aria-hidden="true">
+            <path d="M0 5h12M8.5 1.5 12 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <figure class="h2__fig" data-seam2>
+      <figcaption class="h2__cap">
+        <span class="h2__cap-k">A worked diagnosis</span>
+        Support volume is rising after purchase. Watch where the problem actually lives.
+      </figcaption>
+
+      <p class="visually-hidden">
+        The customer experiences one continuous journey: discover, understand, decide, buy,
+        receive, return. The company is organised as five separate functions: marketing;
+        website and product; checkout; operations; support and retention. The journey breaks
+        between buying and receiving — in the handoff between checkout and operations. Four
+        functions contribute: marketing promised next-day delivery, the website reveals
+        delivery time only at checkout, operations takes three days to fulfil, and the symptom
+        surfaces in support as repeated “where is my order?” contacts. No single department
+        owns the break. The resolution connects the functions into one operating flow with one
+        owner for post-purchase certainty and three timed updates — not a new product.
+      </p>
+
+      <svg class="h2__svg" viewBox="0 0 1200 372" aria-hidden="true" focusable="false">
+        <!-- ── the customer's one journey ── -->
+        <text class="s2-lab" x="44" y="18">ONE CUSTOMER JOURNEY</text>
+        <path class="s2-line s2-fx-line" pathLength="1" d="M 60 48 L 700 48" />
+        <path class="s2-line s2-fx-line s2-fx-line--b" pathLength="1" d="M 876 48 L 1100 48" />
+
+        <g class="s2-fx-break">
+          <path class="s2-break" d="M 700 48 L 876 48" />
+          <path class="s2-break-cap" d="M 700 38 L 700 58" />
+          <path class="s2-break-cap" d="M 876 38 L 876 58" />
+          <text class="s2-t s2-t--f" x="788" y="30" text-anchor="middle">the break — nobody owns this</text>
+        </g>
+
+        {STAGES.map((s) => (
+          <g class="s2-fx-stage">
+            <circle class="s2-dot" cx={s.x} cy="48" r="4.5" />
+            <text class="s2-t" x={s.x} y="74" text-anchor="middle">{s.label}</text>
+          </g>
+        ))}
+
+        <!-- ── the organisation: fragmented, then aligned ── -->
+        <text class="s2-lab s2-fx-lab2" x="44" y="120">…AND FIVE SEPARATE FUNCTIONS</text>
+
+        {FUNCS.map((f) => (
+          <g class="s2-strip" style={`--dy:${f.dy}px; --rot:${f.rot}deg; --d:${f.d}ms`}>
+            <rect class={`s2-box s2-box--${f.state}`} x={f.x} y="140" width="184" height="62" rx="9" />
+            <text class="s2-t s2-t--box" x={f.x + 92} y="166" text-anchor="middle">{f.label}</text>
+            <text class={`s2-t s2-t--micro ${f.state === 'ok' ? 's2-t--mute' : 's2-t--f'}`} x={f.x + 92} y="186" text-anchor="middle">{f.note}</text>
+          </g>
+        ))}
+
+        <!-- ── ownership seam ── -->
+        <g class="s2-fx-break">
+          <path class="s2-seam" d="M 700 60 L 700 132" />
+        </g>
+
+        <!-- ── evidence pulls into one causal sequence ── -->
+        <g class="s2-fx-seq">
+          <path class="s2-connect" pathLength="1" d="M 136 250 L 1064 250" />
+          {[136, 368, 600, 832, 1064].map((x, i) => (
+            <circle class={`s2-cnode s2-cnode--${i}`} cx={x} cy="250" r="5" />
+          ))}
+          <text class="s2-t s2-t--ok" x="44" y="292">
+            One connected path — one owner for post-purchase certainty, three timed updates.
+          </text>
+          <text class="s2-t s2-t--micro s2-t--mute" x="44" y="314">
+            Not a tracking product. Not more agents. Each function was doing its job correctly.
+          </text>
+        </g>
+      </svg>
+
+      <div class="h2__bar">
+        <button class="h2__replay" type="button" data-seam2-replay>
+          <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
+            <path d="M6 1a5 5 0 1 0 5 5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M6 -1.2 L6 3 L2.4 1" fill="currentColor"/>
+          </svg>
+          Replay the diagnosis
+        </button>
+        <span class="h2__note">Plays once when it reaches you · 1.4s · full static diagram without motion</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  /* No panel. No border. The composition is type + instrument on open canvas. */
+  .h2 {
+    padding-block: clamp(2rem, 4.5vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(120% 90% at 12% 0%, rgba(61, 194, 186, 0.06), transparent 60%),
+      radial-gradient(90% 70% at 95% 15%, rgba(215, 101, 85, 0.045), transparent 62%),
+      var(--surface);
+  }
+  .h2__wrap { display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2.5rem); }
+
+  .h2__copy { max-width: 100%; }
+  .h2__eyebrow {
+    font-family: var(--font-head); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-bright);
+    margin-bottom: var(--s4);
+  }
+  .h2__head {
+    font-family: var(--font-head);
+    font-size: clamp(2.25rem, 5.2vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: var(--s5);
+  }
+  .h2__head em {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.02em; color: var(--teal-bright);
+  }
+  .h2__dash { color: var(--coral-bright); padding-left: 0.12em; }
+  .h2__sub {
+    font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.3125rem);
+    color: var(--text-muted); max-width: 46ch; margin-bottom: var(--s6);
+  }
+  .h2__acts { display: flex; gap: var(--s3); flex-wrap: wrap; }
+
+  /* Asymmetric: the instrument breaks the text column and runs wider. */
+  .h2__fig { margin: 0; }
+  .h2__cap {
+    display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap;
+    font-size: var(--fs-caption); color: var(--text-faint);
+    padding-bottom: var(--s3); margin-bottom: var(--s4);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .h2__cap-k {
+    font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-bright);
+  }
+  .h2__svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+  .h2__bar { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; margin-top: var(--s4); }
+  .h2__note { font-size: var(--fs-caption); color: var(--text-faint); }
+  .h2__replay {
+    display: inline-flex; align-items: center; gap: var(--s2);
+    font-family: var(--font-head); font-size: 0.8125rem; font-weight: 600;
+    background: none; border: 1px solid var(--border-control); color: var(--text);
+    padding: 0.45rem 0.8rem; border-radius: var(--r-sm); cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .h2__replay:hover { border-color: var(--teal-bright); color: var(--teal-bright); }
+
+  /* ── SVG semantics ─────────────────────────────────────────────────── */
+  .s2-lab { font-family: var(--font-head); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; fill: var(--text-faint); }
+  .s2-t { font-family: var(--font-body); font-size: 13px; fill: var(--text-muted); }
+  .s2-t--box { font-family: var(--font-head); font-weight: 700; fill: var(--text); font-size: 13px; }
+  .s2-t--micro { font-size: 10.5px; }
+  .s2-t--mute { fill: var(--text-faint); }
+  .s2-t--f { fill: var(--coral-bright); font-weight: 600; }
+  .s2-t--ok { fill: var(--teal-bright); font-weight: 700; font-size: 13.5px; }
+
+  .s2-line { fill: none; stroke: var(--text-muted); stroke-width: 2.5; }
+  .s2-dot { fill: var(--text); }
+  .s2-break { fill: none; stroke: var(--coral-signal); stroke-width: 2.5; stroke-dasharray: 5 6; }
+  .s2-break-cap { stroke: var(--coral-signal); stroke-width: 2.5; }
+  .s2-seam { fill: none; stroke: var(--coral-signal); stroke-width: 1; stroke-dasharray: 3 5; opacity: .7; }
+
+  .s2-box { fill: var(--tint-raise); stroke: var(--hairline-strong); stroke-width: 1; }
+  .s2-box--cause { fill: var(--tint-coral); stroke: rgba(215,101,85,.45); }
+  .s2-box--symptom { fill: var(--tint-coral); stroke: var(--coral-signal); stroke-width: 1.5; }
+
+  .s2-connect { fill: none; stroke: var(--teal-signal); stroke-width: 2.5; }
+  .s2-cnode { fill: var(--teal-bright); }
+
+  /* ══ MOTION — fragmentation → aligned system ═══════════════════════════
+     Base state IS the resolved diagram: strips aligned, evidence sequenced.
+     `.play` re-runs the transformation from the fragmented state.          */
+  .s2-strip { transform-box: fill-box; transform-origin: center; }
+
+  @keyframes s2-draw   { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes s2-in     { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes s2-pop    { from { opacity: 0; } to { opacity: 1; } }
+  /* The signature move: each function strip starts displaced and rotated —
+     visibly fragmented — and settles onto one shared baseline. */
+  @keyframes s2-align  {
+    0%   { transform: translateY(var(--dy)) rotate(var(--rot)); opacity: .3; }
+    70%  { opacity: 1; }
+    100% { transform: none; opacity: 1; }
+  }
+
+  [data-seam2].play .s2-fx-line  { stroke-dasharray: 1; animation: s2-draw 380ms var(--ease-out) both; }
+  [data-seam2].play .s2-fx-line--b { animation-delay: 110ms; }
+  [data-seam2].play .s2-fx-stage { animation: s2-in 220ms var(--ease) both; animation-delay: 200ms; }
+  [data-seam2].play .s2-fx-lab2  { animation: s2-pop 200ms var(--ease) both; animation-delay: 380ms; }
+  /* Stagger comes from the inline --d on each strip. :nth-of-type would count
+     among sibling <g> elements and apply the delays to the wrong groups. */
+  [data-seam2].play .s2-strip    { animation: s2-align 640ms var(--ease-out) both; animation-delay: var(--d, 420ms); }
+  [data-seam2].play .s2-fx-break { animation: s2-pop 280ms var(--ease) both; animation-delay: 1000ms; }
+  [data-seam2].play .s2-fx-seq   { animation: s2-pop 260ms var(--ease) both; animation-delay: 1240ms; }
+  [data-seam2].play .s2-fx-seq .s2-connect { stroke-dasharray: 1; animation: s2-draw 520ms var(--ease-out) both; animation-delay: 1240ms; }
+  /* Class-based, not positional — these are siblings of <path> and <text>. */
+  [data-seam2].play .s2-cnode    { animation: s2-pop 180ms var(--ease) both; }
+  [data-seam2].play .s2-cnode--0 { animation-delay: 1300ms; }
+  [data-seam2].play .s2-cnode--1 { animation-delay: 1380ms; }
+  [data-seam2].play .s2-cnode--2 { animation-delay: 1460ms; }
+  [data-seam2].play .s2-cnode--3 { animation-delay: 1540ms; }
+  [data-seam2].play .s2-cnode--4 { animation-delay: 1620ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-seam2].play * { animation: none !important; }
+  }
+
+  /* Mobile: the instrument scrolls in its own container rather than shrinking
+     into illegibility. Reasoning order is preserved. */
+  @media (max-width: 900px) {
+    .h2__svg { min-width: 720px; }
+    .h2__fig { overflow-x: auto; overscroll-behavior-x: contain; }
+  }
+</style>
+
+<script>
+  import { playOnce } from '@/scripts/play-once';
+
+  const fig = document.querySelector<HTMLElement>('[data-seam2]');
+  if (fig) {
+    const { run } = playOnce(fig, { threshold: 0.25, duration: 2000, delay: 100 });
+    document.querySelector('[data-seam2-replay]')?.addEventListener('click', run);
+  }
+</script>

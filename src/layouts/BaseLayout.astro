@@ -2,6 +2,8 @@
 import { site, contact, sameAs, absoluteUrl, withBase } from '@config/site';
 import Header from '@components/nav/Header.astro';
 import Footer from '@components/nav/Footer.astro';
+import Fonts from '@components/Fonts.astro';
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 
@@ -100,6 +102,28 @@ const graph: Record<string, unknown>[] = [
     <meta name="author" content={site.name} />
     <meta name="theme-color" content="#0E1C28" />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+
+    {/*
+      Preload only the two faces needed for the first screen. The serif renders
+      one line, below the fold — preloading it would compete with the headline
+      for bandwidth it does not deserve. `crossorigin` is required on font
+      preloads even same-origin, or the browser fetches the file twice.
+    */}
+    <link
+      rel="preload"
+      href={withBase('/fonts/manrope-latin-wght-normal.woff2')}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={withBase('/fonts/inter-latin-wght-normal.woff2')}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <Fonts />
 
     <!-- Search Console / Bing verification slots — filled at Gate 4 (Phase 10). -->
     <!-- <meta name="google-site-verification" content="" /> -->

@@ -1,0 +1,45 @@
+/* ============================================================================
+   FONT FALLBACKS — metric overrides only.
+
+   The real @font-face rules live in src/components/Fonts.astro, because a
+   url() written here is only base-path-rewritten at BUILD time and would 404
+   under `astro dev`. Nothing in this file references a file, so it is safe.
+   ============================================================================ */
+
+/* ============================================================================
+   METRIC-MATCHED FALLBACKS
+   `swap` renders fallback text first, then swaps. If the fallback's metrics
+   differ from the real face, that swap reflows the page — measurable CLS on the
+   largest text on the site. These adjust the local fallback to match the web
+   font's box, so the swap is invisible.
+   Overrides derived from each family's head/hhea metrics against the platform
+   fallback (Segoe UI on Windows, Helvetica/Arial elsewhere).
+   ============================================================================ */
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  src: local('Segoe UI'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 103%;
+  ascent-override: 99%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Segoe UI'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Serif Fallback';
+  font-style: italic;
+  src: local('Georgia Italic'), local('Georgia'), local('Times New Roman Italic');
+  size-adjust: 100%;
+  ascent-override: 92%;
+  descent-override: 28%;
+  line-gap-override: 0%;
+}

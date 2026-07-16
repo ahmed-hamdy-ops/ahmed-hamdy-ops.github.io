@@ -110,24 +110,90 @@
     color: var(--text);
   }
 
-  /* ── Buttons ─────────────────────────────────────────────────────────── */
+  /* ── Buttons ───────────────────────────────────────────────────────────
+     One authored system. Stable box, restrained fill, intentional arrow.
+     Nothing here animates width, and nothing glows.                        */
   .btn {
-    display: inline-flex; align-items: center; gap: var(--s2);
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0.6em;
     font-family: var(--font-head); font-size: var(--fs-small); font-weight: 700;
-    padding: 0.7rem 1.15rem; border-radius: var(--r-sm);
-    border: 1px solid transparent; cursor: pointer; text-decoration: none;
-    transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
-                color var(--dur-fast) var(--ease);
+    letter-spacing: -0.005em;
+    /* Fixed vertical rhythm: height never depends on the label. */
+    min-height: 44px;                 /* also the touch-target floor */
+    padding: 0 1.15rem;
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    cursor: pointer; text-decoration: none;
+    overflow: hidden;                 /* clips the travelling fill */
+    isolation: isolate;
+    transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
-  /* 8.44:1 — deep ink on bright teal. */
+  .btn__arrow {
+    flex: none;
+    transition: transform var(--dur-mid) var(--ease-out);
+  }
+  /* The directional response: the arrow moves, the box does not. */
+  .btn:hover .btn__arrow,
+  .btn:focus-visible .btn__arrow { transform: translateX(3px); }
+
+  /* A fill travels through the button instead of a colour flash. */
+  .btn::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .btn:hover::before, .btn:focus-visible::before { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .btn::before { transition: none; }
+    .btn:hover .btn__arrow, .btn:focus-visible .btn__arrow { transform: none; }
+  }
+
+  /* Primary — 8.44:1 deep ink on bright teal. */
   .btn--primary { background: var(--teal-bright); color: var(--surface-deep); }
-  .btn--primary:hover { background: var(--focus-dark); }
-  .btn--ghost { border-color: var(--border-control); color: var(--text); }
-  .btn--ghost:hover { border-color: var(--teal-bright); color: var(--teal-bright); }
-  /* 5.22:1 — stone on deep teal, for light zones. */
+  .btn--primary::before { background: var(--focus-dark); }
+
+  /* Secondary — clearly related, deliberately quieter: same box, no fill,
+     the teal arrives only on the border and the travelling wash. */
+  .btn--ghost { border-color: var(--border-control); color: var(--text); background: transparent; }
+  .btn--ghost::before { background: var(--tint-teal); }
+  .btn--ghost:hover, .btn--ghost:focus-visible { border-color: var(--teal-bright); color: var(--teal-bright); }
+
+  /* Light zone — 5.22:1 stone on deep teal. */
   .zone-stone .btn--primary { background: var(--teal-deep); color: var(--surface-stone); }
-  .zone-stone .btn--ghost { border-color: var(--border-stone); color: var(--stone-ink); }
-  .zone-stone .btn--ghost:hover { border-color: var(--teal-deep); color: var(--teal-deep); }
+  .zone-stone .btn--primary::before { background: var(--stone-ink); }
+  .zone-stone .btn--ghost { border-color: var(--border-stone); color: var(--stone-ink); background: transparent; }
+  .zone-stone .btn--ghost::before { background: rgba(8, 113, 109, 0.08); }
+  .zone-stone .btn--ghost:hover, .zone-stone .btn--ghost:focus-visible { border-color: var(--teal-deep); color: var(--teal-deep); }
+
+  /* ── Fixed-width audience CTA shell ────────────────────────────────────
+     The sizer reserves the wider label's width permanently; the two real
+     labels are stacked and crossfade. The box never resizes, so no nav item
+     moves and no layout shift is possible between audience states.         */
+  .cta-shell { padding-inline: 1.15rem; flex: none; }
+  .cta-shell__stack {
+    display: grid;
+    grid-template-areas: 'label';
+    place-items: center;
+  }
+  /* Sizer + both labels occupy the SAME grid cell. The cell sizes to the widest
+     item (the sizer), and the labels overlay it. `visibility: hidden` keeps the
+     sizer contributing width while staying invisible and unreadable to AT. */
+  .cta-shell__sizer {
+    grid-area: label;
+    visibility: hidden; white-space: nowrap; pointer-events: none;
+  }
+  .cta-shell__label {
+    grid-area: label; white-space: nowrap;
+    opacity: 0; transition: opacity var(--dur-mid) var(--ease);
+  }
+  .cta-shell__label.is-on { opacity: 1; }
+  .cta-shell__arrow { flex: none; transition: transform var(--dur-mid) var(--ease-out); }
+  .cta-shell:hover .cta-shell__arrow, .cta-shell:focus-visible .cta-shell__arrow { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-shell__label { transition: none; }
+    .cta-shell:hover .cta-shell__arrow { transform: none; }
+  }
 
   /* ── Panels ──────────────────────────────────────────────────────────── */
   .panel {

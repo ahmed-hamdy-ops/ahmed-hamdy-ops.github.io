@@ -35,10 +35,12 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      // Drafts, incomplete audits, and print routes never enter the sitemap.
+      // Drafts, review routes, incomplete audits, and print routes never enter
+      // the sitemap.
       filter: (page) =>
         !page.includes('/portfolio-print') &&
         !page.includes('/audits/') &&
+        !page.includes('/review/') &&
         !page.includes('/draft/'),
     }),
   ],

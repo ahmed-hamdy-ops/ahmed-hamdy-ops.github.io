@@ -1,105 +1,156 @@
 ---
+import { withBase } from '@config/site';
+
 /**
- * §5 — Capability Proof Map.
- * Selecting a capability reveals what proves it. Signal Reconstruction in its
- * restrained form: the connection is drawn, not decorated.
+ * §5 — Capability Proof Map + Transformation Playbooks (merged at Gate 2).
  *
- * Rule: every capability must name real proof. Nothing here is aspirational —
- * where proof is still being written, it says so.
+ * They answered nearly the same question from two angles: "what can he do?" and
+ * "how would he do it?". Merged, each capability names the WORK that proves it
+ * and the PLAYBOOK that operationalises it — so the playbook stops being a
+ * separate brochure and becomes the answer to "and how?".
+ *
+ * Rule: every capability must name real proof. Nothing aspirational. Where the
+ * proof is still being written, it says so rather than implying it exists.
  */
 
-type Proof = { label: string; state: 'live' | 'soon' };
+type Proof = { label: string; state: 'live' | 'soon'; href?: string };
 
-const CAPS: { id: string; name: string; claim: string; proof: Proof[] }[] = [
+const PLAYBOOKS: Record<string, { name: string; thesis: string }> = {
+  cx: {
+    name: 'Support & CX transformation',
+    thesis: 'I do not begin by asking how to make agents answer faster. I begin by asking why customers need to contact the company at all.',
+  },
+  ecom: {
+    name: 'Digital buying system',
+    thesis: 'I review the site as a complete buying system — from the first promise to the customer’s decision, payment, delivery certainty, and reason to return.',
+  },
+  ops: {
+    name: 'Operations & workflows',
+    thesis: 'A process is not scalable because it has many steps. It is scalable when the right work happens once and the customer never feels the internal complexity.',
+  },
+  growth: {
+    name: 'Growth & market expansion',
+    thesis: 'Growth is not more traffic. It is a stronger reason to buy, a journey that converts it, and an operation that can fulfil the promise profitably.',
+  },
+};
+
+const CAPS: {
+  id: string;
+  name: string;
+  claim: string;
+  proof: Proof[];
+  playbook: keyof typeof PLAYBOOKS;
+  deliverables: string[];
+}[] = [
   {
     id: 'growth', name: 'Business growth & strategy',
     claim: 'Finding where growth is actually constrained — which is rarely the ad budget.',
     proof: [
-      { label: 'Formula4You — market gap → vertical strategy', state: 'live' },
-      { label: 'Growth & Market Expansion playbook', state: 'soon' },
+      { label: 'Formula4You — market gap → vertical platform strategy', state: 'live', href: '/work/formula4you' },
+      { label: 'Formula4You — participant economics and revenue model', state: 'live', href: '/work/formula4you' },
       { label: 'Commercial Growth case study', state: 'soon' },
     ],
+    playbook: 'growth',
+    deliverables: ['Growth-readiness diagnostic', 'Offer & margin economics', 'Channel sequence', 'Stop / scale criteria'],
   },
   {
     id: 'ops', name: 'Operations & process improvement',
     claim: 'Removing repeated work, owner dependency, and unclear handoffs before automating anything.',
     proof: [
-      { label: 'Formula4You — listing lifecycle, admin review, governance', state: 'live' },
-      { label: 'Operations & Workflow playbook', state: 'soon' },
+      { label: 'Formula4You — listing lifecycle, admin review, governance', state: 'live', href: '/work/formula4you' },
+      { label: 'Seam Diagnosis — the break lives in the handoff', state: 'live', href: '/#system' },
       { label: 'Alpha Capital — friction → operational insight', state: 'soon' },
     ],
+    playbook: 'ops',
+    deliverables: ['Current & future-state process maps', 'RACI / decision rights', 'SOPs & exception rules', 'Capacity model'],
   },
   {
     id: 'cx', name: 'Customer experience & support transformation',
     claim: 'Treating contact volume as evidence, not as a staffing problem.',
     proof: [
-      { label: 'Support & CX Transformation playbook', state: 'soon' },
-      { label: 'Alpha Capital — contact drivers', state: 'soon' },
-      { label: 'Seam Diagnosis — post-purchase silence', state: 'live' },
+      { label: 'Intervention Compression — the chatbot gets rejected', state: 'live', href: '/#how-i-work' },
+      { label: 'Seam Diagnosis — nobody owns the silence after the sale', state: 'live', href: '/#system' },
+      { label: 'Alpha Capital — contact drivers at volume', state: 'soon' },
     ],
+    playbook: 'cx',
+    deliverables: ['Contact-driver taxonomy', 'Root-cause tree', 'Knowledge architecture', 'Preventable-contact backlog'],
   },
   {
     id: 'uiux', name: 'Conversion-focused UI/UX',
     claim: 'Judging interface by commercial clarity and information timing — never by visual taste.',
     proof: [
-      { label: 'Formula4You — storefront & discovery requirements', state: 'live' },
+      { label: 'Formula4You — storefront & discovery requirements', state: 'live', href: '/work/formula4you' },
+      { label: 'Formula4You — two-step onboarding, seven fields', state: 'live', href: '/work/formula4you' },
       { label: 'E-commerce Conversion case study', state: 'soon' },
-      { label: 'Digital Buying-System playbook', state: 'soon' },
     ],
+    playbook: 'ecom',
+    deliverables: ['Friction & objection register', 'Offer / information hierarchy', 'Checkout certainty plan', 'Experiment backlog'],
   },
   {
     id: 'journey', name: 'Customer journey optimization',
     claim: 'Designing the whole path — including the silence customers feel after paying.',
     proof: [
-      { label: 'Seam Diagnosis — the break lives in the handoff', state: 'live' },
-      { label: 'Formula4You — onboarding to first order', state: 'live' },
+      { label: 'Seam Diagnosis — discover → return, and where it breaks', state: 'live', href: '/#system' },
+      { label: 'Formula4You — registration to first order', state: 'live', href: '/work/formula4you' },
       { label: 'E-commerce Conversion case study', state: 'soon' },
     ],
+    playbook: 'ecom',
+    deliverables: ['Current & future-state journey', 'Service blueprint', 'Post-purchase communication flow', 'Trust requirements'],
   },
   {
     id: 'product', name: 'Product & feature strategy',
     claim: 'Deciding what earns a build — and what earns a sentence instead.',
     proof: [
-      { label: 'Formula4You — phased scope, feature-bloat prevention', state: 'live' },
-      { label: 'Simplify → Automate → Build framework', state: 'live' },
-      { label: 'Intervention Compression — nine options to two', state: 'live' },
+      { label: 'Formula4You — phased scope, feature-bloat prevention', state: 'live', href: '/work/formula4you' },
+      { label: 'Simplify → Automate → Build — three gates', state: 'live', href: '/#sab' },
+      { label: 'Intervention Compression — nine options to two', state: 'live', href: '/#how-i-work' },
     ],
+    playbook: 'ops',
+    deliverables: ['Feature brief & rationale', 'User stories & acceptance criteria', 'Admin requirements', 'Rollout phases'],
   },
   {
     id: 'gtm', name: 'Go-to-market planning',
     claim: 'Sequencing a launch so it survives its own first month.',
     proof: [
-      { label: 'Formula4You — supply-first launch sequence', state: 'live' },
-      { label: 'Formula4You — participant value propositions', state: 'live' },
-      { label: 'Growth & Market Expansion playbook', state: 'soon' },
+      { label: 'Formula4You — supply-first launch sequence', state: 'live', href: '/work/formula4you' },
+      { label: 'Formula4You — dual participant value propositions', state: 'live', href: '/work/formula4you' },
+      { label: 'Commercial Growth — campaign ↔ page ↔ order ops', state: 'soon' },
     ],
+    playbook: 'growth',
+    deliverables: ['Value proposition & offer architecture', 'Channel logic', '30/60/90-day plan', 'Campaign-to-page consistency'],
   },
   {
     id: 'market', name: 'Market-gap analysis & expansion',
     claim: 'Testing whether a gap is structural before committing resources to it.',
     proof: [
-      { label: 'Formula4You — the gap is the case study', state: 'live' },
-      { label: 'Strategic Audit Method', state: 'live' },
+      { label: 'Formula4You — the gap is the case study', state: 'live', href: '/work/formula4you' },
+      { label: 'Strategic Audit Method — the standard for public analysis', state: 'live', href: '/#audits' },
       { label: 'Market-expansion diagnostic', state: 'soon' },
     ],
+    playbook: 'growth',
+    deliverables: ['Market map & participant model', 'Competitor / substitute map', 'Low-risk entry pilot', 'Localisation requirements'],
   },
   {
     id: 'exec', name: 'Cross-functional execution',
     claim: 'Turning a decision into briefs, sequence, QA, and a measurement defined before launch.',
     proof: [
-      { label: 'Formula4You — design, content, technical, QA, SEO coordination', state: 'live' },
-      { label: 'Formula4You — requirements & acceptance logic', state: 'live' },
-      { label: 'Commercial Growth — feedback loop', state: 'soon' },
+      { label: 'Formula4You — design, content, technical, QA, SEO coordination', state: 'live', href: '/work/formula4you' },
+      { label: 'Formula4You — requirements & acceptance logic', state: 'live', href: '/work/formula4you' },
+      { label: 'Commercial Growth — one feedback loop', state: 'soon' },
     ],
+    playbook: 'ops',
+    deliverables: ['Briefs & roadmap sequencing', 'KPI tree & baseline', 'QA priorities', 'Review cadence'],
   },
   {
     id: 'ai', name: 'AI-aware business decisions',
     claim: 'Knowing when not to automate. The restraint is the skill.',
     proof: [
-      { label: 'Simplify → Automate → Build — three gates', state: 'live' },
-      { label: 'Intervention Compression — the chatbot gets rejected', state: 'live' },
-      { label: 'Formula4You — AI-assisted research, docs, QA', state: 'live' },
+      { label: 'Simplify → Automate → Build — and stopping at Gate 1', state: 'live', href: '/#sab' },
+      { label: 'Intervention Compression — the chatbot is rejected on evidence', state: 'live', href: '/#how-i-work' },
+      { label: 'Formula4You — AI-assisted research, documentation, QA', state: 'live', href: '/work/formula4you' },
     ],
+    playbook: 'cx',
+    deliverables: ['Automate / build / simplify gate', 'Data-readiness check', 'Cost of a wrong result', 'Post-launch ownership'],
   },
 ];
 ---
@@ -107,11 +158,12 @@ const CAPS: { id: string; name: string; claim: string; proof: Proof[] }[] = [
 <section class="section cmap" id="capabilities" aria-labelledby="cmap-h">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Capability proof map</span>
-      <h2 id="cmap-h" class="sec-head__q">Every capability has to name what proves it.</h2>
+      <span class="eyebrow">Capabilities, proof &amp; playbooks</span>
+      <h2 id="cmap-h" class="sec-head__q">Every capability has to name what proves it — and how I would run it.</h2>
       <p class="muted">
-        A capability list is free to write. Select one and it has to show its evidence —
-        including where that evidence is still being written.
+        A capability list is free to write. Select one and it has to show its evidence, the
+        playbook behind it, and what you would actually receive. Where the proof is still being
+        written, it says so.
       </p>
     </div>
 
@@ -139,26 +191,54 @@ const CAPS: { id: string; name: string; claim: string; proof: Proof[] }[] = [
             hidden={i !== 0}
           >
             <p class="cmap__claim">{c.claim}</p>
-            <p class="eyebrow cmap__pl">Proved by</p>
-            <ul class="cmap__proof">
-              {c.proof.map((p) => (
-                <li class={`cmap__p cmap__p--${p.state}`}>
-                  <span class="cmap__p-line" aria-hidden="true"></span>
-                  <span class="cmap__p-l">{p.label}</span>
-                  {p.state === 'soon' && <span class="cmap__p-s">in preparation</span>}
-                </li>
-              ))}
-            </ul>
+
+            <div class="cmap__cols">
+              <div>
+                <p class="eyebrow cmap__pl">Proved by</p>
+                <ul class="cmap__proof">
+                  {c.proof.map((p) => (
+                    <li class={`cmap__p cmap__p--${p.state}`}>
+                      <span class="cmap__p-line" aria-hidden="true"></span>
+                      {p.href && p.state === 'live' ? (
+                        <a class="cmap__p-l" href={p.href.startsWith('/#') ? withBase('/') + p.href.slice(1) : withBase(p.href)}>{p.label}</a>
+                      ) : (
+                        <span class="cmap__p-l">{p.label}</span>
+                      )}
+                      {p.state === 'soon' && <span class="cmap__p-s">in preparation</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="cmap__pb">
+                <p class="eyebrow cmap__pl">The playbook behind it</p>
+                <h3 class="cmap__pb-n">{PLAYBOOKS[c.playbook]!.name}</h3>
+                <p class="cmap__pb-t">“{PLAYBOOKS[c.playbook]!.thesis}”</p>
+                <p class="cmap__pb-dl">What you receive</p>
+                <ul class="cmap__dl">
+                  {c.deliverables.map((d) => <li>{d}</li>)}
+                </ul>
+              </div>
+            </div>
           </div>
         ))}
       </div>
     </div>
+
+    <p class="faint cmap__note">
+      Four transformation playbooks sit behind these ten capabilities — Support &amp; CX, the
+      digital buying system, operations &amp; workflows, and growth &amp; market expansion. Their
+      full diagnostic models, ranked interventions, and metrics are the next build stage. Every
+      scenario in them stays labelled
+      <span class="badge badge--illustrative">Illustrative Scenario</span>
+      until a verified case replaces it.
+    </p>
   </div>
 </section>
 
 <style>
-  .cmap__ui { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--s7); align-items: start; }
-  @media (max-width: 900px) { .cmap__ui { grid-template-columns: 1fr; gap: var(--s5); } }
+  .cmap__ui { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr); gap: var(--s7); align-items: start; }
+  @media (max-width: 1000px) { .cmap__ui { grid-template-columns: 1fr; gap: var(--s5); } }
 
   .cmap__list { display: flex; flex-direction: column; border-top: 1px solid var(--hairline); }
   .cmap__btn {
@@ -183,22 +263,48 @@ const CAPS: { id: string; name: string; claim: string; proof: Proof[] }[] = [
     padding: var(--s5); background: var(--surface-raise);
     border: 1px solid var(--hairline); border-radius: var(--r-lg);
   }
-  .cmap__claim { font-size: var(--fs-h4); font-family: var(--font-head); font-weight: 600; color: var(--text); margin-bottom: var(--s5); }
+  .cmap__claim {
+    font-size: var(--fs-h4); font-family: var(--font-head); font-weight: 600;
+    color: var(--text); margin-bottom: var(--s5); max-width: 52ch;
+  }
+  .cmap__cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); }
+  @media (max-width: 760px) { .cmap__cols { grid-template-columns: 1fr; gap: var(--s5); } }
+
   .cmap__pl { margin-bottom: var(--s3); }
   .cmap__proof { display: flex; flex-direction: column; gap: var(--s3); padding: 0; list-style: none; }
-  .cmap__p { display: flex; align-items: center; gap: var(--s3); font-size: var(--fs-small); }
-  .cmap__p-line { width: 20px; height: 1px; background: var(--teal-signal); flex: none; }
+  .cmap__p { display: flex; align-items: baseline; gap: var(--s3); font-size: var(--fs-small); }
+  .cmap__p-line { width: 18px; height: 1px; background: var(--teal-signal); flex: none; position: relative; top: -0.35em; }
   .cmap__p--soon .cmap__p-line { background: var(--border-control); }
   .cmap__p-l { color: var(--text); }
+  a.cmap__p-l { color: var(--text); text-decoration-color: var(--teal-signal); text-underline-offset: 0.2em; }
+  a.cmap__p-l:hover { color: var(--teal-bright); }
   .cmap__p--soon .cmap__p-l { color: var(--text-muted); }
   .cmap__p-s {
     font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700;
     letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint);
     border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 0.1rem 0.45rem;
+    white-space: nowrap; flex: none;
   }
 
+  .cmap__pb { border-left: 1px solid var(--hairline); padding-left: var(--s5); }
+  @media (max-width: 760px) { .cmap__pb { border-left: 0; border-top: 1px solid var(--hairline); padding-left: 0; padding-top: var(--s5); } }
+  .cmap__pb-n { font-size: var(--fs-h4); margin-bottom: var(--s2); }
+  .cmap__pb-t { font-size: var(--fs-caption); color: var(--text-muted); font-style: italic; margin-bottom: var(--s4); }
+  .cmap__pb-dl {
+    font-family: var(--font-head); font-size: var(--fs-label); font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint);
+    padding-top: var(--s3); border-top: 1px solid var(--hairline); margin-bottom: var(--s3);
+  }
+  .cmap__dl { display: flex; flex-wrap: wrap; gap: var(--s2); padding: 0; list-style: none; }
+  .cmap__dl li {
+    font-size: 0.75rem; color: var(--text-muted);
+    border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 0.15rem 0.55rem;
+  }
+
+  .cmap__note { margin-top: var(--s6); max-width: 92ch; display: flex; flex-wrap: wrap; gap: 0.35em; align-items: center; }
+
   /* Restrained Signal Reconstruction: the connector threads in once. */
-  @keyframes cmap-thread { from { width: 0; opacity: 0; } to { width: 20px; opacity: 1; } }
+  @keyframes cmap-thread { from { width: 0; opacity: 0; } to { width: 18px; opacity: 1; } }
   .cmap__panel:not([hidden]) .cmap__p-line { animation: cmap-thread var(--dur-slow) var(--ease-out) both; }
   .cmap__panel:not([hidden]) .cmap__p:nth-child(2) .cmap__p-line { animation-delay: 60ms; }
   .cmap__panel:not([hidden]) .cmap__p:nth-child(3) .cmap__p-line { animation-delay: 120ms; }
@@ -219,7 +325,6 @@ const CAPS: { id: string; name: string; claim: string; proof: Proof[] }[] = [
 
   tabs.forEach((t) => {
     t.addEventListener('click', () => select(t.dataset.cap!));
-    // Hover reveals on pointer devices without stealing focus.
     t.addEventListener('mouseenter', () => {
       if (window.matchMedia('(hover: hover)').matches) select(t.dataset.cap!);
     });

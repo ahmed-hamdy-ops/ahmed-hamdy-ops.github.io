@@ -19,7 +19,7 @@ import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4321/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
 const OUT = path.resolve(import.meta.dirname, '..', 'verification');
 
 const VIEWPORTS = [
@@ -53,7 +53,12 @@ for (const vp of VIEWPORTS) {
     const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
     const page = await ctx.newPage();
     const consoleErrors = [];
-    page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
+    // Log the failing URL, not just "404". "Failed to load resource" with no
+    // target is unactionable.
+    page.on('response', (r) => {
+      if (r.status() >= 400) consoleErrors.push(`HTTP ${r.status()} → ${r.url()}`);
+    });
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) consoleErrors.push(m.text()); });
     page.on('pageerror', (e) => consoleErrors.push(String(e)));
 
     const resp = await page.goto(pg.url, { waitUntil: 'networkidle' });

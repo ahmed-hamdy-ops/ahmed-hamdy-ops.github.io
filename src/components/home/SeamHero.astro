@@ -386,22 +386,14 @@ const FINDINGS = [
 </style>
 
 <script>
+  import { playOnce } from '@/scripts/play-once';
+
   const seam = document.querySelector<HTMLElement>('[data-seam]');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function play() {
-    if (!seam || reduce.matches) return;
-    seam.classList.remove('play');
-    void seam.offsetWidth; // reflow so a replay actually restarts
-    seam.classList.add('play');
-    window.setTimeout(() => seam.classList.remove('play'), 1400);
-  }
-
-  document.querySelector('[data-seam-replay]')?.addEventListener('click', play);
-
-  // Play once, after first paint — the headline is readable before anything moves,
-  // and nothing here blocks interaction.
-  if (seam && !reduce.matches) {
-    requestAnimationFrame(() => requestAnimationFrame(() => window.setTimeout(play, 120)));
+  if (seam) {
+    // Fires when the diagram is genuinely on screen — NOT on a load timer.
+    // Measured on live: a timer fired it at 13% visibility on desktop and fully
+    // off-screen on mobile, so it finished before anyone could see it.
+    const { run } = playOnce(seam, { threshold: 0.25, duration: 1500, delay: 80 });
+    document.querySelector('[data-seam-replay]')?.addEventListener('click', run);
   }
 </script>

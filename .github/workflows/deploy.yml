@@ -5,8 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# `actions: read` is required by deploy-pages v4+ to fetch the build artifact.
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -19,11 +21,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # All actions below are first-party and pinned to majors that run on the
+      # Node 24 runtime. The previous pinning (checkout@v4, setup-node@v4,
+      # configure-pages@v5, upload-pages-artifact@v3, deploy-pages@v4) ran on
+      # Node 20, which is what produced the runtime deprecation warnings.
+      #
+      # Reviewed for breaking changes before upgrading, not upgraded blindly:
+      #  · checkout v5→v7: ESM, credentials persisted to a separate file, and
+      #    fork PRs blocked for pull_request_target / workflow_run. None apply —
+      #    this workflow is push-to-main and runs no authenticated git after
+      #    checkout.
+      #  · setup-node v7: ESM + new cache outputs. Additive.
+      #  · configure-pages v6 / deploy-pages v5: Node 24 bump only.
+      #  · upload-pages-artifact v5 pairs with deploy-pages v5.
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - name: Install
@@ -33,16 +48,19 @@ jobs:
       - name: Check for hard-coded paths and contact details
         run: npm run check:links
 
+      - name: Type check
+        run: npx astro check
+
       - name: Build
         env:
           # Project site today. For a user site: SITE_URL=https://<user>.github.io, BASE_PATH=/
           # For a custom domain (Gate 4+): set SITE_URL, BASE_PATH=/, add public/CNAME, point DNS.
           SITE_URL: https://ahmedeldep30-ship-it.github.io
           BASE_PATH: /ahmed-hamdy-portfolio
-        run: npm run build
+        run: npm run build:fast
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
@@ -54,4 +72,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
