@@ -1,4 +1,23 @@
 # Ahmed Hamdy Portfolio — Phase 0/1 Plan
+
+> ## ⚠️ HISTORICAL RECORD — superseded in part. Do not implement from this file.
+>
+> This is the Gate 1 submission, kept as a record of what was proposed and why.
+> **For current state read [`00-STATUS.md`](00-STATUS.md).** Superseded since:
+>
+> | This document says | Reality |
+> |---|---|
+> | **Light institutional theme**, warm ivory canvas, and the §4 contrast table | **Superseded.** Gate 1 approved a **dark-leaning** palette. Every ratio was recomputed against the dark surfaces — two locked colours failed there and needed new variants. See `src/styles/tokens.css`. |
+> | §3 hero: copy left, diagram right | **Superseded at Gate 2.2.** The home page opens with the **portrait beside the headline**; the diagnosis moved below it. |
+> | 12 home sections | **11.** Capability Proof Map absorbed Transformation Playbooks. |
+> | D-1 `/audits` | **Still open.** Gate 1 §7 decided it must not look like a populated library; whether it ships as a method page is undecided. |
+> | D-2 header nav | ✅ Approved — 5 links + audience switch + one contextual CTA. |
+> | D-3 palette extension | ✅ Approved — `--teal-700` / `--coral-700`. |
+> | D-4 Tailwind | ✅ Approved — no Tailwind, hand-authored CSS. |
+> | D-5 editorial serif | ✅ Approved — Source Serif 4, ≤1 statement per page. |
+>
+> §1 (positioning), §2 (capability coverage), and §6 (phases and gates) remain accurate.
+
 **Status:** Awaiting Gate 1 approval. No implementation started.
 **Authority:** `Ahmed_Hamdy_Portfolio_Master_Brief_v3.md` (source of truth) + `Ahmed_Hamdy_Codex_Master_Prompt_v3.md` (binding execution). V3 supersedes all prior briefs, prompts, prototypes.
 **Repository state at audit:** `D:\portfolio` contains only source documents. Not a git repository. No prior code, config, or assets to preserve. Greenfield build.

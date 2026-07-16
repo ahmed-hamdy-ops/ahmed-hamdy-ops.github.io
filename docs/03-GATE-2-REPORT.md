@@ -1,5 +1,23 @@
 # Gate 2 — Phase 2/3 Review
 
+> ## ⚠️ HISTORICAL RECORD — superseded. Do not read as current.
+>
+> This was the Gate 2 submission. **Gate 2 was rejected on visual grounds**, and much of
+> what is described below has since changed. **For current state read [`00-STATUS.md`](00-STATUS.md).**
+>
+> | This document says | Reality |
+> |---|---|
+> | "I could not deploy" · "not published" | **Deployed.** Live at the github.io project-site URL, `noindex` until Gate 4. |
+> | "Fonts fall back to system stack — highest-priority remaining visual item" | **Done.** Manrope + Inter + Source Serif 4 self-hosted, 121KB, zero CDN, CLS 0. |
+> | Home is ~13,180px ≈ 14.6 screens | **12,476px ≈ 13.9 screens** after the merge and the Intro rework. |
+> | Recommends merging Capability Map + Playbooks | **Done.** |
+> | 12 home sections, diagram-led hero | **11 sections**, and the page now opens with the **portrait**. |
+> | Workflow actions v4/v5 | **Upgraded** to node24 majors to clear the runtime deprecation warnings. |
+> | "Gate 2 … awaiting approval" | **Rejected on visuals**; reworked at Gate 2.1/2.2 and awaiting review. |
+>
+> Still accurate: the evidence discipline, the claim model, private-asset handling, and the
+> deployment/portability design.
+
 **Status:** Complete and verified. Awaiting approval. **Not published.**
 **Commits:** 3 · **Tracked files:** 60 · **Private files leaked:** 0 · **Build:** 5 pages, 1.5 MB
 

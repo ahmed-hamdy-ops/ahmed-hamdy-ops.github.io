@@ -1,7 +1,7 @@
 # Missing Evidence & Asset Register
 **Required by:** Codex Master Prompt v3 — *"Create a written Missing Evidence and Asset Register before implementation."*
-**Audit date:** 2026-07-16
-**Sources audited:** Master Brief v3 (2,850 lines, complete) · Codex Master Prompt v3 (complete) · `Ahmed_Hamdy_Business_Growth_Operations_CV_Final_Approved.docx` (complete, text-extracted) · `صورتي.png` (viewed) · repository (`D:\portfolio` — source documents only, not a git repo)
+**Originally audited:** 2026-07-16 · **Last reconciled:** 2026-07-16, commit `bdfa50b`
+**Sources audited:** Master Brief v3 (2,850 lines, complete) · Codex Master Prompt v3 (complete) · `Ahmed_Hamdy_Business_Growth_Operations_CV_Final_Approved.docx` (complete, text-extracted) · the approved portrait (viewed) · six real Formula4You screens (each viewed before use)
 
 **Governing rule:** *A smaller verified result is stronger than a larger unsupported result.* Missing proof produces a safe statement, never a fabricated metric.
 
@@ -9,16 +9,16 @@
 
 ## A. Priority 1 — blocks a credible launch
 
-| # | Item | Status | Consequence if not supplied |
+| # | Item | Status | Consequence / where it landed |
 |---|---|---|---|
-| A1 | **Formula4You live production URL** | ❌ **Not supplied anywhere** | The flagship's single strongest claim is *"live platform."* Cannot be published as live without the URL. Blocks brief §09 required evidence, the proof strip, and both PDFs. **Highest-priority blocker.** |
-| A2 | **Formula4You screenshots** (home, supplier/store profile, product/listing discovery, onboarding/subscription, safe admin/governance) — min. 4 real screens with captions | ❌ Not supplied | Case study runs on diagrams only. **Fake historical interfaces are forbidden** — will not be created. Evidence slots ship visibly empty rather than filled with invention. |
-| A3 | **Formula4You logo** (SVG or transparent PNG) | ❌ Not supplied | Case-study header + PDF covers use a text treatment. |
-| A4 | **Portrait approval** — `صورتي.png` | ⚠️ **Supplied, NOT approved** | Brief §15 P1: *"Current generated portrait can be used only after Ahmed confirms it accurately represents him."* §21.3 repeats this. **I will not publish this image until you explicitly confirm it accurately represents you.** Used in About/Contact only. |
-| A5 | **GitHub account/username + repo name + chosen `github.io` URL** | ❌ Not supplied | Determines user-site vs project-site base path and the canonical URL. Blocks deployment config (Phase 2). Architecture supports both, but the value must be set before Gate 2. |
-| A6 | **Alpha Capital — Employee of the Month proof** (certificate, announcement, or manager confirmation) | ❌ Not supplied | Claim is `EVIDENCE REQUIRED`. Without proof it is **omitted**, not softened. |
-| A7 | **Alpha Capital — Trustpilot/review evidence for 300+ five-star reviews** | ❌ Not supplied | Without proof, mandated fallback: **"hundreds of five-star reviews"** (no number, no metric card). |
-| A8 | **Alpha Capital — actual formal job title** | ❌ Not supplied | See conflict **C1**. Blocks the case study and both PDFs. |
+| A1 | **Formula4You live production URL** | ✅ **RESOLVED** — https://www.formula4you.com/ | Published as live and founder-led. **No scale, revenue, traffic, or supplier count inferred from it.** |
+| A2 | **Formula4You screenshots** | ✅ **RESOLVED** — 6 real screens supplied | All six inspected individually and placed at the reasoning stage each proves — not a gallery. Every one answers `proves`. |
+| A3 | **Formula4You logo** (SVG or transparent PNG) | ❌ **Still missing** | Case-study header + PDF covers use a text treatment. Low impact. |
+| A4 | **Portrait approval** | ✅ **RESOLVED** — approved at Gate 1 §3 | Now the lead element of the home Intro, plus About and both PDFs. Source normalized to `ahmed-hamdy-portrait-approved.png` (double extension removed). |
+| A5 | **GitHub account + repo + URL** | ✅ **RESOLVED** — `ahmedeldep30-ship-it` / `ahmed-hamdy-portfolio` | Project-site base path configured; deploying. Provisional until Gate 4. |
+| A6 | **Alpha Capital — Employee of the Month proof** | ❌ **Still missing** | Claim is `EVIDENCE REQUIRED`. **Omitted entirely** — not softened. |
+| A7 | **Alpha Capital — Trustpilot / 300+ reviews proof** | ❌ **Still missing** | Fallback in use verbatim: **"hundreds of five-star reviews"** — no number, no metric card. |
+| A8 | **Alpha Capital — actual formal job title** | ⚠️ **Partially resolved** | Gate 1 §5 supplied the *case-study framing* ("Operational, Growth & Customer Experience Contributions") and confirmed "Business Operations Specialist" must not be presented as a documented title. **The actual contractual title is still unrecorded.** Needed before the Phase 4 case study. |
 
 ---
 
@@ -63,13 +63,19 @@ The CV is downloadable **from** the site. If the site uses the safe fallback whi
 Resolved automatically by supplying A6/A7. Otherwise same three options as C2.
 
 ### C4 — Public email vs account email
-Brief locks the public contact as **`ahmedeldep30@gmail.com`**. This session's account email is `ahmedmagdymohamedy@gmail.com`. The brief's locked value will be used. **Confirm `ahmedeldep30@gmail.com` is the address you want published** — it goes into the site, both PDFs, and the JSON-LD.
+✅ **RESOLVED.** Confirmed at Gate 1 §4: **`ahmedeldep30@gmail.com`** is the published address. In use across the site, JSON-LD, and both PDFs when they ship.
 
 ### C5 — `/audits` has nothing publishable at launch
-Locked route + locked homepage section, zero eligible content (Amouage is research-concept-only and must stay noindex). See Plan **D-1**.
+⏳ **Still open.** Zero eligible content (Amouage is research-concept-only and must stay noindex). Gate 1 §7 decided the Strategic Audit Method may be reached via Insights/Playbooks and **must not be presented as a populated audit library** — implemented. The remaining question is whether `/audits` ships as a method page or waits for the first real audit. See Plan **D-1**.
 
-### C6 — Capability 10 ("AI-aware business and product decision-making") has no proof surface in the brief
-You named it a core capability. The brief carries it only as an Insights *category* and a tools line in the CV. See Plan §2 — proposal uses existing approved material and invents nothing.
+### C6 — Capability 10 ("AI-aware business and product decision-making") had no proof surface
+✅ **RESOLVED.** Gate 1 §11 approved the **Simplify → Automate → Build** framework. Implemented on the home page with all ten evaluation criteria, plus Intervention Compression, in which the chatbot is rejected on evidence. The restraint is the proof. Nothing invented.
+
+### C7 — ORion appears in a published screenshot *(new)*
+The customer-view storefront is branded **ORION**, and the Master Brief §01 excludes "ORion" from V1 as an Ahmed *project*. Gate 1 §5 / Gate 2 approved it **solely as evidence of a storefront built through Formula4You**. Implemented accordingly: ORion is **never named anywhere in the site source**; the caption reads *"a brand storefront created through Formula4You… branding belongs to the merchant, not the platform."* Flagged so the overlap is a knowing decision, not an oversight.
+
+### C8 — The "90%" supplier-onboarding claim *(new)*
+The supplied filename asserts *"~90% of the essential supplier information"*. **Not published.** No baseline or calculation exists behind it, so it is recorded `user_asserted` with a fallback, and the case study publishes only what the screen itself shows — **two steps, seven fields, five required** — and states out loud why it will not publish the other number.
 
 ---
 
@@ -122,18 +128,30 @@ You named it a core capability. The brief carries it only as an Insights *catego
 
 ---
 
-## G. Answers needed to proceed past Gate 1
+## G. Outstanding — current
 
-**Blocking:**
-1. Formula4You live URL *(A1)*
-2. GitHub username + repo name *(A5)*
-3. Alpha Capital formal job title *(C1)*
-4. Portrait approval — yes/no on `صورتي.png` *(A4)*
+Gate 1's four blockers are all resolved (A1 URL · A5 GitHub · A4 portrait · C4 email), and
+Gate 1 §6 confirmed the evidence-status system stays enforced with the safe wording used
+consistently until proof arrives.
 
-**Needed before Gate 2:**
-5. Formula4You screenshots + logo *(A2, A3)*
-6. Employee of the Month + Trustpilot evidence, or accept fallbacks *(A6, A7)*
-7. C2 resolution — evidence, split, or CV revision
-8. D-1 — `/audits` treatment
-9. Confirm `ahmedeldep30@gmail.com` *(C4)*
-10. Playbook scenarios: real / composite / illustrative
+**Still needed — each currently costs a real claim:**
+
+| # | Item | What it unlocks |
+|---|---|---|
+| 1 | Employee of the Month proof *(A6)* | Currently **omitted entirely** |
+| 2 | Trustpilot / 300+ reviews proof *(A7)* | Unlocks the number; today it reads "hundreds of five-star reviews" |
+| 3 | Defensible completed-order totals *(B)* | Unlocks the claim and resolves **C2** |
+| 4 | Alpha Capital contractual job title *(A8)* | Blocks the Phase 4 case study |
+| 5 | Formula4You logo *(A3)* | Low impact — text treatment in use |
+| 6 | Formula4You roadmap / user stories / QA plan *(D)* | **The single best evidence for the product-strategy claim** |
+| 7 | Anonymized client screens, campaign evidence, objection patterns *(D)* | Phase 4 case studies |
+| 8 | Recommendations from a manager / founder / developer *(D)* | The only permissible route to a testimonial |
+| 9 | Audit research *(D)* | Nothing publishable in `/audits` — see **C5** |
+| 10 | Playbook scenarios: real / composite / illustrative *(D)* | Default remains **all illustrative**, visibly labelled |
+
+**Decisions still open:** **C2** (CV vs site conflict) · **C5 / Plan D-1** (`/audits` treatment).
+
+**Governing behaviour, unchanged:** where evidence is missing the approved fallback is used
+verbatim, the evidence slot ships visibly empty rather than filled with invention, and the
+Formula4You case study publishes each held-back claim **next to the fallback that replaced
+it** — so the omission is visible rather than quietly absent.
