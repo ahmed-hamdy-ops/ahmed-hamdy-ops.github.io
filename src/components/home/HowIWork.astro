@@ -266,7 +266,10 @@ const STAGES = [
   [data-ic].play .ic-keep { animation: ic-rise 320ms var(--ease-out) both; animation-delay: calc(760ms + (var(--i) - 7) * 120ms); }
   [data-ic].play .ic-sum { animation: ic-rise 300ms var(--ease-out) both; animation-delay: 1080ms; }
 
-  @media (prefers-reduced-motion: reduce) { [data-ic].play * { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) {
+    /* Gated so an explicit replay still runs — see base.css. */
+    html:not([data-motion-override]) [data-ic].play * { animation: none !important; }
+  }
 </style>
 
 <script>

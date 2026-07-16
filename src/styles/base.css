@@ -292,11 +292,25 @@
 
 /* ============================================================================
    REDUCED MOTION — global contract.
+
    Every diagram's BASE state is its resolved end state, so disabling animation
    never leaves a blank frame. This kills transitions, not meaning.
+
+   `html:not([data-motion-override])` is load-bearing, not decoration.
+   "Reduce motion" means do not ambush someone with unsolicited movement. It
+   does NOT mean a control they deliberately pressed should do nothing. Without
+   this escape hatch the `!important` below also silences the Replay button, so
+   a visitor with the OS setting on sees a permanently frozen diagram and a dead
+   control — which is exactly what happened in production.
+
+   The attribute is set only for the duration of an explicitly requested replay
+   (see src/scripts/play-once.ts) and removed immediately after. Nothing
+   auto-plays for these visitors, ever.
    ============================================================================ */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html:not([data-motion-override]) *,
+  html:not([data-motion-override]) *::before,
+  html:not([data-motion-override]) *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

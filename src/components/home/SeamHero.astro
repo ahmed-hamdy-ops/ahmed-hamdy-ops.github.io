@@ -240,9 +240,16 @@ const FINDINGS = [
             <path d="M6 1a5 5 0 1 0 5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
             <path d="M6 -1.2 L6 3 L2.4 1" fill="currentColor" />
           </svg>
-          Replay diagnosis
+          <span class="seam__default">Replay diagnosis</span>
+          <span class="seam__rm">Play the diagnosis</span>
         </button>
-        <span class="faint">Plays once · 1.15s · full static diagram without motion</span>
+        <span class="faint">
+          <span class="seam__default">Plays once when it reaches you · 1.15s · full static diagram without motion</span>
+          <span class="seam__rm">
+            Your system asks for reduced motion, so nothing plays on its own —
+            the full diagram is already shown above. Press play to watch it build.
+          </span>
+        </span>
       </div>
     </figure>
   </div>
@@ -380,9 +387,17 @@ const FINDINGS = [
   [data-seam].play .s-fx-resolve .s-connect { animation: s-draw 420ms var(--ease-out) both; animation-delay: 960ms; }
   [data-seam].play .s-fx-conc       { animation: s-in 260ms var(--ease) both; animation-delay: 1000ms; }
 
+  /* Gated on the override so an explicitly requested replay still runs — see
+     the note in base.css. Without :not() this silences the Replay button. */
   @media (prefers-reduced-motion: reduce) {
-    [data-seam].play * { animation: none !important; }
+    html:not([data-motion-override]) [data-seam].play * { animation: none !important; }
   }
+
+  /* Reduced-motion visitors get told the control works, rather than pressing a
+     button that appears dead. */
+  .seam__rm { display: none; }
+  [data-seam][data-reduced-motion='true'] .seam__rm { display: inline; }
+  [data-seam][data-reduced-motion='true'] .seam__default { display: none; }
 </style>
 
 <script>

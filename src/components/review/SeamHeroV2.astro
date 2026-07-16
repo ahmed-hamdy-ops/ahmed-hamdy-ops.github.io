@@ -272,7 +272,8 @@ const FUNCS = [
   [data-seam2].play .s2-cnode--4 { animation-delay: 1620ms; }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-seam2].play * { animation: none !important; }
+    /* Gated so an explicit replay still runs — see base.css. */
+    html:not([data-motion-override]) [data-seam2].play * { animation: none !important; }
   }
 
   /* Mobile: the instrument scrolls in its own container rather than shrinking
