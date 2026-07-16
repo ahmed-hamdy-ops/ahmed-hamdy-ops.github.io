@@ -194,7 +194,17 @@
   }
   .zone-stone h1, .zone-stone h2, .zone-stone h3, .zone-stone h4 { color: var(--stone-ink); }
   .zone-stone p { color: var(--stone-body); }
-  .zone-stone a { color: var(--teal-deep); }              /* 5.22 on stone */
+  /* :not(.btn) is load-bearing. Buttons carry their own fill and label colour;
+     a blanket `a` rule here outranks the button rules in `components` and
+     paints a teal label onto a teal fill — invisible text that axe does not
+     reliably flag. Caught by eye, not by the audit. */
+  .zone-stone a:not(.btn) { color: var(--teal-deep); }    /* 5.22 on stone */
+
+  /* Buttons in the light zone, restated in this layer so they cannot lose. */
+  .zone-stone .btn--primary { background: var(--teal-deep); color: var(--surface-stone); }  /* 5.22 */
+  .zone-stone .btn--primary:hover { background: var(--stone-ink); color: var(--surface-stone); }
+  .zone-stone .btn--ghost { border-color: var(--border-stone); color: var(--stone-ink); background: transparent; }
+  .zone-stone .btn--ghost:hover { border-color: var(--teal-deep); color: var(--teal-deep); }
   .zone-stone .eyebrow { color: var(--teal-deep); }       /* 5.22 — NOT teal-bright (2.2) */
   .zone-stone .muted { color: var(--stone-muted); }       /* 4.92 — NOT text-muted (1.9) */
   .zone-stone .faint { color: var(--stone-muted); }       /* 4.92 — NOT text-faint */

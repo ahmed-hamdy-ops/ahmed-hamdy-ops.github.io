@@ -169,7 +169,9 @@ const held = data.claims.filter((c) => c.status !== 'verified' && c.fallback);
   .cs__body :global(ul) { margin: 0 0 var(--s5); padding-left: var(--s5); display: flex; flex-direction: column; gap: var(--s2); }
   .cs__body :global(li) { color: var(--text-muted); }
   .cs__body :global(li::marker) { color: var(--teal-signal); }
-  .cs__body :global(a) { color: var(--teal-bright); }
+  /* :not(.btn) — the contextual CTA lives inside .cs__body, and a blanket link
+     colour paints a teal-bright label onto the teal-bright button fill. */
+  .cs__body :global(a:not(.btn)) { color: var(--teal-bright); }
 
   /* Evidence status */
   .est { margin-top: var(--s9); padding-top: var(--s6); border-top: 1px solid var(--hairline-strong); }

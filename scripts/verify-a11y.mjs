@@ -99,6 +99,37 @@ console.log('\n── Keyboard ──');
   await ctx.close();
 }
 
+// ── Invisible labels: axe did not catch a teal-on-teal button, so check the
+//    thing directly. Any control whose text colour ~= its own background is a
+//    cascade collision, and it renders as a blank slab.
+console.log('\n── Control labels ──');
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  for (const [name, url] of PAGES) {
+    await page.goto(url, { waitUntil: 'networkidle' });
+    const blank = await page.evaluate(() => {
+      const rgb = (s) => (s.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number);
+      const near = (a, b) => a.length === 3 && b.length === 3 &&
+        a.every((v, i) => Math.abs(v - b[i]) < 24);
+      const out = [];
+      document.querySelectorAll('a, button').forEach((el) => {
+        if (!el.textContent?.trim()) return;
+        const cs = getComputedStyle(el);
+        let bg = cs.backgroundColor;
+        // Walk up for the effective background if this element is transparent.
+        let p = el;
+        while (bg === 'rgba(0, 0, 0, 0)' && p.parentElement) { p = p.parentElement; bg = getComputedStyle(p).backgroundColor; }
+        if (near(rgb(cs.color), rgb(bg))) out.push(`${el.tagName}.${el.className} "${el.textContent.trim().slice(0, 30)}"`);
+      });
+      return out;
+    });
+    if (blank.length) { console.error(`  ✗ ${name}: invisible label(s) — ${blank.slice(0, 3).join(' | ')}`); violations++; }
+    else console.log(`  ✓ ${name}: every control label is visible against its own fill`);
+  }
+  await ctx.close();
+}
+
 await browser.close();
 console.log('\n' + '─'.repeat(60));
 console.log(violations ? `FAIL — ${violations} issue(s)` : 'PASS — no accessibility violations');
