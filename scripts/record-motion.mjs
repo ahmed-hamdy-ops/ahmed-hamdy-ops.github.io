@@ -15,7 +15,8 @@ const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfo
 const OUT = path.resolve(import.meta.dirname, '..', 'verification', 'motion');
 await mkdir(OUT, { recursive: true });
 
-const FRAMES = [0, 200, 400, 600, 800, 1000, 1300];
+// Sampled across the full ~4.4s diagnosis, one frame per narrative beat.
+const FRAMES = [200, 700, 1300, 1900, 2400, 3000, 3600, 4400];
 
 const browser = await chromium.launch();
 
@@ -37,10 +38,15 @@ const browser = await chromium.launch();
   for (const t of FRAMES) {
     const wait = t - (Date.now() - t0);
     if (wait > 0) await page.waitForTimeout(wait);
-    await seam?.screenshot({ path: path.join(OUT, `seam-frame-${String(t).padStart(4, '0')}ms.png`) });
+    // VIEWPORT capture, not elementHandle.screenshot(). An element screenshot
+    // re-rasterises the SVG and RESTARTS its animation clock, so every frame
+    // comes back showing the same ~100ms state — it reports a working
+    // animation as frozen. This cost real debugging time; do not "simplify" it
+    // back to el.screenshot().
+    await page.screenshot({ path: path.join(OUT, `seam-frame-${String(t).padStart(4, '0')}ms.png`) });
   }
-  await page.waitForTimeout(900);
-  await seam?.screenshot({ path: path.join(OUT, 'seam-frame-settled.png') });
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: path.join(OUT, 'seam-frame-settled.png') });
   await ctx.close();
   console.log('  ✓ Seam Diagnosis — frames + video');
 }
@@ -62,10 +68,10 @@ const browser = await chromium.launch();
   for (const t of FRAMES) {
     const wait = t - (Date.now() - t0);
     if (wait > 0) await page.waitForTimeout(wait);
-    await ic?.screenshot({ path: path.join(OUT, `compression-frame-${String(t).padStart(4, '0')}ms.png`) });
+    await page.screenshot({ path: path.join(OUT, `compression-frame-${String(t).padStart(4, '0')}ms.png`) });
   }
-  await page.waitForTimeout(900);
-  await ic?.screenshot({ path: path.join(OUT, 'compression-frame-settled.png') });
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: path.join(OUT, 'compression-frame-settled.png') });
   await ctx.close();
   console.log('  ✓ Intervention Compression — frames + video');
 }

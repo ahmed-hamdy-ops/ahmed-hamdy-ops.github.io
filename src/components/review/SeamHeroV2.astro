@@ -34,11 +34,11 @@ const STAGES = [
  * counts among sibling <g> elements and lands the delays on the wrong groups.
  */
 const FUNCS = [
-  { x: 44, label: 'Marketing', state: 'cause', dy: 34, rot: -1.8, d: 420, note: 'promised next-day' },
-  { x: 276, label: 'Website / Product', state: 'cause', dy: -26, rot: 1.4, d: 490, note: 'time hidden till checkout' },
-  { x: 508, label: 'Checkout', state: 'ok', dy: 18, rot: -0.8, d: 560, note: 'working correctly' },
-  { x: 740, label: 'Operations', state: 'cause', dy: 40, rot: 2.0, d: 630, note: 'fulfilment takes 3 days' },
-  { x: 972, label: 'Support / Retention', state: 'symptom', dy: -32, rot: -1.5, d: 700, note: '“where is my order?”' },
+  { x: 44, label: 'Marketing', state: 'cause', dy: 34, rot: -1.8, d: 1200, note: 'promised next-day' },
+  { x: 276, label: 'Website / Product', state: 'cause', dy: -26, rot: 1.4, d: 1400, note: 'time hidden till checkout' },
+  { x: 508, label: 'Checkout', state: 'ok', dy: 18, rot: -0.8, d: 1600, note: 'working correctly' },
+  { x: 740, label: 'Operations', state: 'cause', dy: 40, rot: 2.0, d: 1800, note: 'fulfilment takes 3 days' },
+  { x: 972, label: 'Support / Retention', state: 'symptom', dy: -32, rot: -1.5, d: 2000, note: '“where is my order?”' },
 ];
 ---
 
@@ -147,7 +147,7 @@ const FUNCS = [
           </svg>
           Replay the diagnosis
         </button>
-        <span class="h2__note">Plays once when it reaches you · 1.4s · full static diagram without motion</span>
+        <span class="h2__note">Plays once when it reaches you · full static diagram without motion</span>
       </div>
     </figure>
   </div>
@@ -253,23 +253,29 @@ const FUNCS = [
     100% { transform: none; opacity: 1; }
   }
 
-  [data-seam2].play .s2-fx-line  { stroke-dasharray: 1; animation: s2-draw 380ms var(--ease-out) both; }
-  [data-seam2].play .s2-fx-line--b { animation-delay: 110ms; }
-  [data-seam2].play .s2-fx-stage { animation: s2-in 220ms var(--ease) both; animation-delay: 200ms; }
-  [data-seam2].play .s2-fx-lab2  { animation: s2-pop 200ms var(--ease) both; animation-delay: 380ms; }
+  /* Paced to be read. The fragmentation → alignment move is the whole point of
+     this hero, so it is given room to land rather than snapping past.
+       0.00s  the journey draws        1.20s  functions appear, fragmented
+       1.20s  strips realign, staggered
+       2.60s  the break is revealed    3.30s  the resolution connects
+       ~4.1s  end                                                            */
+  [data-seam2].play .s2-fx-line  { stroke-dasharray: 1; animation: s2-draw 660ms var(--ease-out) both; }
+  [data-seam2].play .s2-fx-line--b { animation-delay: 260ms; }
+  [data-seam2].play .s2-fx-stage { animation: s2-in 380ms var(--ease) both; animation-delay: 560ms; }
+  [data-seam2].play .s2-fx-lab2  { animation: s2-pop 320ms var(--ease) both; animation-delay: 1000ms; }
   /* Stagger comes from the inline --d on each strip. :nth-of-type would count
      among sibling <g> elements and apply the delays to the wrong groups. */
-  [data-seam2].play .s2-strip    { animation: s2-align 640ms var(--ease-out) both; animation-delay: var(--d, 420ms); }
-  [data-seam2].play .s2-fx-break { animation: s2-pop 280ms var(--ease) both; animation-delay: 1000ms; }
-  [data-seam2].play .s2-fx-seq   { animation: s2-pop 260ms var(--ease) both; animation-delay: 1240ms; }
-  [data-seam2].play .s2-fx-seq .s2-connect { stroke-dasharray: 1; animation: s2-draw 520ms var(--ease-out) both; animation-delay: 1240ms; }
+  [data-seam2].play .s2-strip    { animation: s2-align 900ms var(--ease-out) both; animation-delay: var(--d, 1200ms); }
+  [data-seam2].play .s2-fx-break { animation: s2-pop 520ms var(--ease) both; animation-delay: 2600ms; }
+  [data-seam2].play .s2-fx-seq   { animation: s2-pop 420ms var(--ease) both; animation-delay: 3300ms; }
+  [data-seam2].play .s2-fx-seq .s2-connect { stroke-dasharray: 1; animation: s2-draw 820ms var(--ease-out) both; animation-delay: 3300ms; }
   /* Class-based, not positional — these are siblings of <path> and <text>. */
-  [data-seam2].play .s2-cnode    { animation: s2-pop 180ms var(--ease) both; }
-  [data-seam2].play .s2-cnode--0 { animation-delay: 1300ms; }
-  [data-seam2].play .s2-cnode--1 { animation-delay: 1380ms; }
-  [data-seam2].play .s2-cnode--2 { animation-delay: 1460ms; }
-  [data-seam2].play .s2-cnode--3 { animation-delay: 1540ms; }
-  [data-seam2].play .s2-cnode--4 { animation-delay: 1620ms; }
+  [data-seam2].play .s2-cnode    { animation: s2-pop 240ms var(--ease) both; }
+  [data-seam2].play .s2-cnode--0 { animation-delay: 3450ms; }
+  [data-seam2].play .s2-cnode--1 { animation-delay: 3610ms; }
+  [data-seam2].play .s2-cnode--2 { animation-delay: 3770ms; }
+  [data-seam2].play .s2-cnode--3 { animation-delay: 3930ms; }
+  [data-seam2].play .s2-cnode--4 { animation-delay: 4090ms; }
 
   @media (prefers-reduced-motion: reduce) {
     /* Gated so an explicit replay still runs — see base.css. */
@@ -289,7 +295,8 @@ const FUNCS = [
 
   const fig = document.querySelector<HTMLElement>('[data-seam2]');
   if (fig) {
-    const { run } = playOnce(fig, { duration: 2000, delay: 140 });
+    // Must outlast the last keyframe (4090ms + 240ms).
+    const { run } = playOnce(fig, { duration: 4600, delay: 160 });
     document.querySelector('[data-seam2-replay]')?.addEventListener('click', run);
   }
 </script>

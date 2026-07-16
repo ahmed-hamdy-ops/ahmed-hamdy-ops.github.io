@@ -261,10 +261,17 @@ const STAGES = [
   @keyframes ic-fade { 0% { opacity: 1; } 100% { opacity: 0.32; } }
   @keyframes ic-rise { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
 
-  [data-ic].play .ic-strike { stroke-dasharray: 1; animation: ic-strike-in 260ms var(--ease) both; animation-delay: calc(120ms + var(--i) * 70ms); }
-  [data-ic].play .ic-drop { animation: ic-fade 300ms var(--ease) both; animation-delay: calc(240ms + var(--i) * 70ms); }
-  [data-ic].play .ic-keep { animation: ic-rise 320ms var(--ease-out) both; animation-delay: calc(760ms + (var(--i) - 7) * 120ms); }
-  [data-ic].play .ic-sum { animation: ic-rise 300ms var(--ease-out) both; animation-delay: 1080ms; }
+  /* Paced to be read, not glimpsed. Each rejection needs a moment to register
+     as a decision — seven options struck through in 0.6s is a blur, not an
+     argument. ~180ms between each, then the two survivors land unhurried.
+       0.20s  first option struck …  1.50s  seventh struck
+       2.00s  survivor one rises
+       2.45s  survivor two rises
+       2.95s  the conclusion       →  ~3.4s end                              */
+  [data-ic].play .ic-strike { stroke-dasharray: 1; animation: ic-strike-in 380ms var(--ease) both; animation-delay: calc(200ms + var(--i) * 180ms); }
+  [data-ic].play .ic-drop { animation: ic-fade 420ms var(--ease) both; animation-delay: calc(380ms + var(--i) * 180ms); }
+  [data-ic].play .ic-keep { animation: ic-rise 480ms var(--ease-out) both; animation-delay: calc(2000ms + (var(--i) - 7) * 450ms); }
+  [data-ic].play .ic-sum { animation: ic-rise 420ms var(--ease-out) both; animation-delay: 2950ms; }
 
   @media (prefers-reduced-motion: reduce) {
     /* Gated so an explicit replay still runs — see base.css. */
@@ -277,7 +284,8 @@ const STAGES = [
 
   const ic = document.querySelector<HTMLElement>('[data-ic]');
   if (ic) {
-    const { run } = playOnce(ic, { duration: 1700, delay: 140 });
+    // Must outlast the last keyframe (2950ms + 420ms).
+    const { run } = playOnce(ic, { duration: 3600, delay: 160 });
     document.querySelector('[data-ic-replay]')?.addEventListener('click', run);
   }
 </script>

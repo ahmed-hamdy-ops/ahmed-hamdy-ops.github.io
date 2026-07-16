@@ -22,9 +22,26 @@ const bad = (m) => { console.error(`  ✗ ${m}`); fails++; };
 
 const hash = (b) => { let h = 0; for (let i = 0; i < b.length; i += 97) h = (h * 31 + b[i]) >>> 0; return h; };
 
-async function frames(el, page, n = 8, gap = 160) {
+/**
+ * Samples the VIEWPORT, clipped to the element's box — never
+ * elementHandle.screenshot(), which re-rasterises the SVG and restarts its
+ * animation clock, returning the same early frame every time and reporting a
+ * working animation as frozen.
+ */
+async function frames(el, page, n = 8, gap = 260) {
+  const box = await el.boundingBox();
+  const vp = page.viewportSize();
+  const clip = box && {
+    x: Math.max(0, box.x),
+    y: Math.max(0, box.y),
+    width: Math.min(box.width, vp.width - Math.max(0, box.x)),
+    height: Math.min(box.height, vp.height - Math.max(0, box.y)),
+  };
   const out = [];
-  for (let i = 0; i < n; i++) { out.push(hash(await el.screenshot())); await page.waitForTimeout(gap); }
+  for (let i = 0; i < n; i++) {
+    out.push(hash(await page.screenshot(clip && clip.height > 0 ? { clip } : {})));
+    await page.waitForTimeout(gap);
+  }
   return new Set(out).size;
 }
 
@@ -39,10 +56,11 @@ const browser = await chromium.launch();
   await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
   const el = await page.$('[data-seam]');
-  await el.scrollIntoViewIfNeeded();
-  const n = await frames(el, page);
-  n > 2 ? ok(`Motion allowed: autoplays on scroll (${n}/8 distinct frames)`)
-        : bad(`Motion allowed: did NOT autoplay (${n}/8 frames — frozen)`);
+  await page.evaluate(() => { const e = document.querySelector("[data-seam]"); window.scrollTo(0, window.scrollY + e.getBoundingClientRect().top - 60); });
+  await page.waitForTimeout(300);
+  const n = await frames(el, page, 12, 400);
+  n > 2 ? ok(`Motion allowed: autoplays on scroll (${n}/12 distinct frames)`)
+        : bad(`Motion allowed: did NOT autoplay (${n}/12 frames — frozen)`);
   await ctx.close();
 }
 
@@ -53,7 +71,8 @@ const browser = await chromium.launch();
   await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
   const el = await page.$('[data-seam]');
-  await el.scrollIntoViewIfNeeded();
+  await page.evaluate(() => { const e = document.querySelector("[data-seam]"); window.scrollTo(0, window.scrollY + e.getBoundingClientRect().top - 60); });
+  await page.waitForTimeout(300);
 
   // 2. Must NOT autoplay.
   const auto = await frames(el, page, 6, 200);
@@ -71,16 +90,28 @@ const browser = await chromium.launch();
                  : bad(`Reduced motion: ${resolved} element(s) hidden at rest`);
 
   // 3. Explicit press MUST play.
-  await page.click('[data-seam-replay]');
-  const replay = await frames(el, page);
-  replay > 2 ? ok(`Reduced motion: pressing Replay plays it (${replay}/8 distinct frames)`)
-             : bad(`Reduced motion: Replay does NOTHING (${replay}/8 frames) — the reported bug`);
+  // Click via evaluate, NOT page.click(): page.click() scrolls the button into
+  // view, and the button sits at the BOTTOM of the figure — which moves the
+  // early beats above the viewport and makes the clip sample a region where
+  // nothing happens until 2.75s. That reported a working replay as dead.
+  await page.evaluate(() => document.querySelector('[data-seam-replay]').click());
+  await page.evaluate(() => {
+    const e = document.querySelector('[data-seam]');
+    window.scrollTo(0, window.scrollY + e.getBoundingClientRect().top - 60);
+  });
+  // Sample across the WHOLE 4.6s sequence, not just its first 2s.
+  const replay = await frames(el, page, 12, 400);
+  replay > 2 ? ok(`Reduced motion: pressing Replay plays it (${replay}/12 distinct frames)`)
+             : bad(`Reduced motion: Replay does NOTHING (${replay}/12 frames) — the reported bug`);
 
   // The override must not linger and silently re-enable motion site-wide.
-  await page.waitForTimeout(1800);
-  const lingering = await page.evaluate(() => document.documentElement.hasAttribute('data-motion-override'));
-  lingering ? bad('data-motion-override left set — motion re-enabled globally')
-            : ok('data-motion-override cleared after the run');
+  // Must outwait the full play window (4.6s), or this fails spuriously.
+  await page.waitForFunction(
+    () => !document.documentElement.hasAttribute('data-motion-override'),
+    null,
+    { timeout: 9000 }
+  ).then(() => ok('data-motion-override cleared once the run ended'))
+   .catch(() => bad('data-motion-override left set — motion re-enabled globally'));
 
   // The control must tell reduced-motion visitors it works.
   const label = await page.evaluate(() =>

@@ -244,7 +244,7 @@ const FINDINGS = [
           <span class="seam__rm">Play the diagnosis</span>
         </button>
         <span class="faint">
-          <span class="seam__default">Plays once when it reaches you · 1.15s · full static diagram without motion</span>
+          <span class="seam__default">Plays once when it reaches you · full static diagram without motion</span>
           <span class="seam__rm">
             Your system asks for reduced motion, so nothing plays on its own —
             the full diagram is already shown above. Press play to watch it build.
@@ -372,20 +372,34 @@ const FINDINGS = [
   @keyframes s-in   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @keyframes s-pop  { from { opacity: 0; } to { opacity: 1; } }
 
-  [data-seam].play .s-fx-line       { stroke-dasharray: 1; animation: s-draw 340ms var(--ease-out) both; }
-  [data-seam].play .s-fx-line--b    { animation-delay: 90ms; }
-  [data-seam].play .s-fx-stage      { animation: s-in 200ms var(--ease) both; animation-delay: 180ms; }
-  [data-seam].play .s-fx-dept       { animation: s-in 260ms var(--ease) both; animation-delay: 340ms; }
-  [data-seam].play .s-fx-own        { animation: s-pop 240ms var(--ease) both; animation-delay: 520ms; }
-  [data-seam].play .s-fx-break      { animation: s-pop 260ms var(--ease) both; animation-delay: 680ms; }
-  [data-seam].play .s-fx-find       { animation: s-in 220ms var(--ease) both; }
-  [data-seam].play .s-fx-find:nth-child(1) { animation-delay: 700ms; }
-  [data-seam].play .s-fx-find:nth-child(2) { animation-delay: 770ms; }
-  [data-seam].play .s-fx-find:nth-child(3) { animation-delay: 840ms; }
-  [data-seam].play .s-fx-find:nth-child(4) { animation-delay: 910ms; }
-  [data-seam].play .s-fx-resolve    { stroke-dasharray: 1; animation: s-pop 300ms var(--ease) both; animation-delay: 960ms; }
-  [data-seam].play .s-fx-resolve .s-connect { animation: s-draw 420ms var(--ease-out) both; animation-delay: 960ms; }
-  [data-seam].play .s-fx-conc       { animation: s-in 260ms var(--ease) both; animation-delay: 1000ms; }
+  /* Six beats, paced to be READ rather than glimpsed.
+     The whole diagnosis previously ran in ~1.26s — about 200ms per beat, faster
+     than the eye can follow an argument. Each beat now lands, holds, and hands
+     over to the next. It plays once, so deliberate beats a blur.
+
+       0.00s  the customer's journey draws — one continuous line
+       0.55s  the six stages label themselves
+       1.05s  the five functions appear beneath
+       1.60s  ownership connectors trace stage → function
+       2.10s  THE BREAK — the beat that matters, given room
+       2.75s  four findings, one at a time
+       3.70s  the resolution connects, then the conclusion
+       ~4.3s  end                                                            */
+  [data-seam].play .s-fx-line       { stroke-dasharray: 1; animation: s-draw 620ms var(--ease-out) both; }
+  [data-seam].play .s-fx-line--b    { animation-delay: 260ms; }
+  [data-seam].play .s-fx-stage      { animation: s-in 380ms var(--ease) both; animation-delay: 550ms; }
+  [data-seam].play .s-fx-dept       { animation: s-in 460ms var(--ease) both; animation-delay: 1050ms; }
+  [data-seam].play .s-fx-own        { animation: s-pop 420ms var(--ease) both; animation-delay: 1600ms; }
+  /* The break gets the longest reveal in the sequence. It is the finding. */
+  [data-seam].play .s-fx-break      { animation: s-pop 560ms var(--ease) both; animation-delay: 2100ms; }
+  [data-seam].play .s-fx-find       { animation: s-in 340ms var(--ease) both; }
+  [data-seam].play .s-fx-find:nth-child(1) { animation-delay: 2750ms; }
+  [data-seam].play .s-fx-find:nth-child(2) { animation-delay: 2980ms; }
+  [data-seam].play .s-fx-find:nth-child(3) { animation-delay: 3210ms; }
+  [data-seam].play .s-fx-find:nth-child(4) { animation-delay: 3440ms; }
+  [data-seam].play .s-fx-resolve    { stroke-dasharray: 1; animation: s-pop 420ms var(--ease) both; animation-delay: 3700ms; }
+  [data-seam].play .s-fx-resolve .s-connect { animation: s-draw 780ms var(--ease-out) both; animation-delay: 3700ms; }
+  [data-seam].play .s-fx-conc       { animation: s-in 420ms var(--ease) both; animation-delay: 3950ms; }
 
   /* Gated on the override so an explicitly requested replay still runs — see
      the note in base.css. Without :not() this silences the Replay button. */
@@ -408,7 +422,9 @@ const FINDINGS = [
     // Fires when the diagram is genuinely on screen — NOT on a load timer.
     // Measured on live: a timer fired it at 13% visibility on desktop and fully
     // off-screen on mobile, so it finished before anyone could see it.
-    const { run } = playOnce(seam, { duration: 1500, delay: 140 });
+    // duration MUST outlast the last keyframe (3950ms + 420ms). `.play` is
+    // removed when it elapses, so a short value amputates the sequence.
+    const { run } = playOnce(seam, { duration: 4600, delay: 160 });
     document.querySelector('[data-seam-replay]')?.addEventListener('click', run);
   }
 </script>
