@@ -111,16 +111,14 @@ const lenses = [
       <circle cx="520" cy="1810" r="11" stroke="#48e0bb" />
     </svg>
 
-    <div class="case-mark reveal" aria-hidden="true">
-      <div class="wrap case-mark__row">
+    <section class="signal-section zone-paper">
+      <div class="wrap">
+      <div class="case-mark" aria-hidden="true">
         <span class="case-mark__n">Case 01</span>
         <span class="case-mark__t">A question that would not stop being asked.</span>
         <span class="case-mark__ctx">Alpha Capital Group · UK fintech · support team of 13 on Zendesk</span>
       </div>
-    </div>
 
-    <section class="signal-section zone-paper">
-      <div class="wrap">
         {/* This whole section used to run on a made-up scenario labelled
             "Illustrative operating pattern" — a hypothetical about a late
             parcel, rendered in three beautiful diagrams across a third of the
@@ -304,16 +302,15 @@ const lenses = [
       His account, in his detail. He wrote it in the first person plural; he has
       confirmed it was his own engagement and that the "we" was modesty, so it
       reads as "I" like the rest of the page. */}
-  <div class="case-mark reveal" aria-hidden="true">
-    <div class="wrap case-mark__row">
-      <span class="case-mark__n">Case 02</span>
-      <span class="case-mark__t">A company telling its customer five different things.</span>
-      <span class="case-mark__ctx">Mid-size e-commerce · consulting engagement · sector described, not named</span>
-    </div>
-  </div>
 
   <section class="dossier-section zone-paper" id="dossier">
     <div class="wrap">
+      <div class="case-mark" aria-hidden="true">
+        <span class="case-mark__n">Case 02</span>
+        <span class="case-mark__t">A company telling its customer five different things.</span>
+        <span class="case-mark__ctx">Mid-size e-commerce · consulting engagement · sector described, not named</span>
+      </div>
+
       <header class="section-head reveal">
         <div><span class="eyebrow">02 / A — The documents, side by side</span><h2>Every document made sense. Read side by side, they told five different stories.</h2></div>
         <div>
@@ -401,16 +398,14 @@ const lenses = [
     </div>
   </section>
 
-  <div class="case-mark case-mark--night reveal" aria-hidden="true">
-    <div class="wrap case-mark__row">
-      <span class="case-mark__n">Case 03</span>
-      <span class="case-mark__t">The one where the decision was mine.</span>
-      <span class="case-mark__ctx">Formula4You · live platform · founder</span>
-    </div>
-  </div>
-
   <section class="proof-section zone-raised" id="evidence">
     <div class="wrap">
+      <div class="case-mark" aria-hidden="true">
+        <span class="case-mark__n">Case 03</span>
+        <span class="case-mark__t">The one where the decision was mine.</span>
+        <span class="case-mark__ctx">Formula4You · live platform · founder</span>
+      </div>
+
       <header class="section-head reveal">
         <div><span class="eyebrow">03 / A — The gap, and three decisions</span><h2>The gap was not a missing product. It was a missing place.</h2></div>
         <p>Both of those cases were other people’s companies, and a consultant can always leave. This is the one where the decision was mine, there was nobody above me to sign it off, and I am the person who answers for it.</p>
@@ -531,21 +526,23 @@ const lenses = [
   /* The bottom padding is not whitespace — it is clearance. `.hero::after` is
      the paper curve, and it rises ~85px above the hero's own bottom edge. The
      index has to end above that line or the curve eats the last three labels. */
-  /* The case marker. Deliberately the loudest horizontal thing on the page —
-     it is the only element whose whole job is to say "a new case starts here",
-     and the parts inside carry its number so the boundary survives scrolling.
-     aria-hidden because every part already names its case in a real heading;
-     to a screen reader this band would just be the number said twice. */
-  .case-mark { position: relative; z-index: 5; padding: 2.6rem 0 .2rem; background: var(--paper); }
-  .case-mark--night { background: transparent; }
-  .case-mark__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1.1rem; padding-bottom: .85rem; border-bottom: 2px solid var(--ink); }
-  .case-mark--night .case-mark__row { border-bottom-color: var(--signal); }
+  /* The case marker.
+     It lives inside the section it opens rather than in the seam above it, so
+     it takes that section's background for free. The earlier version painted
+     its own paper band over the gap between two sections — and the page behind
+     that gap is night, so it flickered up from black on reveal and, on the dark
+     section where it had to stay transparent, simply drew a black stripe across
+     the paper. Structure should not need a background of its own, and should
+     not animate: aria-hidden because every part already names its case in a
+     real heading, and to a screen reader this would just be the number twice. */
+  .case-mark { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1.1rem; margin-bottom: 2.2rem; padding-bottom: .85rem; border-bottom: 2px solid var(--ink); }
+  .zone-raised .case-mark, .zone-night .case-mark { border-bottom-color: var(--signal); }
   .case-mark__n { color: var(--ink); font: 850 clamp(1.4rem,1.1rem + 1vw,2.1rem)/1 var(--font-head); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-  .case-mark--night .case-mark__n { color: var(--white); }
+  .zone-raised .case-mark__n, .zone-night .case-mark__n { color: var(--white); }
   .case-mark__t { flex: 1; min-width: 14rem; color: var(--ink-soft); font: 700 clamp(.95rem,.85rem + .4vw,1.2rem)/1.3 var(--font-head); }
-  .case-mark--night .case-mark__t { color: var(--chalk); }
+  .zone-raised .case-mark__t, .zone-night .case-mark__t { color: var(--chalk); }
   .case-mark__ctx { color: #5c6e75; font: 800 .6rem var(--font-head); letter-spacing: .1em; text-transform: uppercase; }
-  .case-mark--night .case-mark__ctx { color: var(--slate); }
+  .zone-raised .case-mark__ctx, .zone-night .case-mark__ctx { color: var(--slate); }
   @media (max-width: 620px) { .case-mark__t { min-width: 100%; } }
 
   .hero { position: relative; min-height: 660px; padding: 6.5rem 0 7.9rem; overflow: hidden; color: var(--white); background: radial-gradient(circle at 84% 22%, rgba(121,183,255,.18), transparent 24rem), radial-gradient(circle at 7% 80%, rgba(72,224,187,.12), transparent 25rem), linear-gradient(135deg,#04151e 0%,#082632 63%,#0a303a 100%); }

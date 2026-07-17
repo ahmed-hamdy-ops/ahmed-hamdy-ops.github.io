@@ -61,20 +61,20 @@ const URGENCY = [
 const CHANNELS = [
   {
     href: contact.emailHref,
-    k: 'Email',
-    v: contact.email,
+    k: 'Send an email',
+    v: 'Straight to my inbox',
     path: 'M1.6 3h14.8c.9 0 1.6.7 1.6 1.6v8.8c0 .9-.7 1.6-1.6 1.6H1.6C.7 15 0 14.3 0 13.4V4.6C0 3.7.7 3 1.6 3Zm7.4 6.3 6.6-4.1H2.4L9 9.3Zm0 1.8L1.6 6.5v6.9h14.8V6.5L9 11.1Z',
   },
   {
     href: contact.whatsapp,
-    k: 'WhatsApp',
-    v: '+20 104 002 0093',
+    k: 'Message on WhatsApp',
+    v: 'Fastest — text is fine',
     path: 'M9 0a8.9 8.9 0 0 0-7.6 13.6L0 18l4.5-1.4A8.9 8.9 0 1 0 9 0Zm0 16.2a7.2 7.2 0 0 1-3.7-1l-.3-.2-2.7.8.8-2.6-.2-.3A7.3 7.3 0 1 1 9 16.2Zm4-5.4c-.2-.1-1.3-.7-1.5-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6 6 0 0 1-3-2.6c-.2-.3.1-.4.3-.7l.3-.5v-.5l-.6-1.5c-.2-.4-.4-.3-.5-.3h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.5 1 2.6a9.4 9.4 0 0 0 3.7 3.3c1.3.5 1.6.4 1.9.4.4 0 1.3-.5 1.5-1 .2-.6.2-1 .1-1.1l-.4-.2Z',
   },
   {
     href: contact.linkedin,
-    k: 'LinkedIn',
-    v: 'View the profile',
+    k: 'Open LinkedIn',
+    v: 'See the profile first',
     path: 'M4.5 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM.6 16h3.8V6.6H.6V16Zm6.3 0h3.8v-5.2c0-1.4.3-2.7 2-2.7 1.7 0 1.7 1.6 1.7 2.8V16H18v-5.9c0-3.3-.7-5.8-4.5-5.8-1.8 0-3 1-3.5 1.9h-.1V6.6H6.9V16Z',
   },
 ];
@@ -178,17 +178,18 @@ const CHANNELS = [
 
     <!-- The review step. You see exactly what he will read, before it goes. -->
     <div class="tr" id="talk-review" hidden>
-      <span class="talk__eyebrow">This is what I will read</span>
+      <span class="talk__eyebrow">Ready — pick how to send it</span>
+      <p class="tr__hint">This is exactly what I will read. Nothing has been sent yet — choosing one below opens your own app with it already written.</p>
       <pre class="tr__msg" id="talk-msg"></pre>
       <div class="tr__go">
-        <a class="btn btn--primary" id="talk-wa" href="#" rel="noopener">Open WhatsApp <span class="btn__arrow" aria-hidden="true">→</span></a>
-        <a class="btn" id="talk-mail" href="#">Open email <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--primary" id="talk-wa" href="#" rel="noopener">Send on WhatsApp <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn" id="talk-mail" href="#">Send by email <span class="btn__arrow" aria-hidden="true">→</span></a>
         <button class="tr__edit" type="button" id="talk-edit">← Edit</button>
       </div>
     </div>
 
     <div class="talk__direct">
-      <span class="talk__k">Or skip the form entirely</span>
+      <span class="talk__k">Or skip the form and just say hello</span>
       <ul>
         {CHANNELS.map((c) => (
           <li>
@@ -242,7 +243,10 @@ const CHANNELS = [
   .tf textarea { min-height: 62px; resize: vertical; }
   .tf select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--signal) 50%), linear-gradient(135deg, var(--signal) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2rem; }
   .tf input:focus, .tf select:focus, .tf textarea:focus { outline: none; border-color: var(--signal); background: rgba(72,224,187,.07); }
-  .tf input:focus-visible, .tf select:focus-visible, .tf textarea:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+  /* One focus indicator, not two. :focus already turns the border signal and
+     tints the field; the acid outline on top made every click flash yellow and
+     green at once. Signal on night-soft clears 3:1 on its own. */
+  .tf input:focus-visible, .tf select:focus-visible, .tf textarea:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
   .tf option { color: var(--ink); background: var(--paper-bright); }
   .tf ::placeholder { color: var(--slate-soft); }
 
@@ -252,7 +256,8 @@ const CHANNELS = [
   .tf__priv { color: var(--slate-soft); font-size: .68rem; }
 
   .tr[hidden] { display: none; }
-  .tr__msg { max-height: 240px; margin: .7rem 0 1rem; padding: 1rem; overflow: auto; color: var(--slate); border: 1px solid var(--hairline); border-radius: 18px 6px 20px 8px; background: rgba(0,0,0,.28); font: 500 .74rem/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace; white-space: pre-wrap; }
+  .tr__hint { margin-top: .6rem; color: var(--slate); font-size: .78rem; line-height: 1.55; }
+  .tr__msg { max-height: 220px; margin: .7rem 0 1rem; padding: 1rem; overflow: auto; color: var(--slate); border: 1px solid var(--hairline); border-radius: 18px 6px 20px 8px; background: rgba(0,0,0,.28); font: 500 .74rem/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace; white-space: pre-wrap; }
   .tr__go { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
   .tr__edit { min-height: 44px; padding: 0 .5rem; color: var(--slate); background: none; border: 0; cursor: pointer; font: 750 .78rem var(--font-head); }
   .tr__edit:hover { color: var(--signal); }
@@ -266,8 +271,8 @@ const CHANNELS = [
   .tchan:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
   .tchan__i { display: grid; place-items: center; width: 30px; height: 30px; flex: none; color: var(--signal); border-radius: 50%; background: rgba(72,224,187,.12); }
   .tchan__b { display: flex; flex-direction: column; min-width: 0; }
-  .tchan__k { color: var(--slate-soft); font: 800 .54rem var(--font-head); letter-spacing: .1em; text-transform: uppercase; }
-  .tchan__v { color: var(--white); font: 750 .72rem var(--font-head); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tchan__k { color: var(--white); font: 800 .74rem var(--font-head); }
+  .tchan__v { color: var(--slate); font: 500 .66rem var(--font-body); }
 
   .talk__fine { margin-top: 1.2rem; color: var(--slate-soft); font-size: .7rem; line-height: 1.6; }
 
