@@ -59,7 +59,17 @@
   .btn--primary { color: var(--ink); border-color: transparent; background: var(--signal); box-shadow: 0 14px 34px rgba(72,224,187,0.19); }
   .btn--primary:hover { background: var(--acid); border-color: transparent; }
   .btn--paper { color: var(--ink); border-color: var(--paper-line-strong); background: var(--paper-bright); }
-  .zone-paper .btn--ghost { color: var(--ink); border-color: var(--paper-line-strong); background: rgba(255,255,255,0.45); }
+  /* The base .btn is chalk-on-translucent-white: built for the night zones, and
+     invisible the moment it lands on paper. Only .btn--ghost was being adapted,
+     which meant the secondary button on a light section rendered as near-white
+     text on near-white paper unless the author remembered a modifier. Two of
+     them were shipping that way, including "Download the CV" — the single most
+     important link on the page for someone applying for a job.
+
+     Scoping this to .btn makes the zone responsible for its own contrast rather
+     than the author's memory. Invisible should never be the default. */
+  .zone-paper .btn, .zone-paper .btn--ghost { color: var(--ink); border-color: var(--paper-line-strong); background: rgba(255,255,255,0.45); }
+  .zone-paper .btn--primary { color: var(--ink); border-color: transparent; background: var(--signal); }
   .btn__arrow { transition: transform var(--dur-fast) var(--ease); }
   .btn:hover .btn__arrow { transform: translateX(4px); }
 

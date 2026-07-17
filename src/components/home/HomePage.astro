@@ -202,19 +202,19 @@ const lenses = [
 
         <div class="signal-map">
           <article class="signal-island signal-island--support reveal">
-            <span>Support sees</span><h3>The same person, twice.</h3>
+            <span><i class="isle__n">01</i>Support sees</span><h3>The same person, twice.</h3>
             <p>Not just the same question — the same customer coming back to ask it again, because the first answer gave them nothing they could act on. Volume is the visible cost. Repeat contact is the real one.</p>
           </article>
           <article class="signal-island signal-island--sales reveal reveal-delay-1">
-            <span>Payments sees</span><h3>A transaction that completed.</h3>
+            <span><i class="isle__n">02</i>Payments sees</span><h3>A transaction that completed.</h3>
             <p>Because the record says it did. The status went to Completed, the settlement looks ordinary, and one late transfer at a time is indistinguishable from a normal bank delay.</p>
           </article>
           <article class="signal-island signal-island--ops reveal reveal-delay-2">
-            <span>Engineering sees</span><h3>No error at all.</h3>
+            <span><i class="isle__n">03</i>Engineering sees</span><h3>No error at all.</h3>
             <p>The provider returned success and the system recorded success. Nothing threw, nothing alerted, nothing failed. That is exactly why it survived so long.</p>
           </article>
           <article class="signal-island signal-island--lead reveal reveal-delay-3">
-            <span>Management sees</span><h3>A headcount request.</h3>
+            <span><i class="isle__n">04</i>Management sees</span><h3>A headcount request.</h3>
             <p>Support volume is up, so support needs people. It is the obvious read, and the only one that costs real money while changing nothing.</p>
           </article>
           <div class="signal-map__core"><strong>The record and the reality had drifted apart</strong><small>Everyone downstream trusted the record</small></div>
@@ -342,10 +342,10 @@ const lenses = [
             statement is which direction moved and which number he refused to
             chase — not a percentage nobody can source. */}
         <div class="impact-system">
-          <article class="impact-petal impact-petal--support reveal"><span>The customer</span><h3>A timeline instead of a word.</h3><p>Request received → under review → sent to payment provider → completed, each with an expected time. Not a faster answer. No reason to ask.</p></article>
-          <article class="impact-petal impact-petal--sales reveal reveal-delay-1"><span>The data</span><h3>Cause recorded apart from complaint.</h3><p>Every ticket now carries what the customer said and what was actually wrong. Those two were one field before, and that single missing distinction had been aiming every decision at the wrong department.</p></article>
-          <article class="impact-petal impact-petal--ops reveal reveal-delay-2"><span>The system</span><h3>A status that stopped lying.</h3><p>Completed only after settlement confirms, a real intermediate state so the truth has somewhere to live, and a monitoring alert so it cannot drift back quietly.</p></article>
-          <article class="impact-petal impact-petal--lead reveal reveal-delay-3"><span>The team</span><h3>Quality became the decision, not the script.</h3><p>Thirteen people, reviewed on whether the customer could act on the answer rather than whether the phrasing was approved. An agent can hit every required word and still leave a problem with no owner.</p></article>
+          <article class="impact-petal impact-petal--support reveal"><span><i class="isle__n">01</i>The customer</span><h3>A timeline instead of a word.</h3><p>Request received → under review → sent to payment provider → completed, each with an expected time. Not a faster answer. No reason to ask.</p></article>
+          <article class="impact-petal impact-petal--sales reveal reveal-delay-1"><span><i class="isle__n">02</i>The data</span><h3>Cause recorded apart from complaint.</h3><p>Every ticket now carries what the customer said and what was actually wrong. Those two were one field before, and that single missing distinction had been aiming every decision at the wrong department.</p></article>
+          <article class="impact-petal impact-petal--ops reveal reveal-delay-2"><span><i class="isle__n">03</i>The system</span><h3>A status that stopped lying.</h3><p>Completed only after settlement confirms, a real intermediate state so the truth has somewhere to live, and a monitoring alert so it cannot drift back quietly.</p></article>
+          <article class="impact-petal impact-petal--lead reveal reveal-delay-3"><span><i class="isle__n">04</i>The team</span><h3>Quality became the decision, not the script.</h3><p>Thirteen people, reviewed on whether the customer could act on the answer rather than whether the phrasing was approved. An agent can hit every required word and still leave a problem with no owner.</p></article>
           <div class="impact-core"><span>Measured on</span><strong>Repeat contact, not first response</strong></div>
         </div>
       </div>
@@ -594,6 +594,19 @@ const lenses = [
      text fell outside somewhere new — 1440 passed while 390 failed, then 390
      passed and 560 failed. Fixed px corners cut a known amount, so one padding
      value clears them at every width instead of at the width I screenshotted. */
+  /* Reading order. Four cards in a 2x2 with a core in the middle give the eye
+     no entry point — it is the one thing colour cannot encode, because colour
+     already means "which department". */
+  .signal-island > span, .impact-petal > span { display: flex; align-items: center; gap: .5rem; }
+  .isle__n {
+    display: flex; align-items: center; gap: .5rem; flex: none;
+    font-style: normal; font-variant-numeric: tabular-nums; letter-spacing: .04em;
+  }
+  .isle__n::after {
+    content: ''; display: block; width: 15px; height: 1px;
+    background: currentColor; opacity: .45;
+  }
+
   .signal-island { position: relative; z-index: 3; min-height: 190px; padding: 3rem 4.25rem; border: 1px solid var(--paper-line); background: rgba(255,255,255,.77); box-shadow: var(--shadow-soft); backdrop-filter: blur(12px); }
   .signal-island span { color: var(--signal-deep); font: 850 .58rem var(--font-head); letter-spacing: .14em; text-transform: uppercase; }
   .signal-island h3 { margin: 1.5rem 0 .65rem; font-size: 1.35rem; }

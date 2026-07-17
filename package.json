@@ -10,13 +10,10 @@
     "build:fast": "astro build",
     "preview": "astro preview --port 4330",
     "astro": "astro",
-
     "assets": "node scripts/process-assets.mjs",
     "fonts": "node scripts/copy-fonts.mjs",
-
     "check:links": "node scripts/check-hardcoded-paths.mjs",
-
-    "verify:all": "npm run check:links && node scripts/verify.mjs && node scripts/verify-hero-fold.mjs && node scripts/verify-motion.mjs && node scripts/verify-motion-duration.mjs && node scripts/verify-reduced-motion.mjs && node scripts/verify-contact.mjs && node scripts/verify-header.mjs && node scripts/verify-fonts.mjs && node scripts/verify-a11y.mjs",
+    "verify:all": "npm run check:links && node scripts/verify.mjs && node scripts/verify-hero-fold.mjs && node scripts/verify-motion.mjs && node scripts/verify-motion-duration.mjs && node scripts/verify-reduced-motion.mjs && node scripts/verify-contact.mjs && node scripts/verify-header.mjs && node scripts/verify-fonts.mjs && node scripts/verify-a11y.mjs && npm run verify:controls",
     "verify": "node scripts/verify.mjs",
     "verify:arrival": "node scripts/verify-hero-fold.mjs",
     "verify:motion": "node scripts/verify-motion.mjs",
@@ -27,13 +24,12 @@
     "verify:fonts": "node scripts/verify-fonts.mjs",
     "verify:a11y": "node scripts/verify-a11y.mjs",
     "verify:lh": "node scripts/verify-lighthouse.mjs",
-
     "diagnose:motion": "node scripts/diagnose-motion.mjs",
     "diagnose:frozen": "node scripts/diagnose-live-frozen.mjs",
-
     "shots": "node scripts/shots.mjs",
     "shots:review": "node scripts/shots-review.mjs",
-    "record": "node scripts/record-motion.mjs"
+    "record": "node scripts/record-motion.mjs",
+    "verify:controls": "node scripts/verify-visible-controls.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.6",
