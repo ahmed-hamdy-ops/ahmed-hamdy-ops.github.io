@@ -4,13 +4,21 @@ import { withBase } from '@config/site';
 interface Props { path: string }
 const { path } = Astro.props;
 const isHome = path === '/';
+
+/**
+ * Single-page portfolio: the nav moves you down one page, it does not scatter
+ * you across five. `/how-i-work`, `/about`, `/insights`, `/for-employers` and
+ * `/for-businesses` were removed — the nav pointing at them would 404.
+ *
+ * Anchors are absolute (home + hash) so they still work from /work and /contact.
+ */
 const links = [
-  { label: 'Work', href: '/work' },
-  { label: 'How I Work', href: '/how-i-work' },
-  { label: 'Insights', href: '/insights' },
-  { label: 'About', href: '/about' },
+  { label: 'The diagnosis', hash: '#diagnosis' },
+  { label: 'What I go deep on', hash: '#capabilities' },
+  { label: 'Evidence', hash: '#evidence' },
+  { label: 'About', hash: '#about' },
 ];
-const active = (href: string) => path === href || (href !== '/' && path.startsWith(`${href}/`));
+const hrefFor = (hash: string) => `${withBase('/')}${hash}`.replace(/\/+#/, '/#');
 ---
 
 <header class:list={['hdr', { 'hdr--home': isHome }]}>
@@ -25,13 +33,15 @@ const active = (href: string) => path === href || (href !== '/' && path.startsWi
 
     <nav class="hdr__nav" aria-label="Primary navigation">
       {links.map((link) => (
-        <a href={withBase(link.href)} aria-current={active(link.href) ? 'page' : undefined}>{link.label}</a>
+        <a href={hrefFor(link.hash)}>{link.label}</a>
       ))}
     </nav>
 
+    {/* The employer/business split is gone: one page, one route, one reader.
+        Two doors on a single-page portfolio was a decision the visitor should
+        never have been asked to make. */}
     <div class="hdr__routes">
-      <a href={withBase('/for-employers')}>For employers</a>
-      <a href={withBase('/for-businesses')}>For businesses</a>
+      <a href={withBase('/work/formula4you')}>Formula4You</a>
       <a class="hdr__contact" href={withBase('/contact')}>Talk to me <span aria-hidden="true">↗</span></a>
     </div>
 
@@ -43,9 +53,8 @@ const active = (href: string) => path === href || (href !== '/' && path.startsWi
 
   <div class="hdr__mobile" id="mobile-menu" hidden>
     <nav class="wrap" aria-label="Mobile navigation">
-      {links.map((link) => <a href={withBase(link.href)}>{link.label}</a>)}
-      <a href={withBase('/for-employers')}>For employers</a>
-      <a href={withBase('/for-businesses')}>For businesses</a>
+      {links.map((link) => <a href={hrefFor(link.hash)}>{link.label}</a>)}
+      <a href={withBase('/work/formula4you')}>Formula4You</a>
       <a class="btn btn--primary" href={withBase('/contact')}>Start a conversation</a>
     </nav>
   </div>

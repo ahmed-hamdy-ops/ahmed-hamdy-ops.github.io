@@ -1,0 +1,153 @@
+---
+/**
+ * Disclosure — the progressive-depth device the whole page is built on.
+ *
+ * Collapsed: index · title · one line that earns the click · arrow.
+ * Open: the real depth.
+ *
+ * Built on native <details>/<summary> on purpose:
+ *  · works with JavaScript disabled — no dead accordion
+ *  · keyboard and screen-reader behaviour is the browser's, not mine to
+ *    reinvent badly
+ *  · the content is in the DOM either way, so it stays crawlable
+ *
+ * The animation uses ::details-content where supported and degrades to an
+ * instant open elsewhere. Nothing depends on it.
+ */
+interface Props {
+  index?: string;
+  title: string;
+  /** The line that has to earn the click. Never a label — a claim. */
+  teaser: string;
+  tone?: 'paper' | 'night';
+  open?: boolean;
+  id?: string;
+}
+const { index, title, teaser, tone = 'paper', open = false, id } = Astro.props;
+---
+
+<details class:list={['d', `d--${tone}`]} open={open} id={id}>
+  <summary class="d__head">
+    <span class="d__meta">
+      {index && <span class="d__index">{index}</span>}
+      <span class="d__titles">
+        <span class="d__title">{title}</span>
+        <span class="d__teaser">{teaser}</span>
+      </span>
+    </span>
+    <span class="d__chev" aria-hidden="true">
+      <svg viewBox="0 0 16 10" width="16" height="10">
+        <path d="M1 1l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+  </summary>
+  <div class="d__body">
+    <div class="d__inner"><slot /></div>
+  </div>
+</details>
+
+<style>
+  /* Lets block-size: auto animate where ::details-content is supported. */
+  :global(:root) { interpolate-size: allow-keywords; }
+
+  .d {
+    border-top: 1px solid var(--paper-line);
+    /* No box. The rule and the type carry the structure — this page already
+       had too many rectangles. */
+  }
+  .d--night { border-top-color: var(--hairline); }
+  .d:last-of-type { border-bottom: 1px solid var(--paper-line); }
+  .d--night:last-of-type { border-bottom-color: var(--hairline); }
+
+  .d__head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--s5);
+    padding: var(--s5) 0;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .d__head::-webkit-details-marker { display: none; }
+  .d__head:focus-visible {
+    outline: 2px solid var(--signal-deep);
+    outline-offset: 4px; border-radius: 4px;
+  }
+  .d--night .d__head:focus-visible { outline-color: var(--signal); }
+
+  .d__meta { display: flex; gap: var(--s5); align-items: baseline; min-width: 0; }
+  .d__index {
+    flex: none; width: 1.6em;
+    font: 800 var(--fs-label)/1 var(--font-head);
+    letter-spacing: 0.1em; color: var(--signal-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .d--night .d__index { color: var(--signal); }
+
+  .d__titles { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+  .d__title {
+    font: 800 clamp(1.15rem, 1rem + 0.65vw, 1.6rem)/1.2 var(--font-head);
+    letter-spacing: -0.02em; color: var(--ink);
+    text-wrap: balance;
+  }
+  .d--night .d__title { color: var(--chalk); }
+
+  .d__teaser {
+    font: 400 var(--fs-small)/1.55 var(--font-body);
+    color: var(--ink-soft); max-width: 62ch;
+  }
+  .d--night .d__teaser { color: var(--slate); }
+
+  /* The arrow is the only affordance. It rotates; nothing else moves. */
+  .d__chev {
+    flex: none; display: grid; place-items: center;
+    width: 38px; height: 38px; margin-top: 2px;
+    border: 1px solid var(--paper-line-strong); border-radius: 50%;
+    color: var(--ink);
+    transition: transform var(--dur-mid) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                background var(--dur-fast) var(--ease);
+  }
+  .d--night .d__chev { border-color: var(--hairline-strong); color: var(--chalk); }
+  .d__head:hover .d__chev { border-color: var(--signal-deep); background: var(--signal-soft); }
+  .d--night .d__head:hover .d__chev { border-color: var(--signal); background: rgba(72, 224, 187, 0.12); }
+  .d[open] .d__chev { transform: rotate(180deg); }
+
+  .d__inner {
+    padding: 0 0 var(--s6) calc(1.6em + var(--s5));
+    max-width: 78ch;
+  }
+  @media (max-width: 620px) {
+    .d__inner { padding-left: 0; }
+    .d__meta { gap: var(--s3); }
+  }
+
+  /* Body typography — set here so every section's prose is consistent. */
+  .d__inner :global(p) { margin: 0 0 var(--s4); color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.68; }
+  .d--night .d__inner :global(p) { color: var(--slate); }
+  .d__inner :global(p:last-child) { margin-bottom: 0; }
+  .d__inner :global(strong) { color: var(--ink); font-weight: 650; }
+  .d--night .d__inner :global(strong) { color: var(--chalk); }
+  .d__inner :global(em) { font-style: italic; }
+
+  /* Smooth open where the browser supports it; instant everywhere else.
+     Nothing here carries meaning. */
+  @supports selector(::details-content) {
+    .d::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition: block-size var(--dur-mid) var(--ease),
+                  opacity var(--dur-mid) var(--ease),
+                  content-visibility var(--dur-mid) allow-discrete;
+    }
+    .d[open]::details-content { block-size: auto; opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .d__chev { transition: none; }
+    @supports selector(::details-content) {
+      .d::details-content { transition: none; }
+    }
+  }
+</style>
