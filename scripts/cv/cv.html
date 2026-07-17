@@ -43,7 +43,7 @@
   body {
     font-family: Inter, 'Segoe UI', Arial, sans-serif;
     color: var(--ink);
-    line-height: 1.45;
+    line-height: 1.40;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -64,7 +64,7 @@
   .id__contact a { color: var(--soft); text-decoration: none; }
 
   /* ── Sections ─────────────────────────────────────────────────────────── */
-  section { margin-top: 13pt; }
+  section { margin-top: 11pt; }
   h2 {
     margin-bottom: 7pt; padding-bottom: 3pt;
     border-bottom: 0.75pt solid var(--rule);
@@ -80,7 +80,7 @@
      a fresh page whole, and the gap it leaves behind cost an entire sheet here.
      Splitting a long role across a page break is normal in a CV; what must not
      split is a heading from the first line under it. */
-  .role { margin-top: 11pt; }
+  .role { margin-top: 9pt; }
   h2, h3, .role__head, .role__where, .role__note { break-after: avoid-page; }
   li, .sk { break-inside: avoid-page; }
   .role:first-of-type { margin-top: 0; }
@@ -94,7 +94,7 @@
   .role__note { margin-top: 4pt; font-size: 9.2pt; color: var(--soft); }
 
   ul { margin-top: 5pt; list-style: none; }
-  li { position: relative; padding-left: 10pt; margin-top: 3.6pt; font-size: 9.4pt; color: var(--soft); }
+  li { position: relative; padding-left: 10pt; margin-top: 3.2pt; font-size: 9.4pt; color: var(--soft); }
   /* A real character, not a background image — a parser reads this and keeps
      the line as a list item. */
   li::before { content: '▪'; position: absolute; left: 0; top: -0.5pt; color: var(--accent); font-size: 7pt; }
@@ -104,7 +104,7 @@
   /* Deliberately not a grid, not chips, and not bars with percentages. A label
      and a comma-separated line reads correctly to a parser and to a person, and
      nobody can pretend a percentage means anything. */
-  .sk { margin-top: 5pt; font-size: 9.3pt; color: var(--soft); }
+  .sk { margin-top: 4.2pt; font-size: 9.3pt; color: var(--soft); }
   .sk:first-of-type { margin-top: 0; }
   .sk b { color: var(--ink); font-weight: 700; font-family: Manrope, sans-serif; font-size: 8.8pt; }
 
@@ -129,12 +129,12 @@
 <section>
   <h2>Profile</h2>
   <p class="lede">
-    I find where an operational problem actually lives — usually a department away from where it shows
-    up — and redesign the process, ownership or handoff causing it. <strong>Two years inside a UK
-    fintech's support function</strong>: rebuilt the ticket taxonomy, the knowledge base and the quality
-    model, then managed the team of 13. <strong>Project consulting</strong> across telecom, steel
-    manufacturing, petroleum distribution and higher education. <strong>Founder</strong> of a live
-    specialist commerce platform.
+    <strong>Promoted from frontline Arabic-language support to managing a 13-person function</strong> at a
+    UK fintech, where I rebuilt the ticket taxonomy, the knowledge base and the quality model. What I do is
+    find where an operational problem actually lives — usually a department away from where it shows up —
+    and redesign the process, ownership or handoff causing it. <strong>Part-time project consulting since
+    2022</strong> across telecommunications, steel manufacturing, petroleum distribution, higher education
+    and founder-led e-commerce, and <strong>founder</strong> of a live specialist commerce platform.
   </p>
 </section>
 
@@ -146,11 +146,12 @@
       <h3>Independent Consultant — Business Operations &amp; Process Improvement</h3>
       <span class="role__when">2022 — Present</span>
     </div>
-    <p class="role__where">Project engagements · Egypt</p>
+    <p class="role__where">Part-time, project-based engagements · Egypt</p>
     <p class="role__note">
-      Business operations for a national telecom operator and one of Egypt's largest steel manufacturers;
-      IT and service desk for a state petroleum distributor and a higher-education institute; operating
-      model and growth work for founder-led retail and e-commerce businesses. Selected work:
+      Project engagements across telecommunications, steel manufacturing, petroleum distribution, higher
+      education and founder-led e-commerce. The work is consistent across them: process diagnosis,
+      ownership clarification, SOP and service-desk design, service-quality control and customer-journey
+      improvement. Selected engagement:
     </p>
     <ul>
       <li>
@@ -161,9 +162,10 @@
         support's internal rule and the carrier's own clock, none of which agreed.
       </li>
       <li>
-        <strong>Rebuilt the order journey into unambiguous stages</strong>, each with a definition, an
-        owning department, a normal duration, a next action and a named owner when it overran — after
-        establishing that three departments each read "Confirmed" differently.
+        <strong>Identified five conflicting delivery promises and three internal definitions of
+        "Confirmed"</strong>, then rebuilt the order journey into unambiguous stages, each with a
+        definition, an owning department, a normal duration, a next action and a named owner when it
+        overran.
       </li>
       <li>
         <strong>Introduced three-field problem recording</strong> — the customer's words, the actual
@@ -188,12 +190,12 @@
   <article class="role">
     <div class="role__head">
       <h3>Support Team Manager</h3>
-      <span class="role__when">Jan 2024 — Feb 2026</span>
+      <span class="role__when">Jul 2024 — Feb 2026</span>
     </div>
     <p class="role__where">Alpha Capital Group (UK) · Remote · fintech</p>
     <p class="role__note">
-      Progressed from handling Arabic-language customer conversations to managing the function: 13 people
-      (10 agents, 2 seniors, 1 QA) on Zendesk, with Jira, Slack and Notion.
+      Promoted after six months on the frontline to manage a 13-person function comprising 10 agents,
+      2 senior agents and 1 QA specialist, across Zendesk, Jira, Slack and Notion.
     </p>
     <ul>
       <li>
@@ -229,10 +231,23 @@
         a monitoring alert and an incident playbook.
       </li>
       <li>
-        Worked across sales, operations and product on the upstream causes of recurring contact. Earned
-        Employee of the Month recognition and hundreds of verified five-star customer reviews.
+        Worked across sales, operations and product on the upstream causes of recurring contact rather
+        than on reply speed.
       </li>
     </ul>
+  </article>
+
+  <article class="role">
+    <div class="role__head">
+      <h3>Customer Support Specialist</h3>
+      <span class="role__when">Jan 2024 — Jul 2024</span>
+    </div>
+    <p class="role__where">Alpha Capital Group (UK) · Remote · fintech</p>
+    <p class="role__note">
+      Frontline Arabic-language support for a high-volume customer base. Earned Employee of the Month
+      recognition and hundreds of verified five-star customer reviews, and mapped the recurring contact
+      drivers that became the basis of the management role.
+    </p>
   </article>
 
   <article class="role">
@@ -240,7 +255,7 @@
       <h3>Founder — Business Growth, Customer Experience &amp; Platform Operations</h3>
       <span class="role__when">2025 — Present</span>
     </div>
-    <p class="role__where">Formula4You · Egypt · specialist commerce platform (live)</p>
+    <p class="role__where">Formula4You · Egypt · part-time venture · specialist commerce platform (live)</p>
     <p class="role__note">
       Identified a structural gap in Egypt's fragrance market — suppliers, manufacturers, sellers and
       buyers all operating through general-purpose tools that did not reflect the category's discovery,
@@ -275,15 +290,15 @@
   <p class="sk"><b>Operations &amp; process</b> — Process diagnosis · Root-cause analysis · Workflow and journey design · Operating-model definition · SOP and playbook authoring · Service blueprinting · Cross-functional handoff design · Exception and ownership mapping · Impact–effort prioritisation</p>
   <p class="sk"><b>Support operations</b> — Ticket taxonomy design · Contact-driver analysis · Repeat-contact reduction · Queue routing and prioritisation · SLA design · Escalation and incident management · Knowledge base and FAQ authoring · QA calibration and decision-quality review · Zendesk administration</p>
   <p class="sk"><b>Leadership &amp; customer experience</b> — Team management (13) · Coaching and performance review · Standards definition · Cross-department coordination · Customer journey mapping · Conversion and drop-off review · Voice-of-customer analysis · Complaint and de-escalation handling</p>
-  <p class="sk"><b>Analysis &amp; decision</b> — KPI definition and interpretation · Requirements and acceptance criteria · Market and competitor analysis · Build-versus-simplify judgement</p>
+  <p class="sk"><b>Analysis &amp; decision</b> — KPI definition and interpretation · Requirements and acceptance criteria · Market and competitor analysis · Cost-benefit and prioritisation analysis</p>
   <p class="sk"><b>Tools</b> — Zendesk · Jira · Slack · Notion · Trello · Miro · Google Workspace · Microsoft Excel · Google Sheets · Meta Business Suite · Google Search Console</p>
   <p class="sk"><b>Domains</b> — Fintech · E-commerce · Telecommunications · Steel manufacturing · Petroleum distribution · Higher education</p>
 </section>
 
 <section>
   <h2>Education &amp; Languages</h2>
-  <p class="sk"><b>Faculty of Al-Alsun (Languages), Ain Shams University</b> — Cairo, Egypt. Two academic years of undergraduate study completed.</p>
-  <p class="sk"><b>Languages</b> — Arabic: native. English: professional working proficiency in written and business communication; conversational spoken proficiency.</p>
+  <p class="sk"><b>Faculty of Al-Alsun, Ain Shams University</b> — Cairo, Egypt. Undergraduate studies in Languages, two academic years completed.</p>
+  <p class="sk"><b>Languages</b> — Arabic: native. English: professional working proficiency in written business communication; conversational spoken proficiency.</p>
 </section>
 
 </body>
