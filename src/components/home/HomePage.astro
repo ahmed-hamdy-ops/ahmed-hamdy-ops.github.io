@@ -123,6 +123,23 @@ const lenses = [
           <a class="btn btn--primary" href="#diagnosis">See how I take it apart <span class="btn__arrow" aria-hidden="true">↓</span></a>
           <a class="btn" href="#evidence">Where I have done it <span class="btn__arrow" aria-hidden="true">→</span></a>
         </div>
+
+        {/* The whole page, on the first screen.
+            "The person should understand what they will see" — so show them.
+            Six labels beats a scroll bar for telling someone how much is here
+            and whether it is worth their time. */}
+        <nav class="hero__index" aria-label="On this page">
+          {[
+            ['01', 'The diagnosis', '#diagnosis'],
+            ['02', 'What I go deep on', '#capabilities'],
+            ['03', 'Evidence', '#evidence'],
+            ['04', 'Where I stop', '#boundary'],
+            ['05', 'Why I see it this way', '#about'],
+            ['06', 'Talk', '#talk'],
+          ].map(([n, label, href]) => (
+            <a href={href}><span>{n}</span>{label}</a>
+          ))}
+        </nav>
       </div>
 
       <div class="system-lens" aria-label="Customer, support, sales and operations signals converging around Ahmed's portrait">
@@ -305,7 +322,7 @@ const lenses = [
     </div>
   </section>
 
-  <section class="lenses-section zone-paper">
+  <section class="lenses-section zone-paper" id="boundary">
     <div class="wrap">
       <header class="section-head reveal">
         <div><span class="eyebrow">Supporting business lenses</span><h2>I can work next to technical specialists without pretending to be one.</h2></div>
@@ -326,7 +343,7 @@ const lenses = [
     </div>
   </section>
 
-  <section class="about-strip zone-night">
+  <section class="about-strip zone-night" id="about">
     <div class="wrap about-strip__grid">
       <div class="about-strip__quote reveal">
         <span class="eyebrow">Why I see problems this way</span>
@@ -361,7 +378,10 @@ const lenses = [
 </div>
 
 <style>
-  .hero { position: relative; min-height: 860px; padding: 9.5rem 0 9rem; overflow: hidden; color: var(--white); background: radial-gradient(circle at 84% 22%, rgba(121,183,255,.18), transparent 24rem), radial-gradient(circle at 7% 80%, rgba(72,224,187,.12), transparent 25rem), linear-gradient(135deg,#04151e 0%,#082632 63%,#0a303a 100%); }
+  /* The bottom padding is not whitespace — it is clearance. `.hero::after` is
+     the paper curve, and it rises ~85px above the hero's own bottom edge. The
+     index has to end above that line or the curve eats the last three labels. */
+  .hero { position: relative; min-height: 660px; padding: 6.5rem 0 7.25rem; overflow: hidden; color: var(--white); background: radial-gradient(circle at 84% 22%, rgba(121,183,255,.18), transparent 24rem), radial-gradient(circle at 7% 80%, rgba(72,224,187,.12), transparent 25rem), linear-gradient(135deg,#04151e 0%,#082632 63%,#0a303a 100%); }
   .hero::before { content: ''; position: absolute; inset: 0; opacity: .19; background-image: radial-gradient(rgba(255,255,255,.28) .7px, transparent .7px); background-size: 24px 24px; mask-image: radial-gradient(circle at 36% 36%,black,transparent 66%); }
   .hero::after { content: ''; position: absolute; z-index: 3; left: -5%; right: -5%; bottom: -95px; height: 180px; border-radius: 52% 48% 0 0 / 58% 65% 0 0; background: var(--paper); transform: rotate(-1.2deg); box-shadow: 0 -22px 45px rgba(0,0,0,.08); }
   /* The copy column was 1.02fr against a 450px minimum, which left the headline
@@ -374,7 +394,13 @@ const lenses = [
   .hero__lede { max-width: 650px; margin-top: 1.7rem; color: rgba(255,255,255,.68); font-size: clamp(1rem,.96rem + .3vw,1.2rem); }
   .hero__depth { max-width: 660px; margin-top: 1.3rem; color: rgba(255,255,255,.45); font: 750 .7rem/1.7 var(--font-head); letter-spacing: .08em; text-transform: uppercase; }
   .hero__actions { margin-top: 2rem; }
-  .system-lens { position: relative; min-height: 535px; }
+  /* The page's shape, on the first screen. Quiet enough not to compete with
+     the claim; complete enough to answer "how much is here?" */
+  .hero__index { display: flex; flex-wrap: wrap; gap: .35rem 1.6rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.12); }
+  .hero__index a { display: flex; align-items: baseline; gap: .5rem; color: rgba(255,255,255,.62); text-decoration: none; font: 700 .72rem var(--font-head); transition: color var(--dur-fast) var(--ease); }
+  .hero__index a:hover { color: var(--signal); }
+  .hero__index span { color: var(--signal); font-size: .58rem; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+  .system-lens { position: relative; min-height: 430px; }
   .lens-orbit { position: absolute; border: 1px solid rgba(255,255,255,.14); border-radius: 48% 52% 57% 43% / 54% 44% 56% 46%; animation: orbit-shape 11s ease-in-out infinite alternate; }
   .lens-orbit--one { inset: 20px 0 5px 5px; transform: rotate(12deg); }
   .lens-orbit--two { inset: 76px 55px 58px 50px; border-color: rgba(72,224,187,.25); transform: rotate(-17deg); animation-delay: -4s; }
@@ -394,10 +420,10 @@ const lenses = [
   .journey__glow { fill: none; stroke: rgba(17,125,108,.07); stroke-width: 55; stroke-linecap: round; }
   .journey__line { fill: none; stroke: url(#journey-gradient); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 8 14; animation: dash 22s linear infinite; }
   .journey__spine circle { fill: var(--paper); stroke-width: 3; }
-  .signal-section, .impact-section { position: relative; z-index: 3; padding: 3.5rem 0 5rem; }
+  .signal-section, .impact-section { position: relative; z-index: 3; padding: 2.2rem 0 2.8rem; }
   .scenario-label { display: inline-block; margin-top: .9rem; color: var(--slate-soft); font: 750 .62rem var(--font-head); letter-spacing: .1em; text-transform: uppercase; }
-  .signal-map { position: relative; min-height: 600px; }
-  .signal-island { position: absolute; z-index: 3; width: 285px; min-height: 176px; padding: 1.8rem; border: 1px solid var(--paper-line); background: rgba(255,255,255,.77); box-shadow: var(--shadow-soft); backdrop-filter: blur(12px); }
+  .signal-map { position: relative; min-height: 470px; }
+  .signal-island { position: absolute; z-index: 3; width: 265px; min-height: 150px; padding: 1.4rem; border: 1px solid var(--paper-line); background: rgba(255,255,255,.77); box-shadow: var(--shadow-soft); backdrop-filter: blur(12px); }
   .signal-island span { color: var(--signal-deep); font: 850 .58rem var(--font-head); letter-spacing: .14em; text-transform: uppercase; }
   .signal-island h3 { margin: 1.7rem 0 .65rem; font-size: 1.35rem; }
   .signal-island p { color: var(--ink-soft); font-size: .84rem; }
@@ -412,7 +438,7 @@ const lenses = [
   .signal-map__core { position: absolute; z-index: 5; left: 50%; top: 48%; width: 180px; height: 180px; display: grid; place-content: center; padding: 1.5rem; text-align: center; border-radius: 50%; background: var(--acid); box-shadow: 0 24px 58px rgba(77,105,27,.2),0 0 0 18px rgba(201,243,111,.15); transform: translate(-50%,-50%); }
   .signal-map__core strong { font: 800 1rem/1.25 var(--font-head); }
   .signal-map__core small { margin-top: .5rem; color: rgba(7,26,36,.58); font: 800 .55rem var(--font-head); letter-spacing: .12em; text-transform: uppercase; }
-  .decision-section { position: relative; z-index: 4; padding: 2.5rem 0; background: transparent; }
+  .decision-section { position: relative; z-index: 4; padding: 1.4rem 0; background: transparent; }
   .decision-shell { padding: clamp(2.6rem,6vw,5rem); border-radius: 72px 22px 82px 30px; background: radial-gradient(circle at 8% 45%,rgba(72,224,187,.12),transparent 20rem),radial-gradient(circle at 90% 80%,rgba(121,183,255,.13),transparent 23rem),var(--night); box-shadow: var(--shadow-deep); }
   .decision-path { position: relative; display: grid; grid-template-columns: repeat(6,1fr); gap: 1rem; }
   .decision-path::before { content: ''; position: absolute; left: 3%; right: 3%; top: 21px; height: 2px; background: linear-gradient(90deg,var(--coral),var(--violet),var(--acid),var(--sky),var(--signal)); }
@@ -426,9 +452,9 @@ const lenses = [
   .decision-path h3 { font-size: 1.05rem; }
   .decision-path p { margin-top: .6rem; color: var(--slate); font-size: .74rem; line-height: 1.6; }
   .decision-note { max-width: 900px; margin: 2.5rem auto 0; padding: 1.2rem 1.5rem; color: var(--ink); border-radius: 28px 9px 30px 12px; background: var(--acid); text-align: center; font-size: .86rem; }
-  .impact-section { padding-top: 4.5rem; padding-bottom: 5.5rem; }
+  .impact-section { padding-top: 2.6rem; padding-bottom: 3rem; }
   .impact-system { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; padding: 0 3rem; }
-  .impact-petal { position: relative; min-height: 205px; padding: 2.1rem; box-shadow: var(--shadow-soft); }
+  .impact-petal { position: relative; min-height: 172px; padding: 1.7rem; box-shadow: var(--shadow-soft); }
   .impact-petal span { color: rgba(7,26,36,.49); font: 850 .58rem var(--font-head); letter-spacing: .14em; text-transform: uppercase; }
   .impact-petal h3 { margin: 2rem 0 .7rem; font-size: 1.65rem; }
   .impact-petal p { color: var(--ink-soft); font-size: .84rem; }
@@ -439,7 +465,7 @@ const lenses = [
   .impact-core { position: absolute; z-index: 4; left: 50%; top: 50%; width: 178px; height: 178px; display: grid; place-content: center; padding: 1.5rem; color: var(--white); border-radius: 52% 48% 55% 45% / 43% 60% 40% 57%; background: var(--night-soft); box-shadow: 0 25px 60px rgba(7,26,36,.28),0 0 0 17px rgba(7,26,36,.04); text-align: center; transform: translate(-50%,-50%); }
   .impact-core span { color: var(--signal); font: 850 .55rem var(--font-head); letter-spacing: .13em; text-transform: uppercase; }
   .impact-core strong { margin-top: .7rem; font: 780 1.1rem/1.25 var(--font-head); }
-  .capability-section { padding: 4.5rem 0 6rem; }
+  .capability-section { padding: 3rem 0 3.5rem; }
   .capability-list { max-width: 1000px; }
 
   /* Body of an opened capability. The accent colour is the only thing that
@@ -480,7 +506,7 @@ const lenses = [
   .capability-row ul { display: grid; gap: .35rem; }
   .capability-row li { position: relative; padding-left: 1rem; color: var(--ink-soft); font-size: .76rem; }
   .capability-row li::before { content: ''; position: absolute; left: 0; top: .65em; width: .38rem; height: .38rem; border-radius: 50%; background: var(--cap); }
-  .proof-section { position: relative; padding: 7rem 0; overflow: hidden; }
+  .proof-section { position: relative; padding: 4.2rem 0 4rem; overflow: hidden; }
   .proof-section::before { content: ''; position: absolute; left: -4%; right: -4%; top: -78px; height: 128px; border-radius: 0 0 52% 48%; background: var(--paper); }
   .proof-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 1.8rem; align-items: stretch; }
   .alpha-proof { padding: clamp(2rem,4.5vw,3.8rem); color: var(--ink); border-radius: 74px 24px 84px 28px; background: var(--paper); box-shadow: var(--shadow-deep); }
@@ -504,7 +530,7 @@ const lenses = [
   .close-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.5rem; }
   .close-note { max-width: 60ch; margin-top: 1.8rem; color: var(--slate-soft); font-size: .82rem; }
   .alpha-note { margin-top: 1.6rem !important; padding: 1rem 1.2rem; border-left: 3px solid var(--signal-deep); background: rgba(17,125,108,.07); border-radius: 0 14px 14px 0; font-size: .8rem !important; }
-  .lenses-section { padding: 6.5rem 0; }
+  .lenses-section { padding: 3.6rem 0; }
   .lens-list { border-top: 1px solid var(--paper-line); }
   .lens-row { display: grid; grid-template-columns: 55px minmax(250px,.72fr) minmax(320px,1fr); gap: 1.5rem; padding: 1.4rem 0; border-bottom: 1px solid var(--paper-line); align-items: baseline; }
   .lens-row > span { color: var(--signal-deep); font: 850 .62rem var(--font-head); }
@@ -520,7 +546,7 @@ const lenses = [
   .about-strip blockquote { margin-top: 1.4rem; font: italic clamp(2rem,3.5vw,3.8rem)/1.15 var(--font-serif); letter-spacing: -.025em; }
   .about-strip__copy p { color: var(--slate); }
   .about-strip__copy a { display: inline-block; margin-top: 1.4rem; color: var(--signal); font: 850 .82rem var(--font-head); text-decoration: none; }
-  .routes-section { padding: 6rem 0 7rem; }
+  .routes-section { padding: 3.4rem 0 4.5rem; }
   .route-fork { position: relative; display: grid; grid-template-columns: 1fr 135px 1fr; gap: 1.2rem; align-items: center; }
   .route-card { min-height: 310px; display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem,4vw,3.3rem); color: var(--ink); text-decoration: none; box-shadow: var(--shadow-soft); transition: transform var(--dur-mid) var(--ease); }
   .route-card:hover { transform: translateY(-7px); }

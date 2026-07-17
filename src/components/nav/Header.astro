@@ -6,93 +6,110 @@ const { path } = Astro.props;
 const isHome = path === '/';
 
 /**
- * Single-page portfolio: the nav moves you down one page, it does not scatter
- * you across five. `/how-i-work`, `/about`, `/insights`, `/for-employers` and
- * `/for-businesses` were removed — the nav pointing at them would 404.
+ * A mark, not a navigation bar.
  *
- * Anchors are absolute (home + hash) so they still work from /work and /contact.
+ * The old header was a full tab bar: brand block on the left, four section
+ * links in the middle, two route links and a CTA on the right. On a portfolio
+ * — and especially a SINGLE-PAGE one — that is a control panel bolted above a
+ * story. There is nowhere to navigate to. You scroll.
+ *
+ * So: one centred mark. It sits quietly at the top, and on scroll it shrinks
+ * into a compact pill that keeps the name and one way to reach him. The
+ * section index lives in the hero instead, where it can actually show the
+ * shape of the page rather than hide it behind four words.
  */
-const links = [
-  { label: 'The diagnosis', hash: '#diagnosis' },
-  { label: 'What I go deep on', hash: '#capabilities' },
-  { label: 'Evidence', hash: '#evidence' },
-  { label: 'About', hash: '#about' },
-];
-const hrefFor = (hash: string) => `${withBase('/')}${hash}`.replace(/\/+#/, '/#');
 ---
 
-<header class:list={['hdr', { 'hdr--home': isHome }]}>
-  <div class="wrap hdr__inner">
-    <a class="hdr__brand" href={withBase('/')} aria-label="Ahmed Hamdy, home">
-      <span class="hdr__mark">AH</span>
-      <span>
-        <strong>Ahmed Hamdy</strong>
-        <small>Business Growth &amp; Operations</small>
-      </span>
-    </a>
-
-    <nav class="hdr__nav" aria-label="Primary navigation">
-      {links.map((link) => (
-        <a href={hrefFor(link.hash)}>{link.label}</a>
-      ))}
-    </nav>
-
-    {/* The employer/business split is gone: one page, one route, one reader.
-        Two doors on a single-page portfolio was a decision the visitor should
-        never have been asked to make. */}
-    <div class="hdr__routes">
-      <a href={withBase('/work/formula4you')}>Formula4You</a>
-      <a class="hdr__contact" href={withBase('/contact')}>Talk to me <span aria-hidden="true">↗</span></a>
-    </div>
-
-    <button class="hdr__burger no-js-hide" type="button" aria-expanded="false" aria-controls="mobile-menu">
-      <span class="visually-hidden">Open navigation</span>
-      <span></span><span></span>
-    </button>
-  </div>
-
-  <div class="hdr__mobile" id="mobile-menu" hidden>
-    <nav class="wrap" aria-label="Mobile navigation">
-      {links.map((link) => <a href={hrefFor(link.hash)}>{link.label}</a>)}
-      <a href={withBase('/work/formula4you')}>Formula4You</a>
-      <a class="btn btn--primary" href={withBase('/contact')}>Start a conversation</a>
-    </nav>
-  </div>
+<header class:list={['mark', { 'mark--home': isHome }]} data-mark>
+  <a class="mark__id" href={withBase('/')} aria-label="Ahmed Hamdy — home">
+    <span class="mark__dot" aria-hidden="true"></span>
+    <span class="mark__name">Ahmed Hamdy</span>
+    <span class="mark__sep" aria-hidden="true"></span>
+    <span class="mark__role">Business Growth &amp; Operations</span>
+  </a>
+  <a class="mark__talk" href={withBase('/contact')}>Talk<span aria-hidden="true"> ↗</span></a>
 </header>
 
 <style>
-  .hdr { position: sticky; z-index: 100; top: 0; color: var(--chalk); border-bottom: 1px solid var(--hairline); background: color-mix(in srgb, var(--night) 91%, transparent); backdrop-filter: blur(18px); }
-  .hdr--home { position: absolute; width: 100%; background: linear-gradient(to bottom, rgba(2,16,23,.62), transparent); border-bottom-color: transparent; }
-  .hdr__inner { min-height: 82px; display: flex; align-items: center; gap: 1.6rem; }
-  .hdr__brand { display: flex; align-items: center; gap: .75rem; flex: none; color: inherit; text-decoration: none; }
-  .hdr__mark { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--hairline-strong); border-radius: 58% 42% 65% 35% / 55% 60% 40% 45%; background: rgba(255,255,255,.07); box-shadow: inset 0 0 22px rgba(72,224,187,.08); font: 800 .75rem var(--font-head); letter-spacing: -.04em; }
-  .hdr__brand strong, .hdr__brand small { display: block; }
-  .hdr__brand strong { font: 800 .82rem var(--font-head); }
-  .hdr__brand small { margin-top: .17rem; color: rgba(255,255,255,.47); font: 700 .48rem var(--font-head); letter-spacing: .14em; text-transform: uppercase; }
-  .hdr__nav { display: flex; gap: 1.55rem; margin-left: auto; }
-  .hdr__nav a, .hdr__routes > a:not(.hdr__contact) { position: relative; color: rgba(255,255,255,.67); font: 750 .72rem var(--font-head); text-decoration: none; white-space: nowrap; }
-  .hdr__nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.65rem; height: 2px; border-radius: 2px; background: var(--signal); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-mid) var(--ease); }
-  .hdr__nav a:hover, .hdr__nav a[aria-current='page'], .hdr__routes a:hover { color: var(--white); }
-  .hdr__nav a:hover::after, .hdr__nav a[aria-current='page']::after { transform: scaleX(1); }
-  .hdr__routes { display: flex; align-items: center; gap: 1rem; padding-left: 1.25rem; border-left: 1px solid var(--hairline); }
-  .hdr__contact { position: relative; min-height: 42px; display: inline-flex; align-items: center; padding: 0 1rem; color: var(--ink); border-radius: var(--shape-pill); background: var(--signal); font: 800 .72rem var(--font-head); text-decoration: none; }
-  .hdr__contact::after { content: ''; position: absolute; left: -.3rem; bottom: -.28rem; width: .7rem; height: .7rem; border-radius: 50%; background: var(--signal); }
-  .hdr__burger { display: none; width: 44px; height: 42px; margin-left: auto; padding: 0; border: 1px solid var(--hairline-strong); border-radius: var(--shape-sm); background: rgba(255,255,255,.06); }
-  .hdr__burger span:not(.visually-hidden) { display: block; width: 18px; height: 1px; margin: 5px auto; background: var(--white); }
-  .hdr__mobile { padding: 1.2rem 0 1.5rem; border-top: 1px solid var(--hairline); background: var(--night); }
-  .hdr__mobile nav { display: grid; gap: .3rem; }
-  .hdr__mobile nav > a:not(.btn) { padding: .65rem 0; color: var(--chalk); font: 750 .92rem var(--font-head); text-decoration: none; border-bottom: 1px solid var(--hairline); }
-  .hdr__mobile .btn { margin-top: 1rem; justify-self: start; }
-  @media (max-width: 1110px) { .hdr__nav, .hdr__routes { display: none; } .hdr__burger { display: block; } }
-  @media (max-width: 560px) { .hdr__brand small { display: none; } .hdr__inner { min-height: 70px; } }
+  .mark {
+    position: fixed; z-index: 60;
+    top: 1.1rem; left: 50%;
+    display: flex; align-items: center; gap: .35rem;
+    padding: .4rem .45rem .4rem .95rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: rgba(6, 24, 34, .62);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 12px 34px rgba(2, 12, 18, .28);
+    transform: translateX(-50%);
+    transition: padding var(--dur-mid) var(--ease),
+                background var(--dur-mid) var(--ease),
+                border-color var(--dur-mid) var(--ease);
+  }
+
+  .mark__id {
+    display: flex; align-items: center; gap: .55rem;
+    color: var(--chalk); text-decoration: none;
+    font: 750 .74rem var(--font-head); letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+  .mark__dot {
+    width: 6px; height: 6px; border-radius: 50%; flex: none;
+    background: var(--signal);
+    box-shadow: 0 0 0 3px rgba(72, 224, 187, .18);
+  }
+  .mark__sep { width: 1px; height: 11px; background: var(--hairline-strong); }
+  .mark__role {
+    color: var(--slate);
+    font-weight: 600; font-size: .68rem;
+    transition: max-width var(--dur-mid) var(--ease), opacity var(--dur-mid) var(--ease);
+    max-width: 20rem; overflow: hidden;
+  }
+
+  .mark__talk {
+    padding: .4rem .8rem;
+    border-radius: 999px;
+    background: var(--signal);
+    color: var(--ink); text-decoration: none;
+    font: 800 .7rem var(--font-head);
+    transition: background var(--dur-fast) var(--ease);
+  }
+  .mark__talk:hover { background: var(--acid); }
+  .mark__id:focus-visible, .mark__talk:focus-visible {
+    outline: 2px solid var(--acid); outline-offset: 3px; border-radius: 999px;
+  }
+
+  /* Scrolled: the role drops away and the mark tightens to just the name.
+     Less furniture the further you are into the argument. */
+  .mark[data-scrolled] { background: rgba(6, 24, 34, .86); border-color: var(--hairline-strong); }
+  .mark[data-scrolled] .mark__role { max-width: 0; opacity: 0; }
+  .mark[data-scrolled] .mark__sep { display: none; }
+
+  @media (max-width: 560px) {
+    .mark { top: .7rem; padding-left: .8rem; }
+    .mark__role, .mark__sep { display: none; }
+    .mark__name { font-size: .7rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark, .mark__role { transition: none; }
+  }
 </style>
 
 <script>
-  const trigger = document.querySelector<HTMLButtonElement>('.hdr__burger');
-  const menu = document.getElementById('mobile-menu');
-  trigger?.addEventListener('click', () => {
-    const open = trigger.getAttribute('aria-expanded') === 'true';
-    trigger.setAttribute('aria-expanded', String(!open));
-    if (menu) menu.hidden = open;
-  });
+  const mark = document.querySelector<HTMLElement>('[data-mark]');
+  if (mark) {
+    let ticking = false;
+    const sync = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (window.scrollY > 120) mark.setAttribute('data-scrolled', '');
+        else mark.removeAttribute('data-scrolled');
+      });
+    };
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
+  }
 </script>
