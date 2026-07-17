@@ -4,46 +4,77 @@ import { contact } from '@config/site';
 /**
  * The talk dialog.
  *
- * Replaces a 373-line contact page carrying the old design and a form with no
- * backend behind it — a form that cannot submit is theatre, and it was asking
- * people to type into it.
+ * Replaces a 373-line contact page carrying the old design language. The page
+ * was not fake and its idea was right: a builder that asks who you are and what
+ * is wrong, assembles a structured message, and hands it to your own WhatsApp
+ * or mail client. Nothing stored, nothing posted anywhere. I removed it on the
+ * first pass, which was wrong — the form is the point. A blank "message me" box
+ * makes the visitor do the hardest part, which is knowing what to say.
  *
- * There is nothing to type here. Three channels that reach him directly, and
- * the one honest thing to say about what the conversation costs.
+ * So: the same builder, the same adapter (src/scripts/consultation.ts), the new
+ * design language, and one screen instead of a page.
  *
- * Built on native <dialog> because the browser already does the hard parts
- * correctly: the top layer, the backdrop, focus trapping, Escape, inert-ing the
- * page behind it, and restoring focus to whatever opened it. Every hand-rolled
- * modal on the web is an attempt to reimplement that list, and most of them
- * miss two or three.
+ * Built on native <dialog> because the browser already does the top layer, the
+ * backdrop, focus trapping, Escape, inerting the page behind it, and restoring
+ * focus to whatever opened it. Every hand-rolled modal is an attempt to
+ * reimplement that list, and most miss two or three of them.
  *
  * Progressive enhancement is real, not decorative: every trigger is an ordinary
- * <a href="/contact">. With JavaScript off it navigates to a page that works.
- * The script upgrades those links to open this instead.
+ * <a href="/contact">. With JavaScript off it navigates to a page that works,
+ * and the direct channels there are plain links.
  */
+const VISITOR = [
+  ['Founder / business owner', 'Founder / business owner'],
+  ['Company team', 'Company team'],
+  ['Employer / recruiter', 'Employer / recruiter'],
+  ['Collaborator', 'Collaborator'],
+  ['Other', 'Other'],
+];
+
+const CHALLENGE = [
+  ['Growth has slowed', 'Growth has slowed'],
+  ['Traffic but low conversion', 'Traffic but low conversion'],
+  ['Customers contact us too often', 'Customers contact us too often'],
+  ['Customer experience is inconsistent', 'Customer experience is inconsistent'],
+  ['Operations are disorganised', 'Operations are disorganised'],
+  ['The business depends on me', 'The business depends on me'],
+  ['Unclear product or feature priorities', 'Unclear product or feature priorities'],
+  ['Launching something new', 'Launching something new'],
+  ['Entering a new market', 'Entering a new market'],
+  ['Something is wrong — not sure what', 'Something is wrong — not sure what'],
+];
+
+const STAGE = [
+  ['Idea / pre-launch', 'Idea / pre-launch'],
+  ['Early — first customers', 'Early — first customers'],
+  ['Growing steadily', 'Growing steadily'],
+  ['Established', 'Established'],
+  ['Not applicable', 'Not applicable'],
+];
+
+const URGENCY = [
+  ['Exploring — no deadline', 'Exploring — no deadline'],
+  ['Next few weeks', 'Next few weeks'],
+  ['Urgent', 'Urgent'],
+];
+
 const CHANNELS = [
   {
     href: contact.emailHref,
     k: 'Email',
     v: contact.email,
-    note: 'Best for anything with detail in it.',
-    external: false,
     path: 'M1.6 3h14.8c.9 0 1.6.7 1.6 1.6v8.8c0 .9-.7 1.6-1.6 1.6H1.6C.7 15 0 14.3 0 13.4V4.6C0 3.7.7 3 1.6 3Zm7.4 6.3 6.6-4.1H2.4L9 9.3Zm0 1.8L1.6 6.5v6.9h14.8V6.5L9 11.1Z',
   },
   {
     href: contact.whatsapp,
     k: 'WhatsApp',
     v: '+20 104 002 0093',
-    note: 'Fastest. Text is fine — I do not need a call to start.',
-    external: true,
     path: 'M9 0a8.9 8.9 0 0 0-7.6 13.6L0 18l4.5-1.4A8.9 8.9 0 1 0 9 0Zm0 16.2a7.2 7.2 0 0 1-3.7-1l-.3-.2-2.7.8.8-2.6-.2-.3A7.3 7.3 0 1 1 9 16.2Zm4-5.4c-.2-.1-1.3-.7-1.5-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6 6 0 0 1-3-2.6c-.2-.3.1-.4.3-.7l.3-.5v-.5l-.6-1.5c-.2-.4-.4-.3-.5-.3h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.5 1 2.6a9.4 9.4 0 0 0 3.7 3.3c1.3.5 1.6.4 1.9.4.4 0 1.3-.5 1.5-1 .2-.6.2-1 .1-1.1l-.4-.2Z',
   },
   {
     href: contact.linkedin,
     k: 'LinkedIn',
-    v: 'ahmed-hamdy-growth-operations',
-    note: 'If you would rather see the profile first.',
-    external: true,
+    v: 'View the profile',
     path: 'M4.5 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM.6 16h3.8V6.6H.6V16Zm6.3 0h3.8v-5.2c0-1.4.3-2.7 2-2.7 1.7 0 1.7 1.6 1.7 2.8V16H18v-5.9c0-3.3-.7-5.8-4.5-5.8-1.8 0-3 1-3.5 1.9h-.1V6.6H6.9V16Z',
   },
 ];
@@ -57,32 +88,128 @@ const CHANNELS = [
 
     <span class="talk__eyebrow">Talk to me</span>
     <h2 id="talk-h">Tell me what is not working.</h2>
-    <p class="talk__lede">No form, and nothing to fill in. These three reach me directly, and I answer them myself.</p>
-
-    <ul class="talk__list">
-      {CHANNELS.map((c) => (
-        <li>
-          <a class="tchan" href={c.href} rel={c.external ? 'noopener' : undefined}>
-            <span class="tchan__i" aria-hidden="true">
-              <svg viewBox="0 0 18 18" width="17" height="17" focusable="false"><path d={c.path} fill="currentColor" /></svg>
-            </span>
-            <span class="tchan__b">
-              <span class="tchan__k">{c.k}</span>
-              <span class="tchan__v">{c.v}</span>
-              <span class="tchan__n">{c.note}</span>
-            </span>
-            <span class="tchan__go" aria-hidden="true">→</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <p class="talk__lede">
+      Answer what you can — it takes a minute, and it means my first reply is about your
+      problem instead of asking you five questions back.
+    </p>
 
     <p class="talk__free">
       <strong>The first conversation is free, and it is not a favour.</strong>
-      An hour inside a real problem teaches me more than a month of reading about one, so I get as much out of it as you do. Bring the thing that is actually annoying you — not the tidy version.
+      An hour inside a real problem teaches me more than a month of reading about one, so I get
+      as much out of it as you do.
     </p>
+
+    <!-- The builder. Nothing is stored, posted, or sent anywhere by this site:
+         it assembles the message and hands it to your own WhatsApp or mail app,
+         which is why there is a review step before anything opens. -->
+    <form class="tf" id="talk-form" novalidate>
+      <div class="tf__row">
+        <label class="tf__f">
+          <span>Name <abbr title="required">*</abbr></span>
+          <input name="name" required autocomplete="name" />
+        </label>
+        <label class="tf__f">
+          <span>Company / brand</span>
+          <input name="company" autocomplete="organization" />
+        </label>
+      </div>
+
+      <div class="tf__row">
+        <label class="tf__f">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" />
+        </label>
+        <label class="tf__f">
+          <span>Website / link</span>
+          <input type="url" name="url" placeholder="https://" />
+        </label>
+      </div>
+
+      <label class="tf__f">
+        <span>You are a <abbr title="required">*</abbr></span>
+        <select name="visitor" required>
+          <option value="">Choose one…</option>
+          {VISITOR.map(([v, l]) => <option value={v}>{l}</option>)}
+        </select>
+      </label>
+
+      <label class="tf__f">
+        <span>What is blocking you? <abbr title="required">*</abbr></span>
+        <select name="challenge" required>
+          <option value="">Choose one…</option>
+          {CHALLENGE.map(([v, l]) => <option value={v}>{l}</option>)}
+        </select>
+      </label>
+
+      <div class="tf__row">
+        <label class="tf__f">
+          <span>Where the business is</span>
+          <select name="stage">
+            <option value="">—</option>
+            {STAGE.map(([v, l]) => <option value={v}>{l}</option>)}
+          </select>
+        </label>
+        <label class="tf__f">
+          <span>Timing</span>
+          <select name="urgency">
+            <option value="">—</option>
+            {URGENCY.map(([v, l]) => <option value={v}>{l}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <label class="tf__f">
+        <span>A good outcome would be…</span>
+        <textarea name="outcome" rows="2" placeholder="What would have to be true for this to be solved?"></textarea>
+      </label>
+
+      <label class="tf__f">
+        <span>Anything else</span>
+        <textarea name="context" rows="2" placeholder="The messy version is more useful than the tidy one."></textarea>
+      </label>
+
+      <p class="tf__err" id="talk-err" role="alert" hidden></p>
+
+      <div class="tf__go">
+        <button class="btn btn--primary" type="submit">Review the message <span class="btn__arrow" aria-hidden="true">→</span></button>
+        <span class="tf__priv">Nothing is stored or sent by this site — it opens your own app.</span>
+      </div>
+    </form>
+
+    <!-- The review step. You see exactly what he will read, before it goes. -->
+    <div class="tr" id="talk-review" hidden>
+      <span class="talk__eyebrow">This is what I will read</span>
+      <pre class="tr__msg" id="talk-msg"></pre>
+      <div class="tr__go">
+        <a class="btn btn--primary" id="talk-wa" href="#" rel="noopener">Open WhatsApp <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn" id="talk-mail" href="#">Open email <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <button class="tr__edit" type="button" id="talk-edit">← Edit</button>
+      </div>
+    </div>
+
+    <div class="talk__direct">
+      <span class="talk__k">Or skip the form entirely</span>
+      <ul>
+        {CHANNELS.map((c) => (
+          <li>
+            <a class="tchan" href={c.href} rel="noopener">
+              <span class="tchan__i" aria-hidden="true">
+                <svg viewBox="0 0 18 18" width="16" height="16" focusable="false"><path d={c.path} fill="currentColor" /></svg>
+              </span>
+              <span class="tchan__b">
+                <span class="tchan__k">{c.k}</span>
+                <span class="tchan__v">{c.v}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
     <p class="talk__fine">
-      Messages are read and answered personally. I do not promise a response time, because I will not promise one I cannot keep. If the problem is not a fit for what I do, I will say so — that is useful to both of us.
+      Messages are read and answered personally. I do not promise a response time, because I
+      will not promise one I cannot keep. If it is not a fit for what I do, I will say so — that
+      is useful to both of us.
     </p>
   </div>
 </dialog>
@@ -90,38 +217,65 @@ const CHANNELS = [
 <style>
   /* `margin: auto` is what centres a native modal — the UA stylesheet sets it,
      and our reset's `* { margin: 0 }` silently takes it away. Without this the
-     dialog pins itself to the top-left corner, and every click meant for the
+     dialog pins itself to the top-left corner and every click meant for the
      backdrop lands inside the panel instead. */
-  .talk { margin: auto; width: min(560px, calc(100vw - 2rem)); max-height: min(88vh, 780px); padding: 0; overflow: visible; color: var(--chalk); border: 1px solid var(--hairline-strong); border-radius: 44px 16px 48px 20px; background: var(--night-soft); box-shadow: 0 40px 110px rgba(0,0,0,.55); }
+  .talk { margin: auto; width: min(620px, calc(100vw - 2rem)); max-height: min(90vh, 860px); padding: 0; overflow: visible; color: var(--chalk); border: 1px solid var(--hairline-strong); border-radius: 44px 16px 48px 20px; background: var(--night-soft); box-shadow: 0 40px 110px rgba(0,0,0,.55); }
   .talk::backdrop { background: rgba(3, 14, 20, .68); backdrop-filter: blur(6px); }
-  .talk__panel { max-height: inherit; overflow-y: auto; padding: clamp(1.6rem, 4vw, 2.6rem); border-radius: inherit; }
+  .talk__panel { max-height: min(90vh, 860px); overflow-y: auto; padding: clamp(1.6rem, 4vw, 2.4rem); border-radius: inherit; }
 
-  .talk__x { position: absolute; top: .85rem; right: .85rem; display: grid; place-items: center; width: 38px; height: 38px; color: var(--chalk); border: 1px solid var(--hairline-strong); border-radius: 50%; background: rgba(255,255,255,.05); cursor: pointer; transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .talk__x { position: absolute; top: .85rem; right: .85rem; z-index: 2; display: grid; place-items: center; width: 38px; height: 38px; color: var(--chalk); border: 1px solid var(--hairline-strong); border-radius: 50%; background: rgba(6,24,34,.9); cursor: pointer; transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
   .talk__x:hover { color: var(--ink); background: var(--signal); border-color: transparent; }
   .talk__x:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
 
   .talk__eyebrow { display: inline-block; color: var(--signal); font: 850 .6rem var(--font-head); letter-spacing: .16em; text-transform: uppercase; }
-  .talk h2 { margin: .6rem 0 .5rem; max-width: 16ch; color: var(--white); font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.3rem); letter-spacing: -.02em; }
-  .talk__lede { color: var(--slate); font-size: .88rem; line-height: 1.6; }
-
-  .talk__list { display: grid; gap: .6rem; margin: 1.5rem 0; padding: 0; list-style: none; }
-  .tchan { display: grid; grid-template-columns: auto 1fr auto; gap: .95rem; align-items: center; padding: .9rem 1rem; border: 1px solid var(--hairline); border-radius: 26px 9px 28px 11px; background: rgba(255,255,255,.04); text-decoration: none; transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
-  .tchan:hover { border-color: var(--signal); background: rgba(72,224,187,.08); transform: translateX(3px); }
-  .tchan:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
-  .tchan__i { display: grid; place-items: center; width: 38px; height: 38px; flex: none; color: var(--signal); border-radius: 50%; background: rgba(72,224,187,.12); }
-  .tchan__b { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
-  .tchan__k { color: var(--slate-soft); font: 800 .58rem var(--font-head); letter-spacing: .12em; text-transform: uppercase; }
-  .tchan__v { color: var(--white); font: 750 .88rem var(--font-head); overflow-wrap: anywhere; }
-  .tchan__n { color: var(--slate); font-size: .74rem; }
-  .tchan__go { color: var(--signal); font: 800 1rem var(--font-head); transition: transform var(--dur-fast) var(--ease); }
-  .tchan:hover .tchan__go { transform: translateX(3px); }
-
-  .talk__free { padding: .95rem 1.1rem; border-left: 2px solid var(--acid); border-radius: 0 14px 14px 0; background: rgba(201,243,111,.07); color: var(--slate); font-size: .82rem; line-height: 1.6; }
+  .talk h2 { margin: .55rem 0 .5rem; max-width: 16ch; color: var(--white); font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.1rem); letter-spacing: -.02em; }
+  .talk__lede { color: var(--slate); font-size: .85rem; line-height: 1.6; }
+  .talk__free { margin-top: 1rem; padding: .8rem 1rem; border-left: 2px solid var(--acid); border-radius: 0 14px 14px 0; background: rgba(201,243,111,.07); color: var(--slate); font-size: .8rem; line-height: 1.6; }
   .talk__free strong { color: var(--chalk); font-weight: 750; }
-  .talk__fine { margin-top: 1rem; color: var(--slate-soft); font-size: .74rem; line-height: 1.6; }
 
-  /* The dialog animates in, and only in. `allow-discrete` is what lets display
-     participate, so it does not pop from nothing. */
+  .tf { display: grid; gap: .8rem; margin-top: 1.4rem; }
+  .tf__row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .tf__f { display: grid; gap: .35rem; }
+  .tf__f > span { color: var(--slate-soft); font: 800 .58rem var(--font-head); letter-spacing: .1em; text-transform: uppercase; }
+  .tf__f abbr { color: var(--signal); text-decoration: none; }
+  .tf input, .tf select, .tf textarea { width: 100%; min-height: 44px; padding: .6rem .75rem; color: var(--white); border: 1px solid var(--hairline-strong); border-radius: 14px 5px 16px 6px; background: rgba(255,255,255,.05); font: 500 .85rem var(--font-body); transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+  .tf textarea { min-height: 62px; resize: vertical; }
+  .tf select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--signal) 50%), linear-gradient(135deg, var(--signal) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2rem; }
+  .tf input:focus, .tf select:focus, .tf textarea:focus { outline: none; border-color: var(--signal); background: rgba(72,224,187,.07); }
+  .tf input:focus-visible, .tf select:focus-visible, .tf textarea:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+  .tf option { color: var(--ink); background: var(--paper-bright); }
+  .tf ::placeholder { color: var(--slate-soft); }
+
+  .tf__err { padding: .6rem .8rem; color: #ffd9d1; border-left: 2px solid var(--coral); border-radius: 0 10px 10px 0; background: rgba(255,122,97,.12); font-size: .78rem; }
+  .tf__err[hidden] { display: none; }
+  .tf__go { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; margin-top: .4rem; }
+  .tf__priv { color: var(--slate-soft); font-size: .68rem; }
+
+  .tr[hidden] { display: none; }
+  .tr__msg { max-height: 240px; margin: .7rem 0 1rem; padding: 1rem; overflow: auto; color: var(--slate); border: 1px solid var(--hairline); border-radius: 18px 6px 20px 8px; background: rgba(0,0,0,.28); font: 500 .74rem/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace; white-space: pre-wrap; }
+  .tr__go { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
+  .tr__edit { min-height: 44px; padding: 0 .5rem; color: var(--slate); background: none; border: 0; cursor: pointer; font: 750 .78rem var(--font-head); }
+  .tr__edit:hover { color: var(--signal); }
+  .tr__edit:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; border-radius: 8px; }
+
+  .talk__direct { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--hairline); }
+  .talk__k { display: block; margin-bottom: .7rem; color: var(--slate-soft); font: 800 .58rem var(--font-head); letter-spacing: .12em; text-transform: uppercase; }
+  .talk__direct ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 0; padding: 0; list-style: none; }
+  .tchan { display: flex; align-items: center; gap: .55rem; min-height: 44px; padding: .55rem .7rem; border: 1px solid var(--hairline); border-radius: 18px 6px 20px 8px; background: rgba(255,255,255,.04); text-decoration: none; transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+  .tchan:hover { border-color: var(--signal); background: rgba(72,224,187,.08); }
+  .tchan:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
+  .tchan__i { display: grid; place-items: center; width: 30px; height: 30px; flex: none; color: var(--signal); border-radius: 50%; background: rgba(72,224,187,.12); }
+  .tchan__b { display: flex; flex-direction: column; min-width: 0; }
+  .tchan__k { color: var(--slate-soft); font: 800 .54rem var(--font-head); letter-spacing: .1em; text-transform: uppercase; }
+  .tchan__v { color: var(--white); font: 750 .72rem var(--font-head); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .talk__fine { margin-top: 1.2rem; color: var(--slate-soft); font-size: .7rem; line-height: 1.6; }
+
+  @media (max-width: 560px) {
+    .tf__row, .talk__direct ul { grid-template-columns: 1fr; }
+    .tchan__v { white-space: normal; }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .talk { opacity: 0; translate: 0 12px; transition: opacity .22s var(--ease), translate .22s var(--ease), overlay .22s allow-discrete, display .22s allow-discrete; }
     .talk[open] { opacity: 1; translate: 0 0; }
@@ -133,34 +287,95 @@ const CHANNELS = [
 </style>
 
 <script>
+  import { adapterFor, buildMessage, type Payload } from '@/scripts/consultation';
+
   const dialog = document.getElementById('talk-dialog') as HTMLDialogElement | null;
 
   if (dialog && typeof dialog.showModal === 'function') {
+    const form = document.getElementById('talk-form') as HTMLFormElement | null;
+    const review = document.getElementById('talk-review');
+    const msgBox = document.getElementById('talk-msg');
+    const err = document.getElementById('talk-err');
+    const wa = document.getElementById('talk-wa') as HTMLAnchorElement | null;
+    const mail = document.getElementById('talk-mail') as HTMLAnchorElement | null;
+    const edit = document.getElementById('talk-edit');
+
     // Every link to the contact page becomes a trigger. The href stays exactly
-    // as it is, so middle-click, Ctrl-click and a JS failure all still work.
-    const triggers = document.querySelectorAll<HTMLAnchorElement>('a[href$="/contact"], a[href$="/contact/"]');
+    // as authored, so middle-click, Ctrl-click and a JS failure all still work.
+    document
+      .querySelectorAll<HTMLAnchorElement>('a[href$="/contact"], a[href$="/contact/"]')
+      .forEach((a) =>
+        a.addEventListener('click', (e) => {
+          // Leave modifier gestures alone — someone Ctrl-clicking wants a tab.
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          e.preventDefault();
+          dialog.showModal();
+          form?.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+        }),
+      );
 
-    triggers.forEach((a) => {
-      a.addEventListener('click', (e) => {
-        // Leave the modifier gestures alone — someone Ctrl-clicking wants a tab.
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e as MouseEvent).button !== 0) return;
-        e.preventDefault();
-        dialog.showModal();
-      });
-    });
+    dialog
+      .querySelectorAll<HTMLElement>('[data-talk-close]')
+      .forEach((b) => b.addEventListener('click', () => dialog.close()));
 
-    dialog.querySelectorAll<HTMLElement>('[data-talk-close]').forEach((b) =>
-      b.addEventListener('click', () => dialog.close()),
-    );
-
-    // Clicking the backdrop closes it. The dialog's own rect is the test —
-    // clicks on the backdrop report the <dialog> as their target, so checking
-    // the target alone would close it whenever the padding was hit.
+    // Clicking the backdrop closes. The dialog's rect is the test — a backdrop
+    // click reports the <dialog> itself as its target, so checking the target
+    // alone would close it every time someone hit the padding.
     dialog.addEventListener('click', (e) => {
       const r = dialog.getBoundingClientRect();
       const inside =
         e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
       if (!inside) dialog.close();
+    });
+
+    const show = (el: HTMLElement | null, on: boolean) => el && (el.hidden = !on);
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form || !review || !msgBox || !err || !wa || !mail) return;
+
+      const fd = new FormData(form);
+      const get = (k: string) => String(fd.get(k) ?? '').trim();
+
+      const missing = (['name', 'visitor', 'challenge'] as const).filter((k) => !get(k));
+      if (missing.length) {
+        err.textContent =
+          'Still needed: ' +
+          missing.map((k) => ({ name: 'your name', visitor: 'who you are', challenge: 'what is blocking you' })[k]).join(', ') + '.';
+        show(err, true);
+        form.querySelector<HTMLElement>(`[name="${missing[0]}"]`)?.focus();
+        return;
+      }
+      show(err, false);
+
+      const payload: Payload = {
+        name: get('name'),
+        company: get('company'),
+        email: get('email'),
+        url: get('url'),
+        visitor: get('visitor'),
+        challenge: get('challenge'),
+        stage: get('stage'),
+        urgency: get('urgency'),
+        outcome: get('outcome'),
+        context: get('context'),
+      };
+
+      const message = buildMessage(payload);
+      msgBox.textContent = message;
+      wa.href = adapterFor('whatsapp').href(payload, message);
+      mail.href = adapterFor('email').href(payload, message);
+
+      show(form, false);
+      show(review, true);
+      review.scrollIntoView({ block: 'nearest' });
+      wa.focus();
+    });
+
+    edit?.addEventListener('click', () => {
+      show(review, false);
+      show(form, true);
+      form?.querySelector<HTMLInputElement>('[name="name"]')?.focus();
     });
   }
 </script>
