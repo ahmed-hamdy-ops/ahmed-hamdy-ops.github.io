@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ahmed Hamdy — Business Operations &amp; Process Improvement Consultant</title>
+<!--
+  THE CV.
+
+  Two requirements pull against each other here. Ahmed wants it to stop looking
+  like the CV an AI hands you, and he wants it to survive an ATS parser intact.
+  But the list of things that break a parser IS the list of things that make a
+  CV look generated: a coloured sidebar, a circular photo, skill bars with
+  percentages, icon rows, two columns, a decorative header band.
+
+  So: one column, no tables, no text boxes, no images, no icons, real headings
+  in the order a human reads them, and contact details as body text rather than
+  in a header region a parser will drop. The distinctiveness is carried by type,
+  space and a single accent on rules — none of which a parser can trip on.
+
+  The rest of it is the writing, which is the only part that was ever going to
+  do that job anyway.
+
+  Regenerate:  node scripts/build-cv.mjs
+  Verify:      the same script extracts the text layer back out and checks it.
+-->
+<style>
+  @font-face { font-family: 'Manrope'; font-weight: 200 800; font-display: block; src: url('../../public/fonts/manrope-latin-wght-normal.woff2') format('woff2-variations'); }
+  @font-face { font-family: 'Inter'; font-weight: 100 900; font-display: block; src: url('../../public/fonts/inter-latin-wght-normal.woff2') format('woff2-variations'); }
+
+  :root {
+    --ink: #16232b;
+    --soft: #4a5a63;
+    --faint: #6f7f88;
+    --accent: #0f7565;      /* 4.92:1 on white — the portfolio's signal-deep */
+    --rule: #d8dcdd;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: A4; margin: 13mm 14mm; }
+
+  html { font-size: 10.2pt; }
+  body {
+    font-family: Inter, 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: Manrope, 'Segoe UI', Arial, sans-serif; }
+
+  /* ── Identity ─────────────────────────────────────────────────────────── */
+  .id { padding-bottom: 9pt; border-bottom: 2pt solid var(--ink); }
+  h1 { font-size: 25pt; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .id__role {
+    margin-top: 4pt;
+    font-family: Manrope, sans-serif; font-weight: 700; font-size: 11.4pt;
+    color: var(--accent); letter-spacing: -0.01em;
+  }
+  /* Contact as body text, not a header/footer region: parsers routinely discard
+     anything they classify as page furniture, and this is the one block that
+     must never be discarded. */
+  .id__contact { margin-top: 6pt; font-size: 9pt; color: var(--soft); }
+  .id__contact a { color: var(--soft); text-decoration: none; }
+
+  /* ── Sections ─────────────────────────────────────────────────────────── */
+  section { margin-top: 13pt; }
+  h2 {
+    margin-bottom: 7pt; padding-bottom: 3pt;
+    border-bottom: 0.75pt solid var(--rule);
+    font-size: 8.6pt; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .lede { font-size: 9.9pt; color: var(--soft); }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  /* ── Roles ────────────────────────────────────────────────────────────── */
+  /* Not avoid-page. A role that will not fit in the space left gets thrown to
+     a fresh page whole, and the gap it leaves behind cost an entire sheet here.
+     Splitting a long role across a page break is normal in a CV; what must not
+     split is a heading from the first line under it. */
+  .role { margin-top: 11pt; }
+  h2, h3, .role__head, .role__where, .role__note { break-after: avoid-page; }
+  li, .sk { break-inside: avoid-page; }
+  .role:first-of-type { margin-top: 0; }
+  .role__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
+  h3 { font-size: 11.6pt; font-weight: 800; letter-spacing: -0.015em; }
+  .role__when { flex: none; font-family: Manrope, sans-serif; font-weight: 700; font-size: 8.4pt; color: var(--faint); letter-spacing: 0.04em; }
+  .role__where {
+    margin-top: 1pt;
+    font-family: Manrope, sans-serif; font-weight: 700; font-size: 9pt; color: var(--accent);
+  }
+  .role__note { margin-top: 4pt; font-size: 9.2pt; color: var(--soft); }
+
+  ul { margin-top: 5pt; list-style: none; }
+  li { position: relative; padding-left: 10pt; margin-top: 3.6pt; font-size: 9.4pt; color: var(--soft); }
+  /* A real character, not a background image — a parser reads this and keeps
+     the line as a list item. */
+  li::before { content: '▪'; position: absolute; left: 0; top: -0.5pt; color: var(--accent); font-size: 7pt; }
+  li strong { color: var(--ink); font-weight: 650; }
+
+  /* ── Skills ───────────────────────────────────────────────────────────── */
+  /* Deliberately not a grid, not chips, and not bars with percentages. A label
+     and a comma-separated line reads correctly to a parser and to a person, and
+     nobody can pretend a percentage means anything. */
+  .sk { margin-top: 5pt; font-size: 9.3pt; color: var(--soft); }
+  .sk:first-of-type { margin-top: 0; }
+  .sk b { color: var(--ink); font-weight: 700; font-family: Manrope, sans-serif; font-size: 8.8pt; }
+
+  .fine { margin-top: 4pt; font-size: 8.6pt; color: var(--faint); }
+  body > section:last-of-type { margin-bottom: 0; }
+  body > *:last-child { margin-bottom: 0; }
+
+  .todo { background: #fff2a8; color: #6b5400; padding: 0 2pt; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="id">
+  <h1>Ahmed Hamdy</h1>
+  <p class="id__role">Business Operations &amp; Process Improvement Consultant</p>
+  <p class="id__contact">
+    Alexandria, Egypt · +20 104 002 0093 · ahmedeldep30@gmail.com<br />
+    linkedin.com/in/ahmed-hamdy-growth-operations · ahmedeldep30-ship-it.github.io/ahmed-hamdy-portfolio
+  </p>
+</header>
+
+<section>
+  <h2>Profile</h2>
+  <p class="lede">
+    I find where an operational problem actually lives — usually a department away from where it shows
+    up — and redesign the process, ownership or handoff causing it. <strong>Two years inside a UK
+    fintech's support function</strong>: rebuilt the ticket taxonomy, the knowledge base and the quality
+    model, then managed the team of 13. <strong>Project consulting</strong> across telecom, steel
+    manufacturing, petroleum distribution and higher education. <strong>Founder</strong> of a live
+    specialist commerce platform.
+  </p>
+</section>
+
+<section>
+  <h2>Professional Experience</h2>
+
+  <article class="role">
+    <div class="role__head">
+      <h3>Support Team Manager</h3>
+      <span class="role__when">2024 — Present</span>
+    </div>
+    <p class="role__where">Alpha Capital Group (UK) · Remote · fintech</p>
+    <p class="role__note">
+      Progressed from handling Arabic-language customer conversations to managing the function: 13 people
+      (10 agents, 2 seniors, 1 QA) on Zendesk, with Jira, Slack and Notion.
+    </p>
+    <ul>
+      <li>
+        <strong>Rebuilt the ticket taxonomy</strong> to separate the stated reason for contact from the
+        cause found after investigation, plus the affected feature, journey stage, owning department and
+        whether the contact was preventable — replacing four generic buckets that had collapsed product,
+        bank, provider and instruction failures into one reporting bar.
+      </li>
+      <li>
+        <strong>Authored the customer-facing knowledge base and FAQ articles</strong>, prioritised by
+        repeat-contact rate, handle time, escalation rate and complaint severity.
+      </li>
+      <li>
+        <strong>Specified an in-product withdrawal status timeline</strong> after establishing that the
+        highest-volume contact driver was a visibility failure rather than a delay. Repeat contacts on
+        that driver dropped clearly.
+      </li>
+      <li>
+        <strong>Replaced script-adherence QA with decision-quality review</strong>: whether the agent
+        reached correct information, explained it usably, named the next step and recorded the cause.
+        Separated ticket resolution from problem resolution as distinct measures.
+      </li>
+      <li>
+        <strong>Redesigned queue routing and priority</strong> on financial impact, customers affected,
+        time sensitivity and compliance risk rather than on contact channel. Defined escalation paths and
+        response standards so ownership of an exception was explicit and answers stayed consistent.
+      </li>
+      <li>
+        <strong>Identified and drove the fix for a payment status-mapping defect</strong> in which the
+        provider's "accepted for processing" acknowledgement was recorded as final settlement, so
+        customers were told funds had arrived while still in flight. Assembled the incident evidence,
+        coordinated Payments Operations, Engineering and Finance, and introduced an intermediate status,
+        a monitoring alert and an incident playbook.
+      </li>
+      <li>
+        Worked across sales, operations and product on the upstream causes of recurring contact. Earned
+        Employee of the Month recognition and hundreds of verified five-star customer reviews.
+      </li>
+    </ul>
+  </article>
+
+  <article class="role">
+    <div class="role__head">
+      <h3>Founder — Business Growth, Customer Experience &amp; Platform Operations</h3>
+      <span class="role__when">2025 — Present</span>
+    </div>
+    <p class="role__where">Formula4You · Egypt · specialist commerce platform (live)</p>
+    <p class="role__note">
+      Identified a structural gap in Egypt's fragrance market — suppliers, manufacturers, sellers and
+      buyers all operating through general-purpose tools that did not reflect the category's discovery,
+      trust and data requirements — and built the platform for it.
+    </p>
+    <ul>
+      <li>
+        <strong>Chose a specialist vertical strategy over a generic storefront</strong>: a general store
+        competes on price and delivery, won by whoever spends most, while a category platform competes on
+        relevance.
+      </li>
+      <li>
+        <strong>Sequenced launch supply-first</strong> — credible suppliers, data structure, then
+        inventory — holding acquisition spend until the marketplace was worth visiting.
+      </li>
+      <li>
+        <strong>Defined the operating model</strong> across onboarding, listing and subscription
+        lifecycles, admin review, content quality, renewals, expired accounts and platform governance —
+        including what happens when a listing is wrong, what a buyer is owed, and who fixes it.
+      </li>
+      <li>
+        Translated priorities into phased UX, product, technical, QA and launch requirements, preventing
+        feature bloat during early growth.
+      </li>
+    </ul>
+  </article>
+
+  <article class="role">
+    <div class="role__head">
+      <h3>Independent Consultant — Business Operations &amp; Process Improvement</h3>
+      <span class="role__when"><span class="todo">DATES NEEDED</span></span>
+    </div>
+    <p class="role__where">Project engagements · Egypt</p>
+    <p class="role__note">
+      Business operations for a national telecom operator and one of Egypt's largest steel manufacturers;
+      IT and service desk for a state petroleum distributor and a higher-education institute; operating
+      model and growth work for founder-led retail and e-commerce businesses. Selected work:
+    </p>
+    <ul>
+      <li>
+        <strong>Diagnosed a mid-size e-commerce operator's "customer service problem" as an
+        operating-model failure.</strong> Audited the documents rather than the opinions — ad copy,
+        transcripts, cancellation reports, inventory, the fulfilment SOP, carrier reports, every team's
+        KPIs — and found five different delivery promises across advertising, sales, the shipping policy,
+        support's internal rule and the carrier's own clock, none of which agreed.
+      </li>
+      <li>
+        <strong>Rebuilt the order journey into unambiguous stages</strong>, each with a definition, an
+        owning department, a normal duration, a next action and a named owner when it overran — after
+        establishing that three departments each read "Confirmed" differently.
+      </li>
+      <li>
+        <strong>Introduced three-field problem recording</strong> — the customer's words, the actual
+        cause, the originating stage — which reclassified a share of "customer cancellations" as internal
+        stock errors and located delivery failures occurring before carrier handover.
+      </li>
+      <li>
+        <strong>Replaced ticket count as the measure of the problem</strong> with cancellation-after-
+        confirmation, delivery failure, repeat-purchase gaps and stage dwell time, surfacing failures that
+        never produced a complaint. Required advertised operational promises to be validated against stock
+        and carrier capacity before launch.
+      </li>
+      <li>
+        <strong>Designed a behaviour-triggered retention offer</strong> shown only to high-intent visitors
+        at exit risk, with frequency controls and margin guardrails, in place of a site-wide discount that
+        would have paid customers who had already decided to buy. Recommended holding acquisition spend
+        where the purchase journey could not sustain it.
+      </li>
+    </ul>
+  </article>
+</section>
+
+<section>
+  <h2>Core Skills</h2>
+  <p class="sk"><b>Operations &amp; process</b> — Process diagnosis · Root-cause analysis · Workflow and journey design · Operating-model definition · SOP and playbook authoring · Service blueprinting · Cross-functional handoff design · Exception and ownership mapping · Impact–effort prioritisation</p>
+  <p class="sk"><b>Support operations</b> — Ticket taxonomy design · Contact-driver analysis · Repeat-contact reduction · Queue routing and prioritisation · SLA design · Escalation and incident management · Knowledge base and FAQ authoring · QA calibration and decision-quality review · Zendesk administration</p>
+  <p class="sk"><b>Leadership &amp; customer experience</b> — Team management (13) · Coaching and performance review · Standards definition · Cross-department coordination · Customer journey mapping · Conversion and drop-off review · Voice-of-customer analysis · Complaint and de-escalation handling</p>
+  <p class="sk"><b>Analysis &amp; decision</b> — KPI definition and interpretation · Requirements and acceptance criteria · Market and competitor analysis · Build-versus-simplify judgement</p>
+  <p class="sk"><b>Tools</b> — Zendesk · Jira · Slack · Notion · Trello · Miro · Google Workspace · Microsoft Excel · Google Sheets · Meta Business Suite · Google Search Console</p>
+  <p class="sk"><b>Domains</b> — Fintech · E-commerce · Telecommunications · Steel manufacturing · Petroleum distribution · Higher education</p>
+</section>
+
+<section>
+  <h2>Education &amp; Languages</h2>
+  <p class="sk"><b>Faculty of Al-Alsun (Languages), Ain Shams University</b> — Cairo, Egypt. Two academic years of undergraduate study completed.</p>
+  <p class="sk"><b>Languages</b> — Arabic: native. English: professional working proficiency in written and business communication; conversational spoken proficiency.</p>
+</section>
+
+</body>
+</html>
