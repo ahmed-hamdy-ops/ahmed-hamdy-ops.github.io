@@ -155,7 +155,6 @@ const lenses = [
           <Image src={portrait} alt="Ahmed Hamdy" widths={[360, 540, 720]} sizes="(max-width: 760px) 230px, 300px" loading="eager" />
           <span>Business signal → operating decision</span>
         </div>
-        <span class="lens-core">Root cause</span>
         <span class="orbit-node orbit-node--support" data-parallax="0.65">Support signal</span>
         <span class="orbit-node orbit-node--sales" data-parallax="-0.45">Sales friction</span>
         <span class="orbit-node orbit-node--ops" data-parallax="0.5">Operating constraint</span>
@@ -543,21 +542,20 @@ const lenses = [
   .hero__index a { display: flex; align-items: baseline; gap: .5rem; padding: .5rem 0; color: rgba(255,255,255,.62); text-decoration: none; font: 700 .72rem var(--font-head); transition: color var(--dur-fast) var(--ease); }
   .hero__index a:hover { color: var(--signal); }
   .hero__index span { color: var(--signal); font-size: .58rem; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
-  .system-lens { position: relative; min-height: 430px; }
+  .system-lens { position: relative; min-height: 460px; }
   .lens-orbit { position: absolute; border: 1px solid rgba(255,255,255,.14); border-radius: 48% 52% 57% 43% / 54% 44% 56% 46%; animation: orbit-shape 11s ease-in-out infinite alternate; }
   .lens-orbit--one { inset: 20px 0 5px 5px; transform: rotate(12deg); }
   .lens-orbit--two { inset: 76px 55px 58px 50px; border-color: rgba(72,224,187,.25); transform: rotate(-17deg); animation-delay: -4s; }
   .lens-orbit--three { inset: 132px 115px 108px 105px; border-style: dashed; border-color: rgba(121,183,255,.3); animation-delay: -7s; }
-  .portrait-frame { position: absolute; z-index: 4; left: 50%; top: 48%; width: 290px; height: 380px; overflow: hidden; border: 6px solid rgba(255,255,255,.12); border-radius: 28px 12px 36px 16px; background: var(--night-soft); box-shadow: 0 35px 90px rgba(0,0,0,.45), inset 0 0 30px rgba(255,255,255,.08); transform: translate(-50%,-50%) rotate(1.2deg); }
+  .portrait-frame { position: absolute; z-index: 4; left: 50%; top: 45%; width: 290px; height: 380px; overflow: hidden; border: 6px solid rgba(255,255,255,.12); border-radius: 28px 12px 36px 16px; background: var(--night-soft); box-shadow: 0 35px 90px rgba(0,0,0,.45), inset 0 0 30px rgba(255,255,255,.08); transform: translate(-50%,-50%) rotate(1.2deg); }
   .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 17%; filter: saturate(.84) contrast(1.04); }
-  .portrait-frame span { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: .7rem .9rem; color: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.14); border-radius: 14px 6px 16px 8px; background: rgba(4,21,30,.78); backdrop-filter: blur(10px); font: 750 .58rem var(--font-head); letter-spacing: .08em; text-transform: uppercase; }
-  .lens-core { position: absolute; z-index: 6; left: 70%; top: 67%; width: 104px; height: 104px; display: grid; place-items: center; color: var(--ink); border-radius: 48% 52% 43% 57% / 58% 41% 59% 42%; background: var(--acid); box-shadow: 0 18px 45px rgba(0,0,0,.32),0 0 0 13px rgba(201,243,111,.08); transform: translate(-50%,-50%); font: 850 .58rem var(--font-head); letter-spacing: .09em; text-transform: uppercase; animation: core-pulse 3.5s ease-in-out infinite; }
+  .portrait-frame span { position: absolute; left: 12px; right: auto; bottom: 12px; max-width: 62%; padding: .7rem .9rem; color: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.14); border-radius: 14px 6px 16px 8px; background: rgba(4,21,30,.78); backdrop-filter: blur(10px); font: 750 .58rem var(--font-head); letter-spacing: .08em; text-transform: uppercase; }
   .orbit-node { position: absolute; z-index: 7; display: flex; align-items: center; gap: .55rem; padding: .75rem .95rem; color: rgba(255,255,255,.82); border: 1px solid rgba(255,255,255,.16); border-radius: var(--shape-pill); background: rgba(6,24,34,.74); box-shadow: 0 18px 36px rgba(0,0,0,.28); backdrop-filter: blur(15px); font: 760 .63rem var(--font-head); }
   .orbit-node::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--node,var(--signal)); box-shadow: 0 0 15px var(--node,var(--signal)); }
   .orbit-node--support { left: 0; top: 20%; }
   .orbit-node--sales { --node: var(--coral); right: -2%; top: 29%; }
-  .orbit-node--ops { --node: var(--sky); left: 7%; bottom: 6%; }
-  .orbit-node--customer { --node: var(--violet); right: 1%; bottom: 10%; }
+  .orbit-node--ops { --node: var(--sky); left: 7%; bottom: 2%; }
+  .orbit-node--customer { --node: var(--violet); right: 1%; bottom: 6%; }
   .journey { position: relative; color: var(--ink); background: var(--paper); }
   .journey__spine { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .55; }
   .journey__glow { fill: none; stroke: rgba(17,125,108,.07); stroke-width: 55; stroke-linecap: round; }
@@ -758,7 +756,6 @@ const lenses = [
   .route-core { width: 125px; height: 125px; display: grid; place-items: center; padding: 1rem; color: var(--white); border-radius: 50%; background: var(--night-soft); box-shadow: var(--shadow-soft),0 0 0 16px rgba(7,26,36,.04); text-align: center; font: 850 .66rem/1.3 var(--font-head); text-transform: uppercase; }
   @keyframes dash { to { stroke-dashoffset: -220; } }
   @keyframes orbit-shape { to { border-radius: 54% 46% 44% 56% / 47% 57% 43% 53%; transform: rotate(-7deg) scale(1.02); } }
-  @keyframes core-pulse { 50% { box-shadow: 0 18px 45px rgba(0,0,0,.32),0 0 0 20px rgba(201,243,111,.04); transform: translate(-50%,-50%) scale(1.03); } }
   @media (max-width: 1020px) {
     /* One column from here down. Two columns with a core in the middle needs
        roughly 1100px to breathe; below that each card was squeezed to 200px
@@ -782,7 +779,6 @@ const lenses = [
     .hero__copy h1 { font-size: clamp(2.8rem,13vw,4.3rem); }
     .system-lens { min-height: 450px; }
     .portrait-frame { width: 230px; height: 315px; }
-    .lens-core { left: 73%; top: 70%; width: 86px; height: 86px; }
     .orbit-node { font-size: .54rem; padding: .62rem .7rem; }
     .orbit-node--support { left: -1%; }
     .orbit-node--sales { right: -1%; }
@@ -813,8 +809,25 @@ const lenses = [
 </style>
 
 <script>
+  /**
+   * Pointer parallax on the portrait.
+   *
+   * This used to bail out entirely on prefers-reduced-motion. Ahmed has
+   * reduce-motion on at the OS level, remembered this moving, and found it
+   * dead — the same trap the diagnosis animation fell into earlier in this
+   * project.
+   *
+   * Reduced motion is about movement that happens TO you: autoplay, drift,
+   * scroll-linked parallax. This happens BECAUSE of you and stops the instant
+   * you stop, which makes it closer to a hover state than an animation. It is
+   * also what this project's own contract already says — reduced motion
+   * suppresses autoplay, not deliberate input. So it stays, at a third of the
+   * throw.
+   */
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduced) {
+  const throwPx = reduced ? 6 : 18;
+  // A coarse pointer has no hover, so there is nothing to track.
+  if (window.matchMedia('(pointer: fine)').matches) {
     const lens = document.querySelector<HTMLElement>('.system-lens');
     const items = lens?.querySelectorAll<HTMLElement>('[data-parallax]');
     lens?.addEventListener('pointermove', (event) => {
@@ -823,7 +836,7 @@ const lenses = [
       const y = (event.clientY - bounds.top) / bounds.height - .5;
       items?.forEach((item) => {
         const depth = Number(item.dataset.parallax ?? 0);
-        item.style.translate = `${x * 18 * depth}px ${y * 18 * depth}px`;
+        item.style.translate = `${x * throwPx * depth}px ${y * throwPx * depth}px`;
       });
     });
     lens?.addEventListener('pointerleave', () => items?.forEach((item) => { item.style.translate = '0 0'; }));

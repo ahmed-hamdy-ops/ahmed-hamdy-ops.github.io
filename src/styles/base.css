@@ -15,7 +15,13 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; background: var(--night); }
+  /* scrollbar-gutter reserves the scrollbar's width from the first paint. It is
+     not the flicker Ahmed reported — measured, the hero lede wraps identically
+     at 1440 and 1425 — but a page whose height crosses the viewport mid-load
+     otherwise gains a scrollbar, loses ~15px of width, and reflows every line
+     on the page. Headless Chromium has no scrollbars, so no harness here would
+     ever catch that. Reserve it and the class of bug cannot happen. */
+  html { scroll-behavior: smooth; scrollbar-gutter: stable; background: var(--night); }
   body { min-height: 100vh; overflow-x: hidden; color: var(--chalk); background: var(--night); font-family: var(--font-body); font-size: var(--fs-body); line-height: 1.68; }
   h1, h2, h3, h4 { color: inherit; font-family: var(--font-head); line-height: 1.08; letter-spacing: -0.045em; }
   a { color: inherit; text-underline-offset: 0.22em; }

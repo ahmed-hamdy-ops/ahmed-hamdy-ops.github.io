@@ -31,6 +31,7 @@ const css = FACES.map(
     `font-display:swap;src:url('${withBase(`/fonts/${f.file}`)}') format('woff2-variations');` +
     `unicode-range:${LATIN};}`
 ).join('');
+
 ---
 
 <style is:inline set:html={css}></style>
