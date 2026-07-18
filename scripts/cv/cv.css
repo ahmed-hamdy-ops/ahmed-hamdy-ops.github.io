@@ -1,0 +1,103 @@
+@font-face { font-family: 'Manrope'; font-weight: 200 800; font-display: block; src: url('../../public/fonts/manrope-latin-wght-normal.woff2') format('woff2-variations'); }
+  @font-face { font-family: 'Inter'; font-weight: 100 900; font-display: block; src: url('../../public/fonts/inter-latin-wght-normal.woff2') format('woff2-variations'); }
+
+  :root {
+    --ink: #16232b;
+    --soft: #4a5a63;
+    --faint: #6f7f88;
+    --accent: #0f7565;      /* 4.92:1 on white — the portfolio's signal-deep */
+    --rule: #d8dcdd;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: A4; margin: 13mm 14mm; }
+
+  html { font-size: 10.2pt; }
+  body {
+    font-family: Inter, 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.40;
+    -webkit-font-smoothing: antialiased;
+    /* Let a paragraph leave a single line on either side of a page break. The
+       print default is orphans/widows: 2, which forbids a bullet from splitting
+       unless two lines fit on each page — so a bullet landing near the boundary
+       gets pushed whole, opening a gap that cascades into a third page. This is
+       what made two CVs of identical height paginate to 2 and 3 pages. */
+    orphans: 1;
+    widows: 1;
+  }
+
+  h1, h2, h3 { font-family: Manrope, 'Segoe UI', Arial, sans-serif; }
+
+  /* ── Identity ─────────────────────────────────────────────────────────── */
+  .id { padding-bottom: 9pt; border-bottom: 2pt solid var(--ink); }
+  h1 { font-size: 25pt; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .id__role {
+    margin-top: 4pt;
+    font-family: Manrope, sans-serif; font-weight: 700; font-size: 11.4pt;
+    color: var(--accent); letter-spacing: -0.01em;
+  }
+  /* Contact as body text, not a header/footer region: parsers routinely discard
+     anything they classify as page furniture, and this is the one block that
+     must never be discarded. */
+  .id__contact { margin-top: 6pt; font-size: 9pt; color: var(--soft); }
+  .id__contact a { color: var(--soft); text-decoration: none; }
+
+  /* ── Sections ─────────────────────────────────────────────────────────── */
+  section { margin-top: 11pt; }
+  h2 {
+    margin-bottom: 7pt; padding-bottom: 3pt;
+    border-bottom: 0.75pt solid var(--rule);
+    font-size: 8.6pt; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .lede { font-size: 9.9pt; color: var(--soft); }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  /* ── Roles ────────────────────────────────────────────────────────────── */
+  /* Not avoid-page. A role that will not fit in the space left gets thrown to
+     a fresh page whole, and the gap it leaves behind cost an entire sheet here.
+     Splitting a long role across a page break is normal in a CV; what must not
+     split is a heading from the first line under it. */
+  .role { margin-top: 9pt; }
+  /* Keep a heading with the line under it, but do NOT forbid a bullet from
+     splitting across a page break. That block-level avoidance was the bug: a
+     tall bullet landing near the page-1 boundary got pushed whole to page 2,
+     leaving a gap that cascaded down and forced a third page — for two CVs with
+     identical flow height, one paginated to 2 pages and the other to 3 purely
+     from the order the avoid-blocks fell in. A bullet breaking mid-list is
+     normal and a parser does not care; a stranded heading is not, so those stay
+     protected. */
+  h2, h3, .role__head, .role__where, .role__note { break-after: avoid-page; }
+  .role:first-of-type { margin-top: 0; }
+  .role__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
+  h3 { font-size: 11.6pt; font-weight: 800; letter-spacing: -0.015em; }
+  .role__when { flex: none; font-family: Manrope, sans-serif; font-weight: 700; font-size: 8.4pt; color: var(--faint); letter-spacing: 0.04em; }
+  .role__where {
+    margin-top: 1pt;
+    font-family: Manrope, sans-serif; font-weight: 700; font-size: 9pt; color: var(--accent);
+  }
+  .role__note { margin-top: 4pt; font-size: 9.2pt; color: var(--soft); }
+
+  ul { margin-top: 5pt; list-style: none; }
+  li { position: relative; padding-left: 10pt; margin-top: 3.2pt; font-size: 9.4pt; color: var(--soft); }
+  /* A real character, not a background image — a parser reads this and keeps
+     the line as a list item. */
+  li::before { content: '▪'; position: absolute; left: 0; top: -0.5pt; color: var(--accent); font-size: 7pt; }
+  li strong { color: var(--ink); font-weight: 650; }
+
+  /* ── Skills ───────────────────────────────────────────────────────────── */
+  /* Deliberately not a grid, not chips, and not bars with percentages. A label
+     and a comma-separated line reads correctly to a parser and to a person, and
+     nobody can pretend a percentage means anything. */
+  .sk { margin-top: 4.2pt; font-size: 9.3pt; color: var(--soft); }
+  .sk:first-of-type { margin-top: 0; }
+  .sk b { color: var(--ink); font-weight: 700; font-family: Manrope, sans-serif; font-size: 8.8pt; }
+
+  .fine { margin-top: 4pt; font-size: 8.6pt; color: var(--faint); }
+  body > section:last-of-type { margin-bottom: 0; }
+  body > *:last-child { margin-bottom: 0; }
+
+  .todo { background: #fff2a8; color: #6b5400; padding: 0 2pt; font-weight: 700; }

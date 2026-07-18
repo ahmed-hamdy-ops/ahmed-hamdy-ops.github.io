@@ -21,13 +21,36 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const SRC = path.resolve('scripts/cv/cv.html');
-const OUT = path.resolve('public/assets/ahmed-hamdy-cv.pdf');
-const TXT = path.resolve('verification/cv-as-a-parser-sees-it.txt');
-
-if (!fs.existsSync(SRC)) throw new Error('missing source: ' + SRC);
+// Two variants, one design. The ops version is linked from the site (which is
+// positioned for consulting); the support version is what Ahmed attaches to
+// LinkedIn applications for Support / CX Manager roles. Same facts, same CSS,
+// different order and emphasis — and both must clear the parser.
+const TARGETS = [
+  {
+    src: 'scripts/cv/cv.html',
+    out: 'public/assets/ahmed-hamdy-cv.pdf',
+    txt: 'verification/cv-as-a-parser-sees-it.txt',
+    role: 'Business Operations & Process Improvement Consultant',
+    firstRole: 'Independent Consultant',
+  },
+  {
+    src: 'scripts/cv/cv-support.html',
+    out: 'public/assets/ahmed-hamdy-cv-support.pdf',
+    txt: 'verification/cv-support-as-a-parser-sees-it.txt',
+    role: 'Customer Support & Operations Manager',
+    firstRole: 'Support Team Manager',
+  },
+];
 
 const browser = await chromium.launch();
+let anyFail = false;
+
+for (const T of TARGETS) {
+  const SRC = path.resolve(T.src);
+  const OUT = path.resolve(T.out);
+  const TXT = path.resolve(T.txt);
+  if (!fs.existsSync(SRC)) throw new Error('missing source: ' + SRC);
+
 const page = await browser.newPage();
 await page.goto(pathToFileURL(SRC).href, { waitUntil: 'networkidle' });
 await page.evaluate(() => document.fonts.ready);
@@ -47,7 +70,7 @@ const hostile = await page.evaluate(() => ({
 }));
 
 await page.pdf({ path: OUT, format: 'A4', printBackground: true, preferCSSPageSize: true });
-await browser.close();
+await page.close();
 
 // ── Read it back the way a parser would ─────────────────────────────────────
 let text = '';
@@ -73,20 +96,20 @@ const has = (s) => text.toLowerCase().includes(s.toLowerCase());
 
 const MUST = [
   'Ahmed Hamdy',
-  'Business Operations & Process Improvement Consultant',
+  T.role, // the one line that differs between the two variants
   'ahmedeldep30@gmail.com',
   '+20 104 002 0093',
   'linkedin.com/in/ahmed-hamdy-growth-operations',
   'Profile',
   'Professional Experience',
   'Support Team Manager',
+  'Customer Support Specialist',
   'Alpha Capital Group',
   'Formula4You',
   'Independent Consultant',
   'Core Skills',
   'Education & Languages',
   'Zendesk',
-  'Ticket taxonomy design',
   'Ain Shams University',
 ];
 
@@ -105,27 +128,38 @@ const order = ['Ahmed Hamdy', 'Profile', 'Professional Experience', 'Core Skills
 const at = order.map((k) => hay.indexOf(k.toLowerCase()));
 const ordered = at.every((v, i) => v >= 0 && (i === 0 || v > at[i - 1]));
 
+// Each variant leads on a different role. The support version is worthless if
+// the reordering silently reverted and Independent Consultant is back on top.
+const firstAt = hay.indexOf(T.firstRole.toLowerCase());
+const otherRoles = ['Support Team Manager', 'Independent Consultant', 'Founder — Business Growth']
+  .filter((r) => r !== T.firstRole)
+  .map((r) => hay.indexOf(r.toLowerCase()));
+const leadsCorrectly = firstAt >= 0 && otherRoles.every((v) => v < 0 || firstAt < v);
+
 const failures = [];
 if (missing.length) failures.push(`${missing.length} required string(s) lost in the text layer: ${missing.join(', ')}`);
 if (!ordered) failures.push('reading order is scrambled — a parser will not get the sections in sequence');
+if (!leadsCorrectly) failures.push(`expected "${T.firstRole}" to lead the experience, but another role comes first`);
 if (hostile.tables) failures.push(`${hostile.tables} <table> — parsers linearise these unpredictably`);
 if (hostile.images) failures.push(`${hostile.images} image(s) — text inside one is invisible to a parser`);
 if (hostile.columns) failures.push(`${hostile.columns} multi-column container(s) — the classic cause of scrambled output`);
 if (hostile.positioned) failures.push(`${hostile.positioned} absolutely positioned element(s) — position, not flow, decides their order`);
 if (pages > 2) failures.push(`${pages} pages — a CV should be two at most`);
 
-console.log(`\n  ${path.relative(process.cwd(), OUT)} — ${(size / 1024).toFixed(0)} KB, ${pages} page${pages === 1 ? '' : 's'}`);
-console.log(`  text layer → ${path.relative(process.cwd(), TXT)} (${text.split(/\s+/).filter(Boolean).length} words a parser can read)\n`);
+console.log(`\n  ${path.relative(process.cwd(), OUT)} — ${(size / 1024).toFixed(0)} KB, ${pages} page${pages === 1 ? '' : 's'} · leads on ${T.firstRole}`);
+console.log(`  text layer → ${path.relative(process.cwd(), TXT)} (${text.split(/\s+/).filter(Boolean).length} words a parser can read)`);
 
 if (failures.length) {
+  anyFail = true;
   failures.forEach((f) => console.log(`  ✗ ${f}`));
 } else {
-  console.log('  ✓ ATS: every required field survives extraction, in order');
-  console.log('  ✓ no tables, images, columns or absolute positioning');
+  console.log('  ✓ ATS clean: every required field survives extraction, in order, no hostile structures');
 }
-
 if (todo.length) {
-  console.log(`\n  ⚠ NOT READY TO SEND — ${todo.length} placeholder still in the document: ${todo.join(', ')}`);
+  anyFail = true;
+  console.log(`  ⚠ NOT READY TO SEND — placeholder still present: ${todo.join(', ')}`);
+}
 }
 
-process.exit(failures.length ? 1 : 0);
+await browser.close();
+process.exit(anyFail ? 1 : 0);
