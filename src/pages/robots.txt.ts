@@ -2,11 +2,14 @@ import type { APIRoute } from 'astro';
 import { site, absoluteUrl } from '@config/site';
 
 /**
- * Until Gate 4 approves the canonical host, the site asks not to be indexed.
+ * Crawl policy, driven entirely by site.canonicalApproved.
  *
- * The github.io address is explicitly provisional. Letting it get indexed now
- * would establish a temporary URL as the canonical identity and make the later
- * domain migration start from a worse position. Flip site.canonicalApproved.
+ * The disallow-everything branch is kept, not dead code: it is correct again the
+ * moment a future host is provisional. But note what it costs while it is on —
+ * it does not only keep the site out of Google. Every link-preview crawler
+ * respects robots.txt too, so LinkedIn, Slack and WhatsApp cannot read the page
+ * to build a card, and LinkedIn refuses the URL outright as invalid. Blocking
+ * indexing and blocking sharing are the same switch.
  */
 export const GET: APIRoute = () => {
   const body = site.canonicalApproved

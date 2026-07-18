@@ -6,18 +6,27 @@
  */
 
 export const site = {
-  /** Canonical origin. Provisional until Gate 4 — see astro.config.mjs. */
+  /** Canonical origin. Approved — this is the host, not a placeholder. */
   url: import.meta.env.SITE ?? 'https://ahmed-hamdy-ops.github.io',
   /** Base path. '/' — this is a user site, and stays '/' on a custom domain. */
   base: import.meta.env.BASE_URL ?? '/',
   /**
-   * True once Ahmed approves the canonical host at Gate 4.
+   * The canonical host is approved. Ahmed chose it, the account was renamed to
+   * match it, and it is the address going on his LinkedIn.
    *
-   * While false, the site is discouraged from indexing so the temporary
-   * github.io URL never becomes the established canonical identity in search.
-   * This is the ONLY reason Lighthouse SEO is below target pre-launch.
+   * It was false for a good reason that has since expired: while the host was
+   * still provisional, letting a temporary URL get indexed would have made the
+   * later migration start from a worse position. That risk is gone.
+   *
+   * What made it urgent rather than tidy: crawlers were blocked, so LinkedIn
+   * could not fetch the page to build a preview and rejected the URL outright
+   * with "Please enter a valid link". Blocking indexing also blocks every link
+   * preview — which is the one place the site most needed to look considered.
+   *
+   * Moving to a custom domain later does not change this back. Keep it true and
+   * change `url`; the routes and base path stay as they are.
    */
-  canonicalApproved: false,
+  canonicalApproved: true,
   name: 'Ahmed Hamdy',
   /**
    * "Business Growth & Operations Specialist" was the wrong door. It described
