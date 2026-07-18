@@ -576,10 +576,20 @@ import Disclosure from '@/components/Disclosure.astro';
         </div>
       </header>
 
+      {/* "Download the CV" used to sit here as a third action, and it was the
+          one thing on the page arguing the opposite of everything else. The
+          site's case is that this is someone with judgement and work to show;
+          a CV button is the strongest possible signal that he is applying for
+          a job, and it reframed the whole page as an application. A consultant
+          does not hand you a CV.
+
+          It costs nothing to remove: the PDFs are still built and still served
+          at /assets/, so a direct link works for anyone who asks, and the
+          recruiter route runs through LinkedIn, which carries the file itself.
+          Removing the button removes the claim, not the document. */}
       <div class="close-actions reveal">
         <a class="btn btn--primary" href={withBase('/contact')}>Start a conversation <span class="btn__arrow" aria-hidden="true">→</span></a>
         <a class="btn" href={withBase('/work/formula4you')}>Read the Formula4You case <span class="btn__arrow" aria-hidden="true">→</span></a>
-        <a class="btn" href={withBase('/assets/ahmed-hamdy-cv.pdf')}>Download the CV <span class="btn__arrow" aria-hidden="true">↓</span></a>
       </div>
       <p class="close-note reveal">No response time is promised, because I will not promise one I cannot keep.</p>
     </div>
