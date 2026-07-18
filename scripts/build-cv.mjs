@@ -21,10 +21,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-// Two variants, one design. The ops version is linked from the site (which is
-// positioned for consulting); the support version is what Ahmed attaches to
-// LinkedIn applications for Support / CX Manager roles. Same facts, same CSS,
-// different order and emphasis — and both must clear the parser.
+// Three variants, one design and one stylesheet. Same facts throughout; what
+// changes is which reader each is written for.
+//
+//   ops     — the consulting positioning. No longer linked from the site (a CV
+//             button was the one thing arguing he was applying for a job), but
+//             still built and served at /assets/ for anyone who asks.
+//   support — Support / CX Manager applications. Leads on Alpha.
+//   cs      — Customer Success / Account Management. Leads on the consulting,
+//             because those roles ask for years of direct client management and
+//             the consulting since 2022 is exactly that.
+//
+// All three must clear the parser independently. A variant that silently
+// reverted to another one's ordering is worthless, so each asserts its own lead.
 const TARGETS = [
   {
     src: 'scripts/cv/cv.html',
@@ -39,6 +48,13 @@ const TARGETS = [
     txt: 'verification/cv-support-as-a-parser-sees-it.txt',
     role: 'Customer Support & Operations Manager',
     firstRole: 'Support Team Manager',
+  },
+  {
+    src: 'scripts/cv/cv-cs.html',
+    out: 'public/assets/ahmed-hamdy-cv-customer-success.pdf',
+    txt: 'verification/cv-cs-as-a-parser-sees-it.txt',
+    role: 'Customer Success & Support Operations Manager',
+    firstRole: 'Independent Consultant',
   },
 ];
 
