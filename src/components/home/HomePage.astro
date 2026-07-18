@@ -86,7 +86,7 @@ import Disclosure from '@/components/Disclosure.astro';
         <p>I start at the raw material rather than the summary: the actual conversations, the actual cancelled orders, the actual page somebody gave up on. By the time a problem reaches a meeting it has been summarised twice, and the detail that would have told you where it began is the first thing summarising removes.</p>
         <p>Since 2022 people have brought me whatever was wrong — how to grow profit without simply buying the growth, where they are genuinely different from the competitor beside them, why a team is not performing, whether a site loses the order long before the checkout. I am blunt about the answers: a lower price is not a strategy, more agents is not a fix, and sometimes the honest answer is that nothing should be built at all.</p>
         <p>None of that came from books. I spent two years inside a UK fintech's support function, promoted from the frontline to running the team, where every failure in the business eventually arrived at my desk as somebody's complaint. I run my own platform, Formula4You, where the operating decisions are mine and I am the one who lives with them. And I have worked from the outside of other people's businesses, from early-stage founders to large organisations, where judgement is the only thing I bring in the door.</p>
-        <p class="who__close">Whatever is breaking, I run the same move on it: find where it actually started, name who owns it, change the smallest thing that fixes it — and say plainly where the evidence stops.</p>
+        <p class="who__close">Whatever is breaking, I run the same move on it: find where it actually started, name who owns it, and change the smallest thing that fixes it.</p>
       </div>
 
       <aside class="who__strengths reveal reveal-delay-1" aria-label="What I am good at">
@@ -99,6 +99,27 @@ import Disclosure from '@/components/Disclosure.astro';
           <li>I say when nothing should be built — usually the least popular answer in the room, and often the correct one.</li>
         </ul>
       </aside>
+    </div>
+  </section>
+
+  {/* The forward-looking half. Everything above it is evidence of what he has
+      done; this is the argument for why it is worth doing, and it is aimed at
+      the founder who has not hit the wall yet. Stated as judgement, because
+      that is what it is — attaching a proof point to every sentence of a
+      professional view is what made the earlier drafts read defensive. */}
+  <section class="early zone-night">
+    <div class="wrap early__grid">
+      <div class="early__head reveal">
+        <span class="eyebrow">Where I am most useful</span>
+        <h2>The problems that cost a large company a fortune were an afternoon's work when it was twelve people.</h2>
+      </div>
+      <div class="early__body reveal reveal-delay-1">
+        <p>Almost every expensive operational failure begins as a small, sensible decision taken early by someone who had no time to think about it. A category invented in a hurry. A status that meant one thing to the person who named it and something else to everyone who came after. A handoff that worked perfectly while the whole company sat in one room.</p>
+        <p>None of that is a problem at twelve people. All of it is a problem at two hundred — and by then the fix is not a conversation. It is a migration, a retraining, a quarter of somebody's roadmap, and a year of reports that were quietly pointing at the wrong department.</p>
+        <p>So the most valuable work I do is early: not building more, but deciding what should exist, who owns it, and what each word in your system will still mean when a hundred people are using it. Settling that in month three is close to free. Settling it in year three is a project.</p>
+        <p>And if you are already large and it already hurts — that is most of what I do, and it is still worth doing. It simply costs more than it would have.</p>
+      </div>
+      <p class="early__pull reveal reveal-delay-2">Seeing the problem you are going to have is the cheapest work available to a business. Everything after it is repair.</p>
     </div>
   </section>
 
@@ -501,18 +522,18 @@ import Disclosure from '@/components/Disclosure.astro';
   <section class="lenses-section zone-paper" id="boundary">
     <div class="wrap">
       <header class="section-head reveal">
-        <div><span class="eyebrow">Where I stop</span><h2>Every fix in those three cases was built by somebody better at it than me.</h2></div>
+        <div><span class="eyebrow">Where I stop</span><h2>I decide what needs to exist and why. Building it is a different craft, and I work with the people who have it.</h2></div>
         <p>The status mapping was an engineer’s. The timeline screen was a designer’s. Formula4You is a developer’s. My part was deciding what needed to exist and why, writing it down clearly enough that they did not have to guess — and saying out loud when the answer was that nothing should be built at all.</p>
       </header>
 
       <div class="lens-list">
         <article class="lens-row reveal">
           <span>01</span><h3>Where a journey leaks</h3>
-          <p>I can tell you which sentence is costing you the order and roughly what it costs. I cannot design the screen that fixes it — I write the requirement and hand it to someone who can.</p>
+          <p>I can tell you which sentence is costing you the order and roughly what it costs. I write the requirement; a designer builds the screen.</p>
         </article>
         <article class="lens-row reveal">
           <span>02</span><h3>Reading the numbers</h3>
-          <p>Start from the business question, not the dashboard: pick the indicator that actually answers it, then read what the pattern means. I have never built a data pipeline and would be slow and wrong if I tried.</p>
+          <p>Start from the business question, not the dashboard: pick the indicator that actually answers it, then read what the pattern means. Building the pipeline is an engineer’s job, and I leave it there.</p>
         </article>
         <article class="lens-row reveal">
           <span>03</span><h3>Deciding what gets built</h3>
@@ -585,6 +606,16 @@ import Disclosure from '@/components/Disclosure.astro';
     .who__grid { grid-template-columns: 1fr; }
     .who__strengths { position: static; }
   }
+
+  /* The forward-looking section. Dark, between two paper sections, so the one
+     argument aimed at the reader's own business is the thing that stands out. */
+  .early { padding: clamp(3rem, 6vw, 5rem) 0; color: var(--chalk); background: radial-gradient(circle at 88% 12%, rgba(121,183,255,.13), transparent 24rem), radial-gradient(circle at 6% 88%, rgba(72,224,187,.11), transparent 25rem), var(--night); }
+  .early__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(1.6rem, 4vw, 3.4rem) clamp(2rem, 5vw, 4rem); align-items: start; }
+  .early__head h2 { max-width: 20ch; margin-top: .7rem; color: var(--white); font-size: clamp(1.6rem, 1.1rem + 2vw, 2.8rem); letter-spacing: -.025em; line-height: 1.1; text-wrap: balance; }
+  .early__body p { max-width: 64ch; margin-bottom: .95rem; color: var(--slate); font-size: clamp(.94rem, .9rem + .25vw, 1.05rem); line-height: 1.7; }
+  .early__body p:last-child { margin-bottom: 0; }
+  .early__pull { grid-column: 1 / -1; max-width: 58ch; margin-top: clamp(1.4rem, 3vw, 2.4rem); padding-top: clamp(1.2rem, 2.5vw, 1.8rem); border-top: 1px solid var(--hairline); color: var(--white); font: 600 clamp(1.05rem, .95rem + .7vw, 1.5rem)/1.35 var(--font-head); letter-spacing: -.015em; text-wrap: balance; }
+  @media (max-width: 860px) { .early__grid { grid-template-columns: 1fr; } .early__head h2 { max-width: none; } }
 
   /* The frame around the cases — one line that stops three organisations from
      reading as a complete career file. */
