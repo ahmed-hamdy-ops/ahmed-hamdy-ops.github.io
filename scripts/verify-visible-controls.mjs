@@ -20,7 +20,7 @@
  */
 import { chromium } from 'playwright';
 
-const BASE = process.argv[2] ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.argv[2] ?? 'http://localhost:4330';
 const ROUTES = ['/', '/contact', '/work', '/work/formula4you'];
 const SELECTOR = '.btn, .mark__talk, button, [role="button"]';
 

@@ -19,7 +19,7 @@ import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330';
 const OUT = path.resolve(import.meta.dirname, '..', 'verification');
 
 const VIEWPORTS = [
@@ -215,9 +215,13 @@ console.log('\n── Base path ──');
   if (!r || r.status() >= 400) fail(`Direct entry to /work/formula4you → HTTP ${r?.status()}`);
   else pass('Direct entry to a deep route under the base path works');
 
-  const badAssets = await page.$$eval('img, link[rel="stylesheet"]', (els) =>
+  // Derived, not hard-coded: on a user site the prefix is '/', so every
+  // root-relative asset passes — which is the correct answer, not a skipped check.
+  const basePath = new URL(BASE).pathname.replace(/\/+$/, '') || '/';
+  const badAssets = await page.$$eval('img, link[rel="stylesheet"]', (els, bp) =>
     els.map((e) => e.getAttribute('src') || e.getAttribute('href'))
-       .filter((h) => h && h.startsWith('/') && !h.startsWith('/ahmed-hamdy-portfolio'))
+       .filter((h) => h && h.startsWith('/') && !h.startsWith(bp)),
+    basePath,
   );
   if (badAssets.length) fail(`Assets bypassing the base path: ${badAssets.slice(0, 3).join(', ')}`);
   else pass('All assets resolve through the configured base path');

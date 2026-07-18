@@ -7,10 +7,9 @@ import { rehypeBasePath } from './scripts/rehype-base-path.mjs';
 /**
  * SITE_URL and BASE_PATH are the ONLY place deployment identity lives.
  *
- * Today  — GitHub Pages project site:
- *          SITE_URL=https://ahmedeldep30-ship-it.github.io  BASE_PATH=/ahmed-hamdy-portfolio
- * Later  — GitHub Pages user site:
- *          SITE_URL=https://<user>.github.io                BASE_PATH=/
+ * Today  — GitHub Pages user site (the repo name matches the account, which
+ *          is what makes it a user site rather than a project):
+ *          SITE_URL=https://ahmed-hamdy-ops.github.io   BASE_PATH=/
  * Later  — custom domain (Gate 4+):
  *          SITE_URL=https://ahmedhamdy.com                  BASE_PATH=/
  *          + public/CNAME + DNS. No route changes, so search equity is preserved.
@@ -18,8 +17,8 @@ import { rehypeBasePath } from './scripts/rehype-base-path.mjs';
  * The temporary github.io address is NOT the permanent canonical identity
  * until Gate 4 approval.
  */
-const SITE_URL = process.env.SITE_URL ?? 'https://ahmedeldep30-ship-it.github.io';
-const BASE_PATH = process.env.BASE_PATH ?? '/ahmed-hamdy-portfolio';
+const SITE_URL = process.env.SITE_URL ?? 'https://ahmed-hamdy-ops.github.io';
+const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   site: SITE_URL,

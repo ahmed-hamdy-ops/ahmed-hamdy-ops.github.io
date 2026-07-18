@@ -7,7 +7,7 @@
 import { chromium } from 'playwright';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330';
 const PAGES = [
   ['home', `${BASE}/`],
   ['formula4you', `${BASE}/work/formula4you`],

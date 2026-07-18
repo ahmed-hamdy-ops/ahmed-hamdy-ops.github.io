@@ -7,8 +7,8 @@
 
 export const site = {
   /** Canonical origin. Provisional until Gate 4 — see astro.config.mjs. */
-  url: import.meta.env.SITE ?? 'https://ahmedeldep30-ship-it.github.io',
-  /** Base path. '/ahmed-hamdy-portfolio' for a project site, '/' for a user site. */
+  url: import.meta.env.SITE ?? 'https://ahmed-hamdy-ops.github.io',
+  /** Base path. '/' — this is a user site, and stays '/' on a custom domain. */
   base: import.meta.env.BASE_URL ?? '/',
   /**
    * True once Ahmed approves the canonical host at Gate 4.

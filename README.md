@@ -4,7 +4,7 @@ Business Growth & Operations Specialist. Enterprise portfolio and business-oppor
 
 **→ For current status, what's done, and what's outstanding, read [`docs/00-STATUS.md`](docs/00-STATUS.md).**
 
-**Live (provisional, noindex):** https://ahmedeldep30-ship-it.github.io/ahmed-hamdy-portfolio/
+**Live (provisional, noindex):** https://ahmed-hamdy-ops.github.io/
 **Gate:** 2 — reworked, awaiting visual approval. Phase 4+ not started.
 **Stack:** Astro 5 · strict TypeScript · MDX content collections · hand-authored CSS · no UI framework ships to the browser.
 
@@ -16,7 +16,7 @@ Business Growth & Operations Specialist. Enterprise portfolio and business-oppor
 npm install
 npm run fonts        # vendor woff2 from node_modules → public/fonts/
 npm run assets       # source-assets/ (private) → src/assets/ (optimized, committed)
-npm run dev          # http://localhost:4321/ahmed-hamdy-portfolio/
+npm run dev          # http://localhost:4321/
 npm run build        # astro check && astro build
 npm run preview      # serves dist/ on :4330 — every verify script targets this
 ```

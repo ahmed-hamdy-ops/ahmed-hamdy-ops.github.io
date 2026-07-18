@@ -6,7 +6,7 @@
  */
 import { chromium, firefox, devices } from 'playwright';
 
-const LIVE = process.env.VERIFY_URL ?? 'https://ahmedeldep30-ship-it.github.io/ahmed-hamdy-portfolio';
+const LIVE = process.env.VERIFY_URL ?? 'https://ahmed-hamdy-ops.github.io';
 
 async function probe(browserType, name, contextOpts = {}) {
   const browser = await browserType.launch();

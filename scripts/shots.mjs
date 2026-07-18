@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330';
 const OUT = path.resolve(import.meta.dirname, '..', 'verification', 'sections');
 await mkdir(OUT, { recursive: true });
 

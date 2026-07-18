@@ -20,7 +20,7 @@ const ALLOW = new Set([
 const RULES = [
   {
     id: 'hardcoded-github-io',
-    re: /ahmedeldep30-ship-it\.github\.io/,
+    re: /ahmed-hamdy-ops\.github\.io/,
     msg: 'Hard-coded GitHub Pages host. Use site.url / absoluteUrl().',
   },
   {

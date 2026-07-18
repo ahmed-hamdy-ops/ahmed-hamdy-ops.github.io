@@ -10,12 +10,12 @@ where they conflict with this file, this file wins.
 
 | | |
 |---|---|
-| **Live (provisional)** | https://ahmedeldep30-ship-it.github.io/ahmed-hamdy-portfolio/ |
+| **Live (provisional)** | https://ahmed-hamdy-ops.github.io/ |
 | **Indexing** | **OFF** — `noindex` site-wide until Gate 4. Deliberate. |
 | **Current gate** | **Gate 2.3 — direction locked; implementation pending.** The V4 positioning and content architecture now govern the refactor; visual direction remains unapproved. |
 | **Phase 4+** | **Not started.** Blocked on Gate 2.3 implementation and Gate 2 visual approval. |
 | **Routes live** | 6 public + 1 review + generated artefacts (§4) |
-| **Repo** | `ahmedeldep30-ship-it/ahmed-hamdy-portfolio`, branch `main` |
+| **Repo** | `ahmed-hamdy-ops/ahmed-hamdy-ops.github.io`, branch `main` |
 
 ### Gate history — what was actually decided
 

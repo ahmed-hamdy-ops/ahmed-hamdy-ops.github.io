@@ -9,7 +9,7 @@
 import lighthouse from 'lighthouse';
 import { launch } from 'chrome-launcher';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330';
 const PAGES = [
   ['home', `${BASE}/`],
   ['formula4you', `${BASE}/work/formula4you`],

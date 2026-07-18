@@ -11,7 +11,7 @@
  */
 import { chromium, devices } from 'playwright';
 
-const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330/ahmed-hamdy-portfolio';
+const BASE = process.env.VERIFY_URL ?? 'http://localhost:4330';
 let fails = 0;
 const ok = (m) => console.log(`  ✓ ${m}`);
 const bad = (m) => { console.error(`  ✗ ${m}`); fails++; };

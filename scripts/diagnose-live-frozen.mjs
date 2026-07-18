@@ -7,7 +7,7 @@
  */
 import { chromium } from 'playwright';
 
-const LIVE = process.env.VERIFY_URL ?? 'https://ahmedeldep30-ship-it.github.io/ahmed-hamdy-portfolio';
+const LIVE = process.env.VERIFY_URL ?? 'https://ahmed-hamdy-ops.github.io';
 
 async function probe(label, reducedMotion) {
   const browser = await chromium.launch();
