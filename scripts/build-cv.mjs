@@ -47,7 +47,7 @@ const TARGETS = [
     out: 'public/assets/ahmed-hamdy-cv-support.pdf',
     txt: 'verification/cv-support-as-a-parser-sees-it.txt',
     role: 'Customer Support & Operations Manager',
-    firstRole: 'Support Team Manager',
+    firstRole: 'Client Support Team Leader',
   },
   {
     src: 'scripts/cv/cv-cs.html',
@@ -118,8 +118,9 @@ const MUST = [
   'linkedin.com/in/ahmed-hamdy-growth-operations',
   'Profile',
   'Professional Experience',
-  'Support Team Manager',
-  'Customer Support Specialist',
+  'Client Support Team Leader',
+  'Client Support Specialist',
+  'Social Media Moderator',
   'Alpha Capital Group',
   'Formula4You',
   'Independent Consultant',
@@ -147,7 +148,7 @@ const ordered = at.every((v, i) => v >= 0 && (i === 0 || v > at[i - 1]));
 // Each variant leads on a different role. The support version is worthless if
 // the reordering silently reverted and Independent Consultant is back on top.
 const firstAt = hay.indexOf(T.firstRole.toLowerCase());
-const otherRoles = ['Support Team Manager', 'Independent Consultant', 'Founder — Business Growth']
+const otherRoles = ['Client Support Team Leader', 'Independent Consultant', 'Founder — Business Growth']
   .filter((r) => r !== T.firstRole)
   .map((r) => hay.indexOf(r.toLowerCase()));
 const leadsCorrectly = firstAt >= 0 && otherRoles.every((v) => v < 0 || firstAt < v);
